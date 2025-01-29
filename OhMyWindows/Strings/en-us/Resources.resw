@@ -141,4 +141,97 @@
   &lt;/actions&gt;
 &lt;/toast&gt;</value>
   </data>
+  <data name="SystemePage_TaskbarHeader" xml:space="preserve">
+    <value>Taskbar</value>
+  </data>
+  <data name="SystemePage_TaskbarAlignment" xml:space="preserve">
+    <value>Taskbar Alignment</value>
+  </data>
+  <data name="SystemePage_TaskbarEndTask" xml:space="preserve">
+    <value>End Task in Taskbar</value>
+  </data>
+  <data name="SystemePage_SearchboxMode" xml:space="preserve">
+    <value>Search Box Mode</value>
+  </data>
+  <data name="SystemePage_TaskViewButton" xml:space="preserve">
+    <value>Task View Button</value>
+  </data>
+  <data name="SystemePage_PrivacyHeader" xml:space="preserve">
+    <value>Privacy and Search</value>
+  </data>
+  <data name="SystemePage_BingSearch" xml:space="preserve">
+    <value>Bing Search</value>
+  </data>
+  <data name="SystemePage_WebSearch" xml:space="preserve">
+    <value>Web Search</value>
+  </data>
+  <data name="SystemePage_SubscribedContent" xml:space="preserve">
+    <value>Subscribed Content</value>
+  </data>
+  <data name="SystemePage_OfflineMaps" xml:space="preserve">
+    <value>Offline Maps</value>
+  </data>
+  <data name="SystemePage_FileExplorerHeader" xml:space="preserve">
+    <value>File Explorer</value>
+  </data>
+  <data name="SystemePage_AppIconsThumbnails" xml:space="preserve">
+    <value>App Icons on Thumbnails</value>
+  </data>
+  <data name="SystemePage_AutomaticFolderDiscovery" xml:space="preserve">
+    <value>Automatic Folder Discovery</value>
+  </data>
+  <data name="SystemePage_CompactView" xml:space="preserve">
+    <value>Compact View</value>
+  </data>
+  <data name="SystemePage_FileExtension" xml:space="preserve">
+    <value>File Extension</value>
+  </data>
+  <data name="SystemePage_HiddenFiles" xml:space="preserve">
+    <value>Hidden Files</value>
+  </data>
+  <data name="SystemePage_ContextMenuHeader" xml:space="preserve">
+    <value>Context Menu</value>
+  </data>
+  <data name="SystemePage_ClassicContextMenu" xml:space="preserve">
+    <value>Classic Context Menu</value>
+  </data>
+  <data name="SystemePage_AutoHideTaskbar" xml:space="preserve">
+    <value>Auto-hide Taskbar</value>
+  </data>
+  <data name="SystemePage_ThemeContextMenu" xml:space="preserve">
+    <value>Theme in Context Menu</value>
+  </data>
+  <data name="SystemePage_SystemHeader" xml:space="preserve">
+    <value>System and Performance</value>
+  </data>
+  <data name="SystemePage_MouseAcceleration" xml:space="preserve">
+    <value>Mouse Acceleration</value>
+  </data>
+  <data name="SystemePage_MicrosoftCopilot" xml:space="preserve">
+    <value>Microsoft Copilot</value>
+  </data>
+  <data name="SystemePage_BackgroundApps" xml:space="preserve">
+    <value>Background Apps</value>
+  </data>
+  <data name="SystemePage_DevMode" xml:space="preserve">
+    <value>Developer Mode</value>
+  </data>
+  <data name="SystemePage_Hibernation" xml:space="preserve">
+    <value>Hibernation</value>
+  </data>
+  <data name="SystemePage_Telemetry" xml:space="preserve">
+    <value>Telemetry</value>
+  </data>
+  <data name="SystemePage_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="SystemePage_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="SystemePage_Visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="SystemePage_Hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
 </root>

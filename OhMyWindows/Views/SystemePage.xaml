@@ -7,6 +7,207 @@
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Bouton Tout sélectionner -->
+        <Button x:Name="ToggleAllButton"
+                Grid.Row="0"
+                Content="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
+                Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"
+                Margin="20,10"
+                HorizontalAlignment="Left"/>
+
+        <!-- Contenu principal -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="10" Margin="20">
+                <!-- Barre des tâches -->
+                <Expander Header="Barre des tâches" 
+                          HorizontalAlignment="Stretch" 
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                          BorderThickness="1"
+                          Padding="10">
+                    <StackPanel Spacing="8">
+                        <ToggleSwitch Header="Alignement au centre" 
+                                    x:Name="TaskbarAlignmentCenter"
+                                    IsOn="{x:Bind ViewModel.TaskbarAlignmentCenter, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Terminer la tâche" 
+                                    x:Name="TaskbarEndTask"
+                                    IsOn="{x:Bind ViewModel.TaskbarEndTask, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ComboBox Header="Mode de recherche" 
+                                x:Name="SearchboxTaskbarMode"
+                                SelectedIndex="{x:Bind ViewModel.SearchboxTaskbarMode, Mode=TwoWay}"
+                                HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="Désactivé"/>
+                            <ComboBoxItem Content="Icône de recherche"/>
+                            <ComboBoxItem Content="Icône et étiquette"/>
+                            <ComboBoxItem Content="Zone de recherche"/>
+                        </ComboBox>
+                        <ToggleSwitch Header="Bouton Task View" 
+                                    x:Name="TaskViewButton"
+                                    IsOn="{x:Bind ViewModel.TaskViewButton, Mode=TwoWay}"
+                                    OnContent="Visible"
+                                    OffContent="Masqué"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Confidentialité et Recherche -->
+                <Expander Header="Confidentialité et Recherche"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                          BorderThickness="1"
+                          Padding="10">
+                    <StackPanel Spacing="8">
+                        <ToggleSwitch Header="Recherche Bing" 
+                                    x:Name="BingSearch"
+                                    IsOn="{x:Bind ViewModel.BingSearch, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Recherche web" 
+                                    x:Name="WebSearch"
+                                    IsOn="{x:Bind ViewModel.WebSearch, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Contenu abonné" 
+                                    x:Name="SubscribedContent"
+                                    IsOn="{x:Bind ViewModel.SubscribedContent, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Cartes hors ligne" 
+                                    x:Name="OfflineMaps"
+                                    IsOn="{x:Bind ViewModel.OfflineMaps, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Explorateur de fichiers -->
+                <Expander Header="Explorateur de fichiers"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                          BorderThickness="1"
+                          Padding="10">
+                    <StackPanel Spacing="8">
+                        <ToggleSwitch Header="Icônes d'application sur les vignettes" 
+                                    x:Name="AppIconsThumbnails"
+                                    IsOn="{x:Bind ViewModel.AppIconsThumbnails, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Découverte automatique des dossiers" 
+                                    x:Name="AutomaticFolderDiscovery"
+                                    IsOn="{x:Bind ViewModel.AutomaticFolderDiscovery, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Vue compacte" 
+                                    x:Name="CompactView"
+                                    IsOn="{x:Bind ViewModel.CompactView, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Extension de fichier" 
+                                    x:Name="FileExtension"
+                                    IsOn="{x:Bind ViewModel.FileExtension, Mode=TwoWay}"
+                                    OnContent="Visible"
+                                    OffContent="Masqué"/>
+                        <ToggleSwitch Header="Fichiers cachés" 
+                                    x:Name="HiddenFiles"
+                                    IsOn="{x:Bind ViewModel.HiddenFiles, Mode=TwoWay}"
+                                    OnContent="Visible"
+                                    OffContent="Masqué"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Menu Contextuel -->
+                <Expander Header="Menu Contextuel"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                          BorderThickness="1"
+                          Padding="10">
+                    <StackPanel Spacing="8">
+                        <ToggleSwitch Header="Menu contextuel classique" 
+                                    x:Name="ClassicContextMenu"
+                                    IsOn="{x:Bind ViewModel.ClassicContextMenu, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Masquer automatiquement la barre des tâches" 
+                                    x:Name="AutoHideTaskbar"
+                                    IsOn="{x:Bind ViewModel.AutoHideTaskbar, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Mode clair/sombre dans le menu contextuel" 
+                                    x:Name="ThemeContextMenu"
+                                    IsOn="{x:Bind ViewModel.ThemeContextMenu, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Système et Performance -->
+                <Expander Header="Système et Performance"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                          BorderThickness="1"
+                          Padding="10">
+                    <StackPanel Spacing="8">
+                        <ToggleSwitch Header="Accélération de la souris" 
+                                    x:Name="MouseAcceleration"
+                                    IsOn="{x:Bind ViewModel.MouseAcceleration, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Microsoft Copilot" 
+                                    x:Name="MicrosoftCopilot"
+                                    IsOn="{x:Bind ViewModel.MicrosoftCopilot, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Applications en arrière-plan" 
+                                    x:Name="BackgroundApps"
+                                    IsOn="{x:Bind ViewModel.BackgroundApps, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Mode Développeur" 
+                                    x:Name="DevMode"
+                                    IsOn="{x:Bind ViewModel.DevMode, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Hibernation" 
+                                    x:Name="Hibernation"
+                                    IsOn="{x:Bind ViewModel.Hibernation, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                        <ToggleSwitch Header="Télémétrie" 
+                                    x:Name="Telemetry"
+                                    IsOn="{x:Bind ViewModel.Telemetry, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Bouton Valider -->
+        <Button x:Name="ApplyButton"
+                Grid.Row="2"
+                Command="{x:Bind ViewModel.ApplyModifiedSettingsCommand}"
+                Style="{StaticResource AccentButtonStyle}"
+                Margin="20,10"
+                IsEnabled="{x:Bind ViewModel.HasModifications, Mode=OneWay}"
+                HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <FontIcon Glyph="&#xE930;" 
+                         Visibility="{x:Bind ViewModel.HasModifications, Mode=OneWay}"/>
+                <TextBlock Text="Valider les modifications"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Page> 
