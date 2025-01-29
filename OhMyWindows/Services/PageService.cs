@@ -16,8 +16,16 @@ public class PageService : IPageService
     {
         Configure<AcceuilViewModel, AcceuilPage>();
         Configure<ConfigurationViewModel, ConfigurationPage>();
+        Configure<SystemeViewModel, SystemePage>();
+        Configure<LogicielsViewModel, LogicielsPage>();
+        Configure<TerminalViewModel, TerminalPage>();
+        Configure<ThemeViewModel, ThemePage>();
         Configure<InstallationViewModel, InstallationPage>();
+        Configure<ProgrammesViewModel, ProgrammesPage>();
+        Configure<GestionnairePaquetsViewModel, GestionnairePaquetsPage>();
         Configure<OutilsViewModel, OutilsPage>();
+        Configure<ActivationViewModel, ActivationPage>();
+        Configure<AndroidViewModel, AndroidPage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 

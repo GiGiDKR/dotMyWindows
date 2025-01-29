@@ -52,16 +52,62 @@
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="Shell_Configuration_Systeme" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.SystemeViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="Shell_Configuration_Logiciels" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.LogicielsViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="Shell_Configuration_Terminal" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.TerminalViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="Shell_Configuration_Theme" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.ThemeViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Installation" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.InstallationViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="Shell_Installation_Programmes" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.ProgrammesViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="Shell_Installation_GestionnairePaquets" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.GestionnairePaquetsViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Outils" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.OutilsViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="Shell_Outils_Activation" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.ActivationViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="Shell_Outils_Android" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.AndroidViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>

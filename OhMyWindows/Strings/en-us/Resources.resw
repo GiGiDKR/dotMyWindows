@@ -73,8 +73,32 @@
   <data name="Shell_Installation.Content" xml:space="preserve">
     <value>Installation</value>
   </data>
+  <data name="Shell_Installation_Programmes.Content" xml:space="preserve">
+    <value>Programmes</value>
+  </data>
+  <data name="Shell_Installation_GestionnairePaquets.Content" xml:space="preserve">
+    <value>Gestionnaire de paquets</value>
+  </data>
+  <data name="Shell_Configuration_Systeme.Content" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="Shell_Configuration_Logiciels.Content" xml:space="preserve">
+    <value>Logiciels</value>
+  </data>
+  <data name="Shell_Configuration_Terminal.Content" xml:space="preserve">
+    <value>Terminal</value>
+  </data>
+  <data name="Shell_Configuration_Theme.Content" xml:space="preserve">
+    <value>Thème</value>
+  </data>
   <data name="Shell_Outils.Content" xml:space="preserve">
     <value>Outils</value>
+  </data>
+  <data name="Shell_Outils_Activation.Content" xml:space="preserve">
+    <value>Activation</value>
+  </data>
+  <data name="Shell_Outils_Android.Content" xml:space="preserve">
+    <value>Android</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
