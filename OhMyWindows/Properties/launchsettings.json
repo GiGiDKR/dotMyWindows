@@ -1,0 +1,15 @@
+﻿{
+    "profiles": {
+      "OhMyWindows (Package)": {
+        "commandName": "MsixPackage",
+        "nativeDebugging": true,
+        "remoteDebugEnabled": false,
+        "remoteDebugMachine": "",
+        "authenticationMode": "None"
+      },
+      "OhMyWindows (Unpackaged)": {
+        "commandName": "Project",
+        "nativeDebugging": true
+      }
+    }
+}
