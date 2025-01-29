@@ -1,15 +1,40 @@
 ﻿{
     "profiles": {
-      "OhMyWindows (Package)": {
-        "commandName": "MsixPackage",
+      "OhMyWindows (x64)": {
+        "commandName": "Project",
         "nativeDebugging": true,
+        "commandLineArgs": "",
+        "environmentVariables": {
+          "DOTNET_ENVIRONMENT": "Development"
+        },
+        "hotReloadEnabled": true,
         "remoteDebugEnabled": false,
         "remoteDebugMachine": "",
         "authenticationMode": "None"
       },
-      "OhMyWindows (Unpackaged)": {
+      "OhMyWindows (x86)": {
         "commandName": "Project",
-        "nativeDebugging": true
+        "nativeDebugging": true,
+        "commandLineArgs": "",
+        "environmentVariables": {
+          "DOTNET_ENVIRONMENT": "Development"
+        },
+        "hotReloadEnabled": true,
+        "remoteDebugEnabled": false,
+        "remoteDebugMachine": "",
+        "authenticationMode": "None"
+      },
+      "OhMyWindows (arm64)": {
+        "commandName": "Project",
+        "nativeDebugging": true,
+        "commandLineArgs": "",
+        "environmentVariables": {
+          "DOTNET_ENVIRONMENT": "Development"
+        },
+        "hotReloadEnabled": true,
+        "remoteDebugEnabled": false,
+        "remoteDebugMachine": "",
+        "authenticationMode": "None"
       }
     }
 }

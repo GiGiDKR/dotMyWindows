@@ -47,6 +47,13 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        if (!IsRunAsAdministrator())
+        {
+            RestartAsAdmin();
+            Environment.Exit(0);
+            return;
+        }
+
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
@@ -110,6 +117,44 @@ public partial class App : Application
         App.GetService<IAppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
+    }
+
+    private bool IsRunAsAdministrator()
+    {
+        var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+        var principal = new System.Security.Principal.WindowsPrincipal(identity);
+        return principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
+    }
+
+    private void RestartAsAdmin()
+    {
+        var processInfo = new System.Diagnostics.ProcessStartInfo
+        {
+            UseShellExecute = true,
+            FileName = Environment.ProcessPath,
+            WorkingDirectory = Environment.CurrentDirectory,
+            Verb = "runas"
+        };
+
+        try
+        {
+            System.Diagnostics.Process.Start(processInfo);
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            var dialog = new Microsoft.UI.Xaml.Controls.ContentDialog
+            {
+                Title = "Privilèges administrateur requis",
+                Content = "Cette application nécessite des privilèges administrateur pour fonctionner correctement. Veuillez la relancer en tant qu'administrateur.",
+                CloseButtonText = "OK"
+            };
+
+            if (MainWindow?.Content != null)
+            {
+                dialog.XamlRoot = MainWindow.Content.XamlRoot;
+                _ = dialog.ShowAsync();
+            }
+        }
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)

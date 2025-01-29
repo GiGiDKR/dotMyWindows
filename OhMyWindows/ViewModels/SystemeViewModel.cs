@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
 using OhMyWindows.Services;
 using System;
 using System.Collections.Generic;
@@ -129,12 +130,36 @@ public partial class SystemeViewModel : ObservableObject
     {
         try
         {
-            TaskbarAlignmentCenter = await _registryService.IsSettingEnabled("Barre des tache", "Taskbar Al - Center");
-            TaskbarEndTask = await _registryService.IsSettingEnabled("Barre des tache", "Enable Taskbar End Task");
-            TaskViewButton = await _registryService.IsSettingEnabled("Barre des tache", "Show Task View Button");
-            BingSearch = await _registryService.IsSettingEnabled("Confidentialite et Recherche", "BingSearchEnabled-On");
-            WebSearch = await _registryService.IsSettingEnabled("Confidentialite et Recherche", "Enable Web Search");
-            // ... Charger les autres paramètres
+            // Barre des tâches
+            TaskbarAlignmentCenter = await _registryService.IsSettingEnabled(RegistryKeys.TaskBar.TaskbarAlignment);
+            TaskbarEndTask = await _registryService.IsSettingEnabled(RegistryKeys.TaskBar.TaskbarEndTask);
+            TaskViewButton = await _registryService.IsSettingEnabled(RegistryKeys.TaskBar.TaskViewButton);
+            
+            // Confidentialité et Recherche
+            BingSearch = await _registryService.IsSettingEnabled(RegistryKeys.Privacy.BingSearch);
+            WebSearch = await _registryService.IsSettingEnabled(RegistryKeys.Privacy.WebSearch);
+            SubscribedContent = await _registryService.IsSettingEnabled(RegistryKeys.Privacy.SubscribedContent);
+            OfflineMaps = await _registryService.IsSettingEnabled(RegistryKeys.Privacy.OfflineMaps);
+            
+            // Explorateur de fichiers
+            AppIconsThumbnails = await _registryService.IsSettingEnabled(RegistryKeys.FileExplorer.AppIconsThumbnails);
+            AutomaticFolderDiscovery = await _registryService.IsSettingEnabled(RegistryKeys.FileExplorer.AutomaticFolderDiscovery);
+            CompactView = await _registryService.IsSettingEnabled(RegistryKeys.FileExplorer.CompactView);
+            FileExtension = await _registryService.IsSettingEnabled(RegistryKeys.FileExplorer.FileExtension);
+            HiddenFiles = await _registryService.IsSettingEnabled(RegistryKeys.FileExplorer.HiddenFiles);
+            
+            // Menu Contextuel
+            ClassicContextMenu = await _registryService.IsSettingEnabled(RegistryKeys.ContextMenu.ClassicContextMenu);
+            AutoHideTaskbar = await _registryService.IsSettingEnabled(RegistryKeys.ContextMenu.AutoHideTaskbar);
+            ThemeContextMenu = await _registryService.IsSettingEnabled(RegistryKeys.ContextMenu.ThemeContextMenu);
+            
+            // Système et Performance
+            MouseAcceleration = await _registryService.IsSettingEnabled(RegistryKeys.SystemAndPerformance.MouseAcceleration);
+            MicrosoftCopilot = await _registryService.IsSettingEnabled(RegistryKeys.SystemAndPerformance.MicrosoftCopilot);
+            BackgroundApps = await _registryService.IsSettingEnabled(RegistryKeys.SystemAndPerformance.BackgroundApps);
+            DevMode = await _registryService.IsSettingEnabled(RegistryKeys.SystemAndPerformance.DevMode);
+            Hibernation = await _registryService.IsSettingEnabled(RegistryKeys.SystemAndPerformance.Hibernation);
+            Telemetry = await _registryService.IsSettingEnabled(RegistryKeys.SystemAndPerformance.Telemetry);
             
             _modifiedSettings.Clear();
             HasModifications = false;
@@ -142,8 +167,21 @@ public partial class SystemeViewModel : ObservableObject
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Erreur lors du chargement des paramètres : {ex.Message}");
-            // TODO: Afficher un message d'erreur à l'utilisateur
+            await ShowErrorDialog("Erreur lors du chargement des paramètres", ex.Message);
         }
+    }
+
+    private async Task ShowErrorDialog(string title, string message)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = message,
+            CloseButtonText = "OK",
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+
+        await dialog.ShowAsync();
     }
 
     [RelayCommand]
@@ -180,48 +218,72 @@ public partial class SystemeViewModel : ObservableObject
     {
         try
         {
+            // Vérifier les privilèges élevés
+            if (await _registryService.RequiresElevatedPrivileges(RegistryKeys.TaskBar.TaskbarAlignment))
+            {
+                await ShowErrorDialog("Privilèges insuffisants", 
+                    "Cette opération nécessite des privilèges administrateur. Veuillez relancer l'application en tant qu'administrateur.");
+                return;
+            }
+
             foreach (var setting in _modifiedSettings)
             {
-                await _registryService.ApplyRegFile(GetCategoryForSetting(setting.Key), setting.Key, setting.Value);
+                var registryKey = GetRegistryKeyForSetting(setting.Key);
+                await _registryService.SetSetting(registryKey, setting.Value);
             }
+
             _modifiedSettings.Clear();
             HasModifications = false;
+            
+            await ShowSuccessDialog();
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Erreur lors de l'application des modifications : {ex.Message}");
-            // TODO: Afficher un message d'erreur à l'utilisateur
-            throw;
+            await ShowErrorDialog("Erreur lors de l'application des modifications", ex.Message);
         }
     }
 
-    private string GetCategoryForSetting(string setting)
+    private RegistryKeys.RegistryKey GetRegistryKeyForSetting(string setting)
     {
         return setting switch
         {
-            "TaskbarAlignmentCenter" => "Barre des tache",
-            "TaskbarEndTask" => "Barre des tache",
-            "TaskViewButton" => "Barre des tache",
-            "BingSearch" => "Confidentialite et Recherche",
-            "WebSearch" => "Confidentialite et Recherche",
-            "SubscribedContent" => "Confidentialite et Recherche",
-            "OfflineMaps" => "Confidentialite et Recherche",
-            "AppIconsThumbnails" => "Explorateur de fichiers",
-            "AutomaticFolderDiscovery" => "Explorateur de fichiers",
-            "CompactView" => "Explorateur de fichiers",
-            "FileExtension" => "Explorateur de fichiers",
-            "HiddenFiles" => "Explorateur de fichiers",
-            "ClassicContextMenu" => "Menu Contextuel",
-            "AutoHideTaskbar" => "Menu Contextuel",
-            "ThemeContextMenu" => "Menu Contextuel",
-            "MouseAcceleration" => "Systeme et Performance",
-            "MicrosoftCopilot" => "Systeme et Performance",
-            "BackgroundApps" => "Systeme et Performance",
-            "DevMode" => "Systeme et Performance",
-            "Hibernation" => "Systeme et Performance",
-            "Telemetry" => "Systeme et Performance",
-            _ => throw new ArgumentException($"Catégorie inconnue pour le paramètre : {setting}")
+            nameof(TaskbarAlignmentCenter) => RegistryKeys.TaskBar.TaskbarAlignment,
+            nameof(TaskbarEndTask) => RegistryKeys.TaskBar.TaskbarEndTask,
+            nameof(TaskViewButton) => RegistryKeys.TaskBar.TaskViewButton,
+            nameof(BingSearch) => RegistryKeys.Privacy.BingSearch,
+            nameof(WebSearch) => RegistryKeys.Privacy.WebSearch,
+            nameof(SubscribedContent) => RegistryKeys.Privacy.SubscribedContent,
+            nameof(OfflineMaps) => RegistryKeys.Privacy.OfflineMaps,
+            nameof(AppIconsThumbnails) => RegistryKeys.FileExplorer.AppIconsThumbnails,
+            nameof(AutomaticFolderDiscovery) => RegistryKeys.FileExplorer.AutomaticFolderDiscovery,
+            nameof(CompactView) => RegistryKeys.FileExplorer.CompactView,
+            nameof(FileExtension) => RegistryKeys.FileExplorer.FileExtension,
+            nameof(HiddenFiles) => RegistryKeys.FileExplorer.HiddenFiles,
+            nameof(ClassicContextMenu) => RegistryKeys.ContextMenu.ClassicContextMenu,
+            nameof(AutoHideTaskbar) => RegistryKeys.ContextMenu.AutoHideTaskbar,
+            nameof(ThemeContextMenu) => RegistryKeys.ContextMenu.ThemeContextMenu,
+            nameof(MouseAcceleration) => RegistryKeys.SystemAndPerformance.MouseAcceleration,
+            nameof(MicrosoftCopilot) => RegistryKeys.SystemAndPerformance.MicrosoftCopilot,
+            nameof(BackgroundApps) => RegistryKeys.SystemAndPerformance.BackgroundApps,
+            nameof(DevMode) => RegistryKeys.SystemAndPerformance.DevMode,
+            nameof(Hibernation) => RegistryKeys.SystemAndPerformance.Hibernation,
+            nameof(Telemetry) => RegistryKeys.SystemAndPerformance.Telemetry,
+            _ => throw new ArgumentException($"Paramètre inconnu : {setting}")
         };
+    }
+
+    private async Task ShowSuccessDialog()
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Modifications appliquées",
+            Content = "Les modifications ont été appliquées avec succès.",
+            CloseButtonText = "OK",
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+
+        await dialog.ShowAsync();
     }
 
     [RelayCommand]
