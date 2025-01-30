@@ -18,6 +18,7 @@
     <SelfContained>true</SelfContained>
     <UseRidGraph>true</UseRidGraph>
     <Platform>x64</Platform>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
   <ItemGroup>

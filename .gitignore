@@ -4,5 +4,7 @@ OhMyWindows.Core/bin
 OhMyWindows.Core/obj
 OhMyWindows/.vs/
 .specstory
-.cursorrules
+.cursorrules*
+.clinerules
+.github/
 files/
