@@ -13,24 +13,36 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Bouton Tout sélectionner -->
-        <Button x:Name="ToggleAllButton"
-                Grid.Row="0"
-                Content="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
-                Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"
-                Margin="20,10"
-                HorizontalAlignment="Left"/>
+        <!-- Boutons de contrôle -->
+        <StackPanel Grid.Row="0" 
+                    Orientation="Horizontal" 
+                    Spacing="10" 
+                    Margin="20,10">
+            <Button x:Name="ToggleAllButton"
+                    Content="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
+                    Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"/>
+            <Button x:Name="ExpandAllButton"
+                    Content="Tout déplier"
+                    Command="{x:Bind ViewModel.ExpandAllCommand}"
+                    IsEnabled="{x:Bind ViewModel.CanExpandAll, Mode=OneWay}"/>
+            <Button x:Name="CollapseAllButton"
+                    Content="Tout replier"
+                    Command="{x:Bind ViewModel.CollapseAllCommand}"
+                    IsEnabled="{x:Bind ViewModel.CanCollapseAll, Mode=OneWay}"/>
+        </StackPanel>
 
         <!-- Contenu principal -->
         <ScrollViewer Grid.Row="1">
             <StackPanel Spacing="10" Margin="20">
                 <!-- Barre des tâches -->
-                <Expander Header="Barre des tâches" 
+                <Expander x:Name="TaskbarExpander"
+                          Header="Barre des tâches" 
                           HorizontalAlignment="Stretch" 
                           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                           BorderThickness="1"
-                          Padding="10">
+                          Padding="10"
+                          IsExpanded="{x:Bind ViewModel.IsTaskbarExpanded, Mode=TwoWay}">
                     <StackPanel Spacing="8">
                         <ToggleSwitch Header="Alignement au centre" 
                                     x:Name="TaskbarAlignmentCenter"
@@ -60,12 +72,14 @@
                 </Expander>
 
                 <!-- Confidentialité et Recherche -->
-                <Expander Header="Confidentialité et Recherche"
+                <Expander x:Name="PrivacyExpander"
+                          Header="Confidentialité et Recherche"
                           HorizontalAlignment="Stretch"
                           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                           BorderThickness="1"
-                          Padding="10">
+                          Padding="10"
+                          IsExpanded="{x:Bind ViewModel.IsPrivacyExpanded, Mode=TwoWay}">
                     <StackPanel Spacing="8">
                         <ToggleSwitch Header="Recherche Bing" 
                                     x:Name="BingSearch"
@@ -91,12 +105,14 @@
                 </Expander>
 
                 <!-- Explorateur de fichiers -->
-                <Expander Header="Explorateur de fichiers"
+                <Expander x:Name="FileExplorerExpander"
+                          Header="Explorateur de fichiers"
                           HorizontalAlignment="Stretch"
                           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                           BorderThickness="1"
-                          Padding="10">
+                          Padding="10"
+                          IsExpanded="{x:Bind ViewModel.IsFileExplorerExpanded, Mode=TwoWay}">
                     <StackPanel Spacing="8">
                         <ToggleSwitch Header="Icônes d'application sur les vignettes" 
                                     x:Name="AppIconsThumbnails"
@@ -118,21 +134,96 @@
                                     IsOn="{x:Bind ViewModel.FileExtension, Mode=TwoWay}"
                                     OnContent="Visible"
                                     OffContent="Masqué"/>
-                        <ToggleSwitch Header="Fichiers cachés" 
-                                    x:Name="HiddenFiles"
+                        <ToggleSwitch Header="Fichiers cachés"
                                     IsOn="{x:Bind ViewModel.HiddenFiles, Mode=TwoWay}"
-                                    OnContent="Visible"
+                                    OffContent="Masqués"
+                                    OnContent="Affichés"/>
+                        <ToggleSwitch Header="Fichiers système protégés"
+                                    IsOn="{x:Bind ViewModel.SystemFiles, Mode=TwoWay}"
+                                    OffContent="Masqués"
+                                    OnContent="Affichés"/>
+
+                        <ToggleSwitch Header="Détails supplémentaires au survol"
+                                    IsOn="{x:Bind ViewModel.CopyMoreDetails, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+
+                        <ToggleSwitch Header="Lettres des lecteurs"
+                                    IsOn="{x:Bind ViewModel.DriveLetters, Mode=TwoWay}"
+                                    OnContent="Affichées"
+                                    OffContent="Masquées"/>
+
+                        <ToggleSwitch Header="Regrouper les dossiers dans Ce PC"
+                                    IsOn="{x:Bind ViewModel.FoldersGroupToThisPC, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+
+                        <ToggleSwitch Header="Galerie"
+                                    IsOn="{x:Bind ViewModel.Gallery, Mode=TwoWay}"
+                                    OnContent="Activée"
+                                    OffContent="Désactivée"/>
+
+                        <ToggleSwitch Header="Panneau de configuration dans la navigation"
+                                    IsOn="{x:Bind ViewModel.ControlPanelInNavigation, Mode=TwoWay}"
+                                    OnContent="Affiché"
                                     OffContent="Masqué"/>
+
+                        <ToggleSwitch Header="Corbeille dans la navigation"
+                                    IsOn="{x:Bind ViewModel.RecycleBinInNavigation, Mode=TwoWay}"
+                                    OnContent="Affichée"
+                                    OffContent="Masquée"/>
+
+                        <ToggleSwitch Header="Dossier utilisateur dans la navigation"
+                                    IsOn="{x:Bind ViewModel.UserFolderInNavigation, Mode=TwoWay}"
+                                    OnContent="Affiché"
+                                    OffContent="Masqué"/>
+
+                        <ToggleSwitch Header="Lecteurs amovibles dans la barre latérale"
+                                    IsOn="{x:Bind ViewModel.RemovableDrivesInSidebar, Mode=TwoWay}"
+                                    OnContent="Affichés"
+                                    OffContent="Masqués"/>
+
+                        <ToggleSwitch Header="Ouvrir l'explorateur sur Ce PC"
+                                    IsOn="{x:Bind ViewModel.OpenFileExplorerToThisPC, Mode=TwoWay}"
+                                    OnContent="Ce PC"
+                                    OffContent="Accueil"/>
+
+                        <ToggleSwitch Header="Historique des documents récents"
+                                    IsOn="{x:Bind ViewModel.RecentDocsHistory, Mode=TwoWay}"
+                                    OnContent="Activé"
+                                    OffContent="Désactivé"/>
+
+                        <ToggleSwitch Header="Applications récemment ajoutées"
+                                    IsOn="{x:Bind ViewModel.RecentlyAddedApps, Mode=TwoWay}"
+                                    OnContent="Affichées"
+                                    OffContent="Masquées"/>
+
+                        <ToggleSwitch Header="Texte des raccourcis"
+                                    IsOn="{x:Bind ViewModel.ShortcutText, Mode=TwoWay}"
+                                    OnContent="Affiché"
+                                    OffContent="Masqué"/>
+
+                        <ToggleSwitch Header="Snap Layouts"
+                                    IsOn="{x:Bind ViewModel.SnapLayouts, Mode=TwoWay}"
+                                    OnContent="Activés"
+                                    OffContent="Désactivés"/>
+
+                        <ToggleSwitch Header="Barre d'état"
+                                    IsOn="{x:Bind ViewModel.StatusBar, Mode=TwoWay}"
+                                    OnContent="Affichée"
+                                    OffContent="Masquée"/>
                     </StackPanel>
                 </Expander>
 
                 <!-- Menu Contextuel -->
-                <Expander Header="Menu Contextuel"
+                <Expander x:Name="ContextMenuExpander"
+                          Header="Menu Contextuel"
                           HorizontalAlignment="Stretch"
                           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                           BorderThickness="1"
-                          Padding="10">
+                          Padding="10"
+                          IsExpanded="{x:Bind ViewModel.IsContextMenuExpanded, Mode=TwoWay}">
                     <StackPanel Spacing="8">
                         <ToggleSwitch Header="Menu contextuel classique" 
                                     x:Name="ClassicContextMenu"
@@ -153,12 +244,14 @@
                 </Expander>
 
                 <!-- Système et Performance -->
-                <Expander Header="Système et Performance"
+                <Expander x:Name="SystemExpander"
+                          Header="Système et Performance"
                           HorizontalAlignment="Stretch"
                           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                           BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                           BorderThickness="1"
-                          Padding="10">
+                          Padding="10"
+                          IsExpanded="{x:Bind ViewModel.IsSystemExpanded, Mode=TwoWay}">
                     <StackPanel Spacing="8">
                         <ToggleSwitch Header="Accélération de la souris" 
                                     x:Name="MouseAcceleration"
