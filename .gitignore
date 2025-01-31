@@ -3,3 +3,8 @@ OhMyWindows/obj
 OhMyWindows.Core/bin
 OhMyWindows.Core/obj
 OhMyWindows/.vs/
+.specstory
+.cursorrules*
+.clinerules
+.github/
+files/

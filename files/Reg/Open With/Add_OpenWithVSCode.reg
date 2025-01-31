@@ -1,0 +1,217 @@
+Windows Registry Editor Version 5.00
+
+; Add to folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%V\""
+
+; Add to background folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVSCode]
+@="Ouvrir dans VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%V\""
+
+; Add to all files
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVSCode]
+@="Modifier avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .ps1 files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .py files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .js files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .ts files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .java files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .c files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .cpp files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .cs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .go files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .php files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .rb files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .swift files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .kt files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .rs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .lua files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .sh files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .pl files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .dart files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .html files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .css files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .json files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .xml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .yaml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+; Add to .md files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithVSCode]
+@="Ouvrir avec VS Code"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithVSCode\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""

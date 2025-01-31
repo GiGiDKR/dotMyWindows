@@ -1,0 +1,27 @@
+Windows Registry Editor Version 5.00
+
+; Add to folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVSCodeInsiders]
+@="Ouvrir avec VS Code Insiders"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVSCodeInsiders\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe\" \"%V\""
+
+; Add to background folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVSCodeInsiders]
+@="Ouvrir dans VS Code Insiders"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVSCodeInsiders\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe\" \"%V\""
+
+; Add to all files
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVSCodeInsiders]
+@="Modifier avec VS Code Insiders"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVSCodeInsiders\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Microsoft VS Code Insiders\\Code - Insiders.exe\" \"%1\""
+
+; TODO: Add entries for file types following pattern

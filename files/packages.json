@@ -1,0 +1,413 @@
+{
+    "packages": [
+        {
+            "name": "7zip",
+            "id": "7zip.7zip",
+            "source": "winget",
+            "category": "Archives"
+        },
+        {
+            "name": "7-Zip zstd",
+            "id": "https://github.com/mcmilk/7-Zip-zstd/releases/download/v22.01-v1.5.5-R3/7z22.01-zstd-x64.exe",
+            "source": "exe",
+            "category": "Archives"
+        },
+        {
+            "name": "Arc Browser",
+            "id": "TheBrowserCompany.Arc",
+            "source": "winget",
+            "category": "Web"
+        },
+        {
+            "name": "Cleanmgr+",
+            "id": "cleanmgr-plus",
+            "source": "choco",
+            "category": "Systeme"
+        },
+        {
+            "name": "Clink",
+            "id": "chrisant996.Clink",
+            "source": "winget",
+            "category": "Terminal"
+        },
+        {
+            "name": "CompactGUI",
+            "id": "IridiumIO.CompactGUI",
+            "source": "winget",
+            "category": "Archives"
+            
+        },
+        {
+            "name": "Cursor",
+            "id": "Anysphere.Cursor",
+            "source": "winget",
+            "category": "Code Editor"
+        },
+        {
+            "name": "Docker Desktop",
+            "id": "Docker.DockerDesktop",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Everything",
+            "id": "voidtools.Everything",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "ExplorerPatcher",
+            "id": "valinet.ExplorerPatcher.Prerelease",
+            "source": "winget",
+            "category": "System"
+        },
+        {
+            "name": "Flow Launcher",
+            "id": "Flow-Launcher.Flow-Launcher",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "f.lux",
+            "id": "flux.flux",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "GeForce Now",
+            "id": "Nvidia.GeForceNow",
+            "source": "winget",
+            "category": "Jeux"
+        },
+        {
+            "name": "Git",
+            "id": "Git.Git",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "GitHub CLI",
+            "id": "GitHub.cli",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "GitHub Desktop",
+            "id": "GitHub.GitHubDesktop",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Glary Utilities",
+            "id": "Glarysoft.GlaryUtilities",
+            "source": "winget",
+            "category": "Systeme"
+        },
+        {
+            "name": "Google Chrome",
+            "id": "Google.Chrome",
+            "source": "winget",
+            "category": "Web"
+
+        },
+        {
+            "name": "MemReduct",
+            "id": "Henry++.MemReduct",
+            "source": "winget",
+            "category": "Systeme"
+        },
+        {
+            "name": "Mica For Everyone",
+            "id": "MicaForEveryone.MicaForEveryone",
+            "source": "winget",
+            "category": "Personnalisation"
+        },
+        {
+            "name": "Microsoft .NET 3.1",
+            "id": "Microsoft.DotNet.DesktopRuntime.3_1",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Microsoft .NET 5",
+            "id": "Microsoft.DotNet.DesktopRuntime.5",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Microsoft .NET 6",
+            "id": "Microsoft.DotNet.Runtime.6",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Microsoft .NET 7",
+            "id": "Microsoft.DotNet.DesktopRuntime.7",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Microsoft .NET 8",
+            "id": "Microsoft.DotNet.DesktopRuntime.8",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Microsoft Paint",
+            "id": "9PCFS5B6T72H",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Microsoft PC Manager",
+            "id": "Microsoft.PCManager",
+            "source": "winget",
+            "category": "Systeme"
+        },
+        {
+            "name": "Microsoft Photos",
+            "id": "9WZDNCRFJBH4",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Microsoft Capture",
+            "id": "9MZ95KL8MR0L",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Microsoft Visual C++ 2015-2022",
+            "id": "Microsoft.VCRedist.2015+.x64",
+            "source": "winget",
+            "category": "Systeme"
+        },
+        {
+            "name": "NanaZip",
+            "id": "M2Team.NanaZip",
+            "source": "winget",
+            "category": "Archives"
+        },
+        {
+            "name": "NanaZip Preview",
+            "id": "M2Team.NanaZip.Preview",
+            "source": "winget",
+            "category": "Archives"
+        },
+        {
+            "name": "Nilesoft Shell",
+            "id": "Nilesoft.Shell",
+            "source": "winget",
+            "category": "Personnalisation"
+        },
+        {
+            "name": "Obsidian",
+            "id": "Obsidian.Obsidian",
+            "source": "winget",
+            "category": "Editeur"
+        },
+        {
+            "name": "OhMyPosh",
+            "id": "JanDeDobbeleer.OhMyPosh",
+            "source": "winget",
+            "category": "Terminal"
+        },
+        {
+            "name": "Optimizer",
+            "id": "https://github.com/hellzerg/optimizer/releases/download/15.9/Optimizer-15.9.exe",
+            "source": "exe",
+            "category": "Systeme"
+        },
+        {
+            "name": "Password Manager SafeInCloud",
+            "id": "9NLXL1B6J7LW",
+            "source": "winget",
+            "category": "Web"
+        },
+        {
+            "name": "PowerShell",
+            "id": "Microsoft.PowerShell",
+            "source": "winget",
+            "category": "Terminal"
+        },
+        {
+            "name": "PowerToys",
+            "id": "Microsoft.PowerToys",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "PyCharm",
+            "id": "JetBrains.PyCharm",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Python 3.10",
+            "id": "Python.Python.3.10",
+            "source": "winget"
+        },
+        {
+            "name": "Python 3.13",
+            "id": "Python.Python.3.13",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Rambox",
+            "id": "Rambox.Rambox",
+            "source": "winget",
+            "category": "Web"
+        },
+        {
+            "name": "RealVNC Server",
+            "id": "RealVNC.VNCServer",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "RealVNC Viewer",
+            "id": "RealVNC.VNCViewer",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Rufus",
+            "id": "Rufus.Rufus",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Tagscanner",
+            "id": "tagscanner",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "Textify",
+            "id": "rammichael.Textify",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "Typora",
+            "id": "appmakes.Typora",
+            "source": "winget",
+            "category": "Editeur"
+        },
+        {
+            "name": "UniExtract",
+            "id": "jbreland.uniextract",
+            "source": "winget",
+            "category": "Archives"
+        },
+        {
+            "name": "UniExtract2",
+            "id": "https://github.com/Bioruebe/UniExtract2/releases/download/v2.0.0-rc.3/UniExtractRC3.zip",
+            "source": "zip",
+            "category": "Archives"
+        },
+        {
+            "name": "UniGetUI",
+            "id": "MartiCliment.UniGetUI",
+            "source": "winget",
+            "category": "Systeme"
+        },
+        {
+            "name": "UWPSpy",
+            "id": "https://ramensoftware.com/downloads/UWPSpy.zip",
+            "source": "zip",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Visual Studio BuildTools 2019",
+            "id": "Microsoft.VisualStudio.2019.BuildTools",
+            "source": "winget",
+            "category": "Development"
+        },
+        {
+            "name": "Visual Studio Community 2022",
+            "id": "Microsoft.VisualStudio.2022.Community",
+            "source": "winget",
+            "category": "Code Editor"
+        },
+        {
+            "name": "Visual Studio Code",
+            "id": "Microsoft.VisualStudioCode",
+            "source": "winget",
+            "category": "Code Editor"
+        },
+        {
+            "name": "VLC",
+            "id": "VideoLAN.VLC",
+            "source": "winget",
+            "category": "Multimedia"
+        },
+        {
+            "name": "Windows Calculator",
+            "id": "9WZDNCRFHVN5",
+            "source": "winget",
+            "category": "Utilitaires"
+        },
+        {
+            "name": "Windows Media Player",
+            "id": "9WZDNCRFJ3PT",
+            "source": "winget",
+            "category": "Multimedia"
+        },
+        {
+            "name": "Windows Notepad",
+            "id": "9MSMLRH6LZF3",
+            "source": "winget",
+            "category": "Editeur"
+        },
+        {
+            "name": "Windows Terminal",
+            "id": "Microsoft.WindowsTerminal",
+            "source": "winget",
+            "category": "Terminal"
+        },
+        {
+            "name": "WindowGrid",
+            "id": "windowgrid",
+            "source": "choco",
+            "category": "Personnalisation"
+        },
+        {
+            "name": "Windhawk",
+            "id": "RamenSoftware.Windhawk",
+            "source": "winget",
+            "category": "Personnalisation"
+        },
+        {
+            "name": "WizTree",
+            "id": "AntibodySoftware.WizTree",
+            "source": "winget",
+            "category": "Outils"
+        },
+        {
+            "name": "WSL2 Distro Manager",
+            "id": "wsl2-distro-manager",
+            "source": "choco",
+            "category": "Terminal"
+        },
+        {
+            "name": "WSL Studio",
+            "id": "9PLSJR4TG2GQ",
+            "source": "winget",
+            "category": "Terminal"
+        },
+        {
+            "name": "yt-dlp",
+            "id": "yt-dlp",
+            "source": "winget",
+            "category": "Multimedia"
+        },
+        {
+            "name": "yt-dlp-gui",
+            "id": "dsymbol.yt-dlp-gui",
+            "source": "winget",
+            "category": "Multimedia"
+        }
+    ]
+}

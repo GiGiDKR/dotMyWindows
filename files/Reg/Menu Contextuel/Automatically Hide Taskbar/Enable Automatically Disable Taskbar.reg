@@ -1,0 +1,23 @@
+Windows Registry Editor Version 5.00 
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\HideTaskbar]
+"Icon"="imageres.dll,-80"
+"MUIVerb"="Automatically hide taskbar"
+"Position"="Bottom"
+"SubCommands"=""
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\HideTaskbar\shell]
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\HideTaskbar\shell\001flyout]
+"MUIVerb"="Turn on"
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\HideTaskbar\shell\001flyout\command]
+@="powershell -command \"&{$p='HKCU:SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3';$v=(Get-ItemProperty -Path $p).Settings;$v[8]=3;&Set-ItemProperty -Path $p -Name Settings -Value $v;&Stop-Process -f -ProcessName explorer}\""
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\HideTaskbar\shell\002flyout]
+"MUIVerb"="Turn off"
+"CommandFlags"=dword:00000020
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\HideTaskbar\shell\002flyout\command]
+@="powershell -command \"&{$p= 'HKCU:SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3' ;$v=(Get-ItemProperty -Path $p).Settings;$v[8]=2;&Set-ItemProperty -Path $p -Name Settings -Value $v;&Stop-Process -f -ProcessName explorer}\""
+  

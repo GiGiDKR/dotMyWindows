@@ -1,0 +1,5 @@
+MemReduct|Henry++.MemReduct|winget
+NanaZip|M2Team.NanaZip|winget
+NanaZip Preview|M2Team.NanaZip.Preview|winget
+Rambox|Rambox.Rambox|winget
+CompactGUI|IridiumIO.CompactGUI|winget

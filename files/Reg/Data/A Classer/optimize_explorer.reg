@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"LaunchTo"=dword:00000001
+"HideFileExt"=dword:00000000
+"Hidden"=dword:00000001
+"ShowSuperHidden"=dword:00000001
+"SeparateProcess"=dword:00000001
+"AutoCheckSelect"=dword:00000000
+"IconsOnly"=dword:00000000
+"ListviewAlphaSelect"=dword:00000001
+"ListviewShadow"=dword:00000001
+"NavPaneExpandToCurrentFolder"=dword:00000001
+"DontPrettyPath"=dword:00000000
+"ShowStatusBar"=dword:00000001

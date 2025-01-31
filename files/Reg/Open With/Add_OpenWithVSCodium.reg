@@ -1,0 +1,25 @@
+Windows Registry Editor Version 5.00
+
+; Add to folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVSCodium]
+@="Ouvrir avec VS Codium"
+"Icon"="C:\\Users\\Gildas\\AppData\\Local\\VSCodium\\VSCodium.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVSCodium\command]
+@="\"C:\\Users\\Gildas\\AppData\\Local\\VSCodium\\VSCodium.exe\" \"%V\""
+
+; Add to background folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVSCodium]
+@="Ouvrir dans VS Codium"
+"Icon"="C:\\Users\\Gildas\\AppData\\Local\\VSCodium\\VSCodium.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVSCodium\command]
+@="\"C:\\Users\\Gildas\\AppData\\Local\\VSCodium\\VSCodium.exe\" \"%V\""
+
+; Add to all files
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVSCodium]
+@="Modifier avec VSCodium"
+"Icon"="C:\\Users\\Gildas\\AppData\\Local\\VSCodium\\VSCodium.exe"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVSCodium\command]
+@="\"C:\\Users\\Gildas\\AppData\\Local\\VSCodium\\VSCodium.exe\" \"%1\""

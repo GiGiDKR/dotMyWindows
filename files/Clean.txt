@@ -1,0 +1,24 @@
+DIRECT X Shader :
+C:\Users\Gildas\AppData\Local\D3DSCache
+
+C:\Users\Gildas\AppData\Local\CrashDumps
+C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache
+C:\WINDOWS\Prefetch
+C:\Windows\SoftwareDistribution
+C:\Users\Gildas\AppData\Roaming\Microsoft\Windows\Recent
+C:\$Recycle.bin
+C:\WINDOWS\Temp
+C:\Users\Gildas\AppData\Local\Microsoft\Windows\Explorer > thumbcache*
+C:\Users\Gildas\AppData\LocalLow\Microsoft\CryptnetUrlCache
+C:\ProgramData\Microsoft\Windows Defender\Definition Updates\Backup
+C:\WINDOWS\SoftwareDistribution\DataStore\Logs\
+C:\WINDOWS\Logs
+C:\WINDOWS\System32\sru
+
+%LOCALAPPDATA%\Temp
+
+C:\Users\Gildas\AppData\Local\Mozilla\Firefox\Profiles\cpfzkhb6.default-release\cache2
+C:\Users\Gildas\AppData\Local\Google\Chrome\User Data\Default\Cache
+C:\Users\Gildas\AppData\Local\Microsoft\Edge\User Data\Default\Code Cache
+
+C:\Users\Gildas\AppData\Local\Adobe\Acrobat\DC\Cache\

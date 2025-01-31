@@ -1,0 +1,217 @@
+Windows Registry Editor Version 5.00
+
+; Add to folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%V\""
+
+; Add to background folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVisualStudio]
+@="Ouvrir dans Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%V\""
+
+; Add to all files
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVisualStudio]
+@="Modifier avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .ps1 files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .py files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .js files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .ts files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .java files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .c files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .cpp files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .cs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .go files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .php files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .rb files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .swift files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .kt files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .rs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .lua files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .sh files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .pl files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .dart files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .html files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .css files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .json files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .xml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .yaml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""
+
+; Add to .md files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithVisualStudio]
+@="Ouvrir avec Visual Studio"
+"Icon"="C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithVisualStudio\command]
+@="\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe\" \"%1\""

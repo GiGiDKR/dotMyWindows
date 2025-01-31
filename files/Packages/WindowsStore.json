@@ -1,0 +1,439 @@
+{
+  "export_version": 2,
+  "packages": [],
+  "incompatible_packages_info": "Incompatible packages cannot be installed from WingetUI, but they have been listed here for logging purposes.",
+  "incompatible_packages": [
+    {
+      "Id": "80f79446-96a8-4191-a7c2-b3fb793eca1c_1.0.0.0_x86__r6vtez4k3xmgc",
+      "Name": "OhMyWinUI",
+      "Version": "1.0.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "93922255-db6c-4507-9ac1-000346dce27b_1.0.0.0_x86__r6vtez4k3xmgc",
+      "Name": "OhMyWPFindows.Packaging",
+      "Version": "1.0.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "9932MartCliment.WingetUIWidgets_0.7.0.0_x64__g91dtg5srk15g",
+      "Name": "Widgets for UniGetUI",
+      "Version": "0.7.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "AmazonVideo.PrimeVideo_1.0.171.0_x64__pwbj9vvecjh7j",
+      "Name": "Prime Video for Windows",
+      "Version": "1.0.171.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "AppUp.IntelGraphicsExperience_1.100.5688.0_x64__8j3eq9eme6ctt",
+      "Name": "Centre de configuration des graphiques Intel\u00AE",
+      "Version": "1.100.5688.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.DirectXRuntime_9.29.1974.0_x64__8wekyb3d8bbwe",
+      "Name": "DirectX",
+      "Version": "9.29.1974.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.DirectXRuntime_9.29.1974.0_x86__8wekyb3d8bbwe",
+      "Name": "DirectX",
+      "Version": "9.29.1974.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.GamingApp_2501.1000.56.0_x64__8wekyb3d8bbwe",
+      "Name": "Xbox",
+      "Version": "2501.1000.56.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.GamingServices_26.95.25001.0_x64__8wekyb3d8bbwe",
+      "Name": "Services de jeu",
+      "Version": "26.95.25001.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.Ink.Handwriting.Main.fr-FR.1.0_0.237.110.0_x64__8wekyb3d8bbwe",
+      "Name": "Ink.Handwriting.Main.fr-FR.1.0",
+      "Version": "0.237.110.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.Ink.Handwriting.fr-FR.1.0_0.598.1811.0_x64__8wekyb3d8bbwe",
+      "Name": "Ink.Handwriting.fr-FR.1.0",
+      "Version": "0.598.1811.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.Ink.Handwriting.fr-FR.1.0_0.598.1811.0_x86__8wekyb3d8bbwe",
+      "Name": "Ink.Handwriting.fr-FR.1.0",
+      "Version": "0.598.1811.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.LanguageExperiencePackfr-FR_26100.22.41.0_neutral__8wekyb3d8bbwe",
+      "Name": "Module d\u0027exp\u00E9rience locale fran\u00E7ais (France)",
+      "Version": "26100.22.41.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.MicrosoftEdge.Stable_131.0.2903.99_neutral__8wekyb3d8bbwe",
+      "Name": "Microsoft Edge",
+      "Version": "131.0.2903.99",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.MicrosoftStickyNotes_6.1.4.0_x64__8wekyb3d8bbwe",
+      "Name": "Pense-b\u00EAtes Microsoft",
+      "Version": "6.1.4.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.NET.CoreRuntime.2.1_2.1.26124.5_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft.NET.CoreRuntime.2.1",
+      "Version": "2.1.26124.5",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.NET.Native.Framework.2.2_2.2.29512.0_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft .Net Native Framework Package 2.2",
+      "Version": "2.2.29512.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.NET.Native.Framework.2.2_2.2.29512.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft .Net Native Framework Package 2.2",
+      "Version": "2.2.29512.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.NET.Native.Runtime.2.2_2.2.28604.0_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft .Net Native Runtime Package 2.2",
+      "Version": "2.2.28604.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.NET.Native.Runtime.2.2_2.2.28604.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft .Net Native Runtime Package 2.2",
+      "Version": "2.2.28604.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.PowerToys.FileLocksmithContextMenu_0.87.1.0_neutral__8wekyb3d8bbwe",
+      "Name": "PowerToys FileLocksmith Context Menu",
+      "Version": "0.87.1.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.PowerToys.NewPlusContextMenu_0.87.1.0_neutral__8wekyb3d8bbwe",
+      "Name": "PowerToys New\u002B",
+      "Version": "0.87.1.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.SecHealthUI_1000.27703.1006.0_x64__8wekyb3d8bbwe",
+      "Name": "S\u00E9curit\u00E9 Windows",
+      "Version": "1000.27703.1006.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.StorePurchaseApp_22410.1401.0.0_x64__8wekyb3d8bbwe",
+      "Name": "H\u00F4te de l\u0027exp\u00E9rience du Microsoft Store",
+      "Version": "22410.1401.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.UI.Xaml.2.2_2.21909.17002.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft.UI.Xaml.2.2",
+      "Version": "2.21909.17002.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.UWPCommunityToolkitSampleApp_8.1.0.0_x64__8wekyb3d8bbwe",
+      "Name": "Windows Community Toolkit Gallery",
+      "Version": "8.1.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.110.00.UWPDesktop_11.0.61135.0_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2012 UWP Desktop Runtime Package",
+      "Version": "11.0.61135.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.110.00.UWPDesktop_11.0.61135.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2012 UWP Desktop Runtime Package",
+      "Version": "11.0.61135.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.120.00.UWPDesktop_12.0.40653.0_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2013 UWP Desktop Runtime Package",
+      "Version": "12.0.40653.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.120.00.UWPDesktop_12.0.40653.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2013 UWP Desktop Runtime Package",
+      "Version": "12.0.40653.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.120.00_12.0.21005.1_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B Runtime Package",
+      "Version": "12.0.21005.1",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.120.00_12.0.21005.1_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B Runtime Package",
+      "Version": "12.0.21005.1",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.140.00.Debug_14.0.33519.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2015 UWP Runtime Package",
+      "Version": "14.0.33519.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.140.00_14.0.33519.0_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2015 UWP Runtime Package",
+      "Version": "14.0.33519.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.VCLibs.140.00_14.0.33519.0_x86__8wekyb3d8bbwe",
+      "Name": "Microsoft Visual C\u002B\u002B 2015 UWP Runtime Package",
+      "Version": "14.0.33519.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WinAppRuntime.DDLM.6000.234.357.0-x6-p2_6000.234.357.0_x64__8wekyb3d8bbwe",
+      "Name": "Windows App Runtime DDLM 6000.234.357.0-x6-p2",
+      "Version": "6000.234.357.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WinAppRuntime.DDLM.6000.234.357.0-x8-p2_6000.234.357.0_x86__8wekyb3d8bbwe",
+      "Name": "Windows App Runtime DDLM 6000.234.357.0-x8-p2",
+      "Version": "6000.234.357.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WinAppRuntime.DDLM.6000.318.2304.0-x6_6000.318.2304.0_x64__8wekyb3d8bbwe",
+      "Name": "Windows App Runtime DDLM 6000.318.2304.0-x6",
+      "Version": "6000.318.2304.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WinAppRuntime.DDLM.6000.318.2304.0-x8_6000.318.2304.0_x86__8wekyb3d8bbwe",
+      "Name": "Windows App Runtime DDLM 6000.318.2304.0-x8",
+      "Version": "6000.318.2304.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WinUI3ControlsGallery_2.5.1.0_x64__8wekyb3d8bbwe",
+      "Name": "WinUI 3 Gallery",
+      "Version": "2.5.1.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.2_2000.802.31.0_x64__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.2",
+      "Version": "2000.802.31.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.2_2000.802.31.0_x86__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.2",
+      "Version": "2000.802.31.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.4_4000.1309.2056.0_x86__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.4",
+      "Version": "4000.1309.2056.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.5_5001.373.1736.0_x64__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.5",
+      "Version": "5001.373.1736.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.5_5001.373.1736.0_x86__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.5",
+      "Version": "5001.373.1736.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.6-preview2_6000.234.357.0_x64__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.6-preview2",
+      "Version": "6000.234.357.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.6-preview2_6000.234.357.0_x86__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.6-preview2",
+      "Version": "6000.234.357.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.6_6000.373.1641.0_x64__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.6",
+      "Version": "6000.373.1641.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.6_6000.373.1641.0_x86__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.6",
+      "Version": "6000.373.1641.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsAppRuntime.1.7-experimental1_7000.319.425.0_x64__8wekyb3d8bbwe",
+      "Name": "WindowsAppRuntime.1.7-experimental1",
+      "Version": "7000.319.425.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsScan_6.3.9654.17133_x64__8wekyb3d8bbwe",
+      "Name": "Scanneur Windows",
+      "Version": "6.3.9654.17133",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.WindowsStore_22411.1401.5.0_x64__8wekyb3d8bbwe",
+      "Name": "Microsoft Store",
+      "Version": "22411.1401.5.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.Winget.Source_2025.117.1520.8_neutral__8wekyb3d8bbwe",
+      "Name": "Windows Package Manager Source (winget) V2",
+      "Version": "2025.117.1520.8",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.XboxGamingOverlay_7.225.1071.0_x64__8wekyb3d8bbwe",
+      "Name": "Game Bar",
+      "Version": "7.225.1071.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "Microsoft.XboxIdentityProvider_12.115.1001.0_x64__8wekyb3d8bbwe",
+      "Name": "Xbox Identity Provider",
+      "Version": "12.115.1001.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftCorporationII.MVVMToolkitSampleApp_8.0.1.0_x64__8wekyb3d8bbwe",
+      "Name": "MVVM Toolkit Sample App",
+      "Version": "8.0.1.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftCorporationII.WinAppRuntime.Main.1.5_5001.311.2039.0_x64__8wekyb3d8bbwe",
+      "Name": "WinAppRuntime.Main.1.5",
+      "Version": "5001.311.2039.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftCorporationII.WinAppRuntime.Main.1.6-p2_6000.234.357.0_x64__8wekyb3d8bbwe",
+      "Name": "WinAppRuntime.Main.1.6-p2",
+      "Version": "6000.234.357.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftCorporationII.WinAppRuntime.Main.1.6_6000.318.2304.0_x64__8wekyb3d8bbwe",
+      "Name": "WinAppRuntime.Main.1.6",
+      "Version": "6000.318.2304.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftCorporationII.WinAppRuntime.Singleton-p2_6000.234.357.0_x64__8wekyb3d8bbwe",
+      "Name": "WinAppRuntime.Singleton-p2",
+      "Version": "6000.234.357.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftCorporationII.WinAppRuntime.Singleton_6000.318.2304.0_x64__8wekyb3d8bbwe",
+      "Name": "WinAppRuntime.Singleton",
+      "Version": "6000.318.2304.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftWindows.Client.WebExperience_524.34401.20.0_x64__cw5n1h2txyewy",
+      "Name": "Windows Web Experience Pack",
+      "Version": "524.34401.20.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftWindows.CrossDevice_1.24112.22.0_x64__cw5n1h2txyewy",
+      "Name": "H\u00F4te d\u2019exp\u00E9rience inter-appareils",
+      "Version": "1.24112.22.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "MicrosoftWindows.WindowsSandbox_0.3.1.0_x64__cw5n1h2txyewy",
+      "Name": "Windows Sandbox",
+      "Version": "0.3.1.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "OpenAI.ChatGPT-Desktop_1.2025.15.0_x64__2p2nqsd0c76g0",
+      "Name": "ChatGPT",
+      "Version": "1.2025.15.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "PythonSoftwareFoundation.Python.3.13_3.13.496.0_x64__qbz5n2kfra8p0",
+      "Name": "Python 3.13",
+      "Version": "3.13.496.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "RapidDev.WPFUI_3.0.3.0_x64__hdeca31h46cv6",
+      "Name": "WPF UI",
+      "Version": "3.0.3.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "ZamzarLtd.Zamzar_1.1.0.0_x64__5yt9wwf1ccbgp",
+      "Name": "Zamzar",
+      "Version": "1.1.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "b346d847-8bf0-4a5c-844f-f3de92f34633_1.0.0.0_x64__r6vtez4k3xmgc",
+      "Name": "OhMyWinUI",
+      "Version": "1.0.0.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "com.MeshIntelligentTechnologi.PiecesDesktop_3.3.3.0_x64__84gz00a5z79wr",
+      "Name": "Pieces Desktop",
+      "Version": "3.3.3.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "com.MeshIntelligentTechnologi.PiecesOS_11.0.3.0_x64__84gz00a5z79wr",
+      "Name": "Pieces OS",
+      "Version": "11.0.3.0",
+      "Source": "Microsoft Store"
+    },
+    {
+      "Id": "com.MeshIntelligentTechnologi.PiecesSuite_1.2.0.0_x64__84gz00a5z79wr",
+      "Name": "Pieces Suite",
+      "Version": "1.2.0.0",
+      "Source": "Microsoft Store"
+    }
+  ]
+}

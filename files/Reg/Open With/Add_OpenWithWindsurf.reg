@@ -1,0 +1,217 @@
+Windows Registry Editor Version 5.00
+
+; Add to folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%V\""
+
+; Add to background folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithWindsurf]
+@="Ouvrir dans Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%V\""
+
+; Add to all files
+[HKEY_CLASSES_ROOT\*\shell\OpenWithWindsurf]
+@="Modifier avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .ps1 files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .py files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .js files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .ts files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .java files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .c files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .cpp files 
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .cs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .go files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .php files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .rb files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .swift files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .kt files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .rs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .lua files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .sh files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .pl files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .dart files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .html files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .css files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .json files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .xml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .yaml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""
+
+; Add to .md files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithWindsurf]
+@="Ouvrir avec Windsurf"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithWindsurf\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Windsurf\\Windsurf.exe\" \"%1\""

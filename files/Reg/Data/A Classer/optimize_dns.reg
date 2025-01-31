@@ -1,0 +1,14 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters]
+"MaxCacheTtl"=dword:00015180
+"MaxNegativeCacheTtl"=dword:00000000
+"ServiceDllUnloadOnStop"=dword:00000001
+"CacheHashTableBucketSize"=dword:00000001
+"CacheHashTableSize"=dword:00000180
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters]
+"EnableTCPChimney"=dword:00000000
+"EnableRSS"=dword:00000001
+"EnableTCPA"=dword:00000001
+"TCPNoDelay"=dword:00000001

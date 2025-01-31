@@ -1,0 +1,67 @@
+Windows Registry Editor Version 5.00 
+
+[HKEY_CLASSES_ROOT\DesktopBackground\Shell\ControlPanel]
+"MUIVerb"="Control Panel"
+"SubCommands"="ControlPanel;DeviceManager;Software;Windows.NetworkAndSharing;WindowsSettings;WindowsVersion;RegistryEditor;Windows.RecycleBin.Empty"
+"Icon"=hex(2):25,00,73,00,79,00,73,00,74,00,65,00,6d,00,72,00,6f,00,6f,00,74,\
+  00,25,00,5c,00,53,00,79,00,73,00,74,00,65,00,6d,00,33,00,32,00,5c,00,69,00,\
+  6d,00,61,00,67,00,65,00,72,00,65,00,73,00,2e,00,64,00,6c,00,6c,00,2c,00,2d,\
+  00,32,00,37,00,00,00
+"Position"="bottom"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\ControlPanel]
+@="Control Panel"
+"Icon"=hex(2):25,00,73,00,79,00,73,00,74,00,65,00,6d,00,72,00,6f,00,6f,00,74,\
+  00,25,00,5c,00,53,00,79,00,73,00,74,00,65,00,6d,00,33,00,32,00,5c,00,69,00,\
+  6d,00,61,00,67,00,65,00,72,00,65,00,73,00,2e,00,64,00,6c,00,6c,00,2c,00,2d,\
+  00,32,00,37,00,00,00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\ControlPanel\command]
+"DelegateExecute"="{06622D85-6856-4460-8DE1-A81921B41C4B}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\DeviceManager]
+@="Device Manager"
+"ControlPanelName"="Microsoft.DeviceManager"
+"Icon"=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,\
+  00,25,00,5c,00,73,00,79,00,73,00,74,00,65,00,6d,00,33,00,32,00,5c,00,64,00,\
+  65,00,76,00,6d,00,67,00,72,00,2e,00,64,00,6c,00,6c,00,2c,00,2d,00,32,00,30,\
+  00,31,00,00,00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\DeviceManager\command]
+"DelegateExecute"="{06622D85-6856-4460-8DE1-A81921B41C4B}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\RegistryEditor]
+@="Registry Editor"
+"Icon"="regedit.exe"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\RegistryEditor\command]
+@="regedit.exe"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\Software]
+@="Software"
+"ControlPanelName"="Microsoft.ProgramsAndFeatures"
+"Icon"=hex(2):25,00,73,00,79,00,73,00,74,00,65,00,6d,00,72,00,6f,00,6f,00,74,\
+  00,25,00,5c,00,73,00,79,00,73,00,74,00,65,00,6d,00,33,00,32,00,5c,00,69,00,\
+  6d,00,61,00,67,00,65,00,72,00,65,00,73,00,2e,00,64,00,6c,00,6c,00,2c,00,2d,\
+  00,38,00,37,00,00,00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\Software\command]
+"DelegateExecute"="{06622D85-6856-4460-8DE1-A81921B41C4B}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\WindowsSettings]
+@="Windows Settings"
+"Icon"=hex(2):25,00,73,00,79,00,73,00,74,00,65,00,6d,00,72,00,6f,00,6f,00,74,\
+  00,25,00,5c,00,73,00,68,00,65,00,6c,00,6c,00,33,00,32,00,2e,00,64,00,6c,00,\
+  6c,00,2c,00,2d,00,31,00,36,00,38,00,32,00,36,00,00,00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\WindowsSettings\Command]
+"DelegateExecute"="{44090B31-CDF9-4ad1-8182-DB5DA3627974}"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\WindowsVersion]
+@="Windows Version"
+"Icon"=hex(2):69,00,6d,00,61,00,67,00,65,00,72,00,65,00,73,00,2e,00,64,00,6c,\
+  00,6c,00,2c,00,2d,00,38,00,31,00,00,00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\WindowsVersion\command]
+@="winver.exe"
+  

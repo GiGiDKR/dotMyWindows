@@ -1,0 +1,217 @@
+Windows Registry Editor Version 5.00
+
+; Add to folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%V\""
+
+; Add to background folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithCursor]
+@="Ouvrir dans Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%V\""
+
+; Add to all files
+;[HKEY_CLASSES_ROOT\*\shell\OpenWithCursor]
+;@="Modifier avec Cursor"
+;"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+;[HKEY_CLASSES_ROOT\*\shell\OpenWithCursor\command]
+;@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .ps1 files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .py files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.py\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .js files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.js\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .ts files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.ts\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .java files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.java\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .c files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.c\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .cpp files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cpp\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .cs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.cs\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .go files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.go\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .php files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.php\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .rb files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rb\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .swift files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.swift\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .kt files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.kt\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .rs files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.rs\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+    
+; Add to .lua files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.lua\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .sh files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.sh\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+;   Add to .pl files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.pl\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .dart files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.dart\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .html files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.html\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .css files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.css\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .json files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.json\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .xml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.xml\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .yaml files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.yaml\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""
+
+; Add to .md files
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithCursor]
+@="Ouvrir avec Cursor"
+"Icon"="C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe"
+
+[HKEY_CLASSES_ROOT\SystemFileAssociations\.md\shell\OpenWithCursor\command]
+@="\"C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\cursor\\cursor.exe\" \"%1\""

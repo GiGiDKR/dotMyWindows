@@ -1,0 +1,143 @@
+{
+  "name": "Noi User Mode",
+  "mode_main": "https://gemini.google.com",
+  "mode_tray": "https://chat.openai.com",
+  "mode_partition": "",
+  "ua_main": "",
+  "ua_tray": "",
+  "noi_ask": [
+    "noi:gemini",
+    "noi:huggingchat",
+    "293bbde292f8483bb96d56886990f85e"
+  ],
+  "modes": [
+    {
+      "id": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "parent": 0,
+      "dir": true,
+      "text": "Code",
+      "checked": true
+    },
+    {
+      "id": "5a4ad3a4ab91481da59b064d250339b9",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Gemini",
+      "url": "https://gemini.google.com"
+    },
+    {
+      "id": "97478db9bb1a41658a6598ab25ff8ac9",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "ChatGPT",
+      "url": "https://chatgpt.com"
+    },
+    {
+      "id": "293bbde292f8483bb96d56886990f85e",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Claude",
+      "url": "https://claude.ai"
+    },
+    {
+      "id": "825cd41ce5274dcfbb133f8797a79314",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Perplexity",
+      "url": "https://www.perplexity.ai"
+    },
+    {
+      "id": "e1a7a7195ad6441eafd7b593a02abb3c",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Perplexity Labs",
+      "url": "https://labs.perplexity.ai/"
+    },
+    {
+      "id": "8267e067196b403290812a18c675b1fb",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Groq",
+      "url": "https://console.groq.com/playground"
+    },
+    {
+      "id": "eb49119c6cfc4c74bc141f73b3e480fb",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Copilot",
+      "url": "https://copilot.microsoft.com"
+    },
+    {
+      "id": "dbe8947e051646aa96380332b14524ca",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Mistral",
+      "url": "https://chat.mistral.ai/chat"
+    },
+    {
+      "id": "a42c4abd544a44408191b189fe1bf71a",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "HuggingChat",
+      "url": "https://huggingface.co/chat",
+      "checked": true
+    },
+    {
+      "id": "63b6e79fd1104bf1896a8a80f4123e6d",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Sonus",
+      "url": "https://chat.sonus.ai/"
+    },
+    {
+      "id": "a9890525b46e412486f9d0e9f342e870",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Together",
+      "url": "https://api.together.xyz/playground/chat"
+    },
+    {
+      "id": "723428b543b944919b8eb6408b2a99cf",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "GitHub",
+      "url": "https://github.com/GiGiDKR"
+    },
+    {
+      "id": "1cbf1e38a6f94594ac3ec492fafd997a",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "OpenBolt",
+      "url": "https://www.openbolt.dev/"
+    },
+    {
+      "id": "257d7a2a04184041b033268bcc98f520",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Projet IDX",
+      "url": "https://idx.google.com"
+    },
+    {
+      "id": "3f81d082976342fcad4cb9bc6f092aba",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "v0",
+      "url": "https://v0.dev/"
+    },
+    {
+      "id": "eb60ebd665f14dd2b5cebffcefb662db",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Copilot Workspace",
+      "url": "https://copilot-workspace.githubnext.com/"
+    },
+    {
+      "id": "693f9e269fdc4feebc2a90f8f87344d3",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Deepseek",
+      "url": "https://chat.deepseek.com/"
+    },
+    {
+      "id": "04ad7ef3b3a849fbb86af2f578493022",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Replit",
+      "url": "https://replit.com"
+    },
+    {
+      "id": "7d336d9a7d584b5792ea6d918fc00dab",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "VS Code",
+      "url": "https://vscode.dev"
+    },
+    {
+      "id": "0e2989324f0a48ac91a7fb5aa3b8198b",
+      "parent": "d05ee30cdf3b407da3c46d4950cfd3c9",
+      "text": "Vectorshift",
+      "url": "https://app.vectorshift.ai/pipelines"
+    }
+  ]
+}
