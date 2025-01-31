@@ -4,9 +4,103 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:OhMyWindows.Services"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Barre d'outils -->
+        <CommandBar Grid.Row="0" 
+                   DefaultLabelPosition="Right"
+                   Background="Transparent"
+                   IsOpen="False"
+                   Margin="0,0,0,10">
+            <AppBarButton Icon="Refresh" 
+                         Label="Rafraîchir"
+                         Command="{x:Bind ViewModel.RefreshProgramsCommand}"/>
+            <AppBarButton Icon="Delete" 
+                         Label="Désinstaller"
+                         Command="{x:Bind ViewModel.UninstallSelectedCommand}"/>
+            <AppBarButton Icon="Add" 
+                         Label="Installer"
+                         Command="{x:Bind ViewModel.InstallSelectedCommand}"/>
+            <AppBarButton Icon="SelectAll" 
+                         Label="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
+                         Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"/>
+            <AppBarButton Icon="List" 
+                         Label="Tout déplier"
+                         Command="{x:Bind ViewModel.ExpandAllCommand}"/>
+        </CommandBar>
+
+        <!-- Liste des programmes -->
+        <ScrollViewer Grid.Row="1" 
+                     VerticalScrollMode="Auto" 
+                     VerticalScrollBarVisibility="Auto">
+            <ItemsRepeater ItemsSource="{x:Bind ViewModel.InstalledPrograms, Mode=OneWay}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="8"/>
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="services:InstalledProgram">
+                        <Expander IsExpanded="{x:Bind IsSelected, Mode=OneWay}"
+                                 HorizontalAlignment="Stretch"
+                                 Margin="0,4">
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Grid.Column="0" 
+                                            IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
+                                            Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1" 
+                                             Text="{x:Bind Name}" 
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" 
+                                             Text="{x:Bind Version}" 
+                                             Opacity="0.6"
+                                             Margin="12,0,0,0"
+                                             VerticalAlignment="Center"/>
+                                </Grid>
+                            </Expander.Header>
+                            <StackPanel Margin="32,8,0,8" Spacing="8">
+                                <TextBlock>
+                                    <Run Text="Éditeur : "/>
+                                    <Run Text="{x:Bind Publisher}"/>
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Commande de désinstallation : "/>
+                                    <Run Text="{x:Bind UninstallString}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+        <!-- Barre de progression -->
+        <Grid Grid.Row="2" 
+              Visibility="{x:Bind ViewModel.IsInstalling, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" 
+                     Text="{x:Bind ViewModel.CurrentOperation, Mode=OneWay}"
+                     Margin="0,8,0,4"
+                     HorizontalAlignment="Center"/>
+            <ProgressBar Grid.Row="1" 
+                       Value="{x:Bind ViewModel.InstallProgress, Mode=OneWay}"
+                       Maximum="100"
+                       Margin="0,0,0,8"/>
+        </Grid>
     </Grid>
 </Page> 
