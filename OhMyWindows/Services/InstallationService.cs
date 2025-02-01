@@ -210,29 +210,71 @@ namespace OhMyWindows.Services
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
-                    FileName = "cmd.exe",
-                    Arguments = "/c "
+                    FileName = "pwsh.exe",
+                    Arguments = "-NoProfile -NonInteractive -Command "
                 };
 
                 if (package.Source.Equals("winget", StringComparison.OrdinalIgnoreCase))
                 {
-                    startInfo.Arguments += $"winget list --exact -q {package.Id}";
+                    startInfo.Arguments += $"\"& {{ winget list --exact -q '{package.Id}' | Out-String }}\"";
                 }
                 else if (package.Source.Equals("choco", StringComparison.OrdinalIgnoreCase))
                 {
-                    startInfo.Arguments += $"choco list --local-only --exact {package.Id}";
+                    startInfo.Arguments += $"\"& {{ choco list '{package.Id}' | Out-String }}\"";
                 }
                 else
                 {
                     return false;
                 }
 
+                LogToFile($"Vérification de {package.Name} avec la commande : {startInfo.FileName} {startInfo.Arguments}");
+
                 using var process = Process.Start(startInfo) ??
                     throw new InvalidOperationException("Impossible de vérifier l'installation");
 
+                var output = new System.Text.StringBuilder();
+                var error = new System.Text.StringBuilder();
+
+                process.OutputDataReceived += (s, e) =>
+                {
+                    if (e.Data != null)
+                    {
+                        output.AppendLine(e.Data);
+                    }
+                };
+                process.ErrorDataReceived += (s, e) =>
+                {
+                    if (e.Data != null)
+                    {
+                        error.AppendLine(e.Data);
+                    }
+                };
+
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
                 await process.WaitForExitAsync(cancellationToken);
-                var output = await process.StandardOutput.ReadToEndAsync();
-                return output.Contains(package.Id, StringComparison.OrdinalIgnoreCase);
+
+                var outputStr = output.ToString();
+                var errorStr = error.ToString();
+
+                LogToFile($"Sortie de la vérification pour {package.Name}:");
+                LogToFile(outputStr);
+                if (!string.IsNullOrEmpty(errorStr))
+                {
+                    LogToFile($"Erreurs lors de la vérification de {package.Name}:");
+                    LogToFile(errorStr);
+                }
+
+                if (package.Source.Equals("winget", StringComparison.OrdinalIgnoreCase))
+                {
+                    return outputStr.Contains(package.Id, StringComparison.OrdinalIgnoreCase) && 
+                           !outputStr.Contains("Aucun package installé", StringComparison.OrdinalIgnoreCase);
+                }
+                else
+                {
+                    return process.ExitCode == 0 && outputStr.Contains(package.Id, StringComparison.OrdinalIgnoreCase);
+                }
             }
             catch (Exception ex)
             {
@@ -250,44 +292,86 @@ namespace OhMyWindows.Services
 
             try
             {
+                // Vérifier d'abord si le package est déjà installé
+                if (await IsPackageInstalledAsync(package, cancellationToken))
+                {
+                    LogToFile($"Le package {package.Name} est déjà installé");
+                    return true;
+                }
+
                 var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
-                    FileName = "cmd.exe",
-                    Arguments = "/c "
+                    FileName = "pwsh.exe",
+                    Arguments = "-NoProfile -NonInteractive -Command "
                 };
 
                 if (package.Source.Equals("winget", StringComparison.OrdinalIgnoreCase))
                 {
-                    startInfo.Arguments += $"winget install {package.Id} --silent --accept-source-agreements --accept-package-agreements";
+                    startInfo.Arguments += $"\"& {{ winget install '{package.Id}' --silent --accept-source-agreements --accept-package-agreements | Out-String }}\"";
                 }
                 else if (package.Source.Equals("choco", StringComparison.OrdinalIgnoreCase))
                 {
-                    startInfo.Arguments += $"choco install {package.Id} -y";
+                    startInfo.Arguments += $"\"& {{ choco install '{package.Id}' -y | Out-String }}\"";
                 }
                 else
                 {
                     return false;
                 }
 
+                LogToFile($"Installation de {package.Name} avec la commande : {startInfo.FileName} {startInfo.Arguments}");
+
                 using var process = Process.Start(startInfo) ??
                     throw new InvalidOperationException("Impossible de démarrer le processus d'installation");
 
-                try
+                var output = new System.Text.StringBuilder();
+                var error = new System.Text.StringBuilder();
+
+                process.OutputDataReceived += (s, e) =>
                 {
-                    await process.WaitForExitAsync(cancellationToken);
-                    return process.ExitCode == 0;
-                }
-                catch (OperationCanceledException)
-                {
-                    if (!process.HasExited)
+                    if (e.Data != null)
                     {
-                        process.Kill(true);
+                        LogToFile($"[Output] {e.Data}");
+                        output.AppendLine(e.Data);
                     }
-                    throw;
+                };
+                process.ErrorDataReceived += (s, e) =>
+                {
+                    if (e.Data != null)
+                    {
+                        LogToFile($"[Error] {e.Data}");
+                        error.AppendLine(e.Data);
+                    }
+                };
+
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                await process.WaitForExitAsync(cancellationToken);
+
+                if (process.ExitCode != 0)
+                {
+                    var errorMessage = error.ToString();
+                    if (string.IsNullOrWhiteSpace(errorMessage))
+                    {
+                        errorMessage = output.ToString();
+                    }
+                    throw new InvalidOperationException($"Échec de l'installation : {errorMessage}");
+                }
+
+                // Vérifier que le package est bien installé
+                if (await IsPackageInstalledAsync(package, cancellationToken))
+                {
+                    LogToFile($"Installation de {package.Name} réussie");
+                    return true;
+                }
+                else
+                {
+                    LogToFile($"Le package {package.Name} n'est pas détecté après l'installation");
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -297,7 +381,7 @@ namespace OhMyWindows.Services
                 {
                     throw;
                 }
-                return false;
+                throw new InvalidOperationException($"Erreur lors de l'installation de {package.Name}: {ex.Message}", ex);
             }
         }
     }

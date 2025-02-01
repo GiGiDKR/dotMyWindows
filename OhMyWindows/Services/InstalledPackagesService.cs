@@ -3,6 +3,9 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using System.Threading;
 
 namespace OhMyWindows.Services
 {
@@ -10,12 +13,33 @@ namespace OhMyWindows.Services
     {
         private readonly string _filePath;
         private HashSet<string> _installedPackages;
+        private readonly JsonSerializerOptions _jsonOptions;
+        private static readonly SemaphoreSlim _semaphore = new(1, 1);
+        private readonly TaskCompletionSource _initializationTask = new();
 
         public InstalledPackagesService()
         {
             _filePath = Path.Combine(AppContext.BaseDirectory, "Data", "installed_packages.json");
             _installedPackages = new HashSet<string>();
-            LoadAsync().Wait();
+            _jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            };
+            
+            // Initialisation asynchrone
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await LoadAsync();
+                    _initializationTask.SetResult();
+                }
+                catch (Exception ex)
+                {
+                    _initializationTask.SetException(ex);
+                }
+            });
         }
 
         /// <summary>
@@ -25,19 +49,28 @@ namespace OhMyWindows.Services
         /// <param name="isInstalled">Indique si le package est installé ou non.</param>
         public async Task SetPackageInstalledAsync(string packageId, bool isInstalled)
         {
-            bool changed = false;
-            if (isInstalled)
+            await _initializationTask.Task; // Attendre l'initialisation
+            await _semaphore.WaitAsync();
+            try
             {
-                changed = _installedPackages.Add(packageId);
-            }
-            else
-            {
-                changed = _installedPackages.Remove(packageId);
-            }
+                bool changed = false;
+                if (isInstalled)
+                {
+                    changed = _installedPackages.Add(packageId);
+                }
+                else
+                {
+                    changed = _installedPackages.Remove(packageId);
+                }
 
-            if (changed)
+                if (changed)
+                {
+                    await SaveAsync();
+                }
+            }
+            finally
             {
-                await SaveAsync();
+                _semaphore.Release();
             }
         }
 
@@ -46,8 +79,9 @@ namespace OhMyWindows.Services
         /// </summary>
         /// <param name="packageId">L'identifiant du package.</param>
         /// <returns>true si le package est installé, sinon false.</returns>
-        public bool IsPackageInstalled(string packageId)
+        public async Task<bool> IsPackageInstalledAsync(string packageId)
         {
+            await _initializationTask.Task; // Attendre l'initialisation
             return _installedPackages.Contains(packageId);
         }
 
@@ -56,22 +90,30 @@ namespace OhMyWindows.Services
         /// </summary>
         private async Task LoadAsync()
         {
-            if (File.Exists(_filePath))
+            await _semaphore.WaitAsync();
+            try
             {
-                try
+                if (File.Exists(_filePath))
                 {
-                    string json = await File.ReadAllTextAsync(_filePath);
-                    var packages = JsonSerializer.Deserialize<HashSet<string>>(json);
-                    if (packages != null)
+                    try
                     {
-                        _installedPackages = packages;
+                        string json = await File.ReadAllTextAsync(_filePath);
+                        var packages = JsonSerializer.Deserialize<HashSet<string>>(json, _jsonOptions);
+                        if (packages != null)
+                        {
+                            _installedPackages = packages;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // En cas d'erreur, initialise avec un ensemble vide.
+                        _installedPackages = new HashSet<string>();
                     }
                 }
-                catch (Exception)
-                {
-                    // En cas d'erreur, initialise avec un ensemble vide.
-                    _installedPackages = new HashSet<string>();
-                }
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
 
@@ -80,22 +122,14 @@ namespace OhMyWindows.Services
         /// </summary>
         private async Task SaveAsync()
         {
-            try
+            var directory = Path.GetDirectoryName(_filePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
-                // Créer le dossier Data s'il n'existe pas
-                var directory = Path.GetDirectoryName(_filePath);
-                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
+                Directory.CreateDirectory(directory);
+            }
 
-                var json = JsonSerializer.Serialize(_installedPackages, new JsonSerializerOptions { WriteIndented = true });
-                await File.WriteAllTextAsync(_filePath, json);
-            }
-            catch (Exception)
-            {
-                // Gérer l'erreur selon les besoins.
-            }
+            var json = JsonSerializer.Serialize(_installedPackages, _jsonOptions);
+            await File.WriteAllTextAsync(_filePath, json);
         }
     }
 }

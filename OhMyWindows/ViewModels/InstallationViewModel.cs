@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Dispatching;
 using OhMyWindows.Models;
 using OhMyWindows.Services;
 using System;
@@ -25,9 +26,13 @@ public partial class InstallationViewModel : ObservableRecipient
     private const int DefaultMaxParallelTasks = 3;
     private readonly string _logPath;
     private static readonly object _lockObj = new object();
+    private readonly DispatcherQueue _dispatcherQueue;
 
     [ObservableProperty]
     private ObservableCollection<CategoryViewModel> _categories;
+
+    [ObservableProperty]
+    private ObservableCollection<PackageViewModel> _allPackages;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -50,6 +55,15 @@ public partial class InstallationViewModel : ObservableRecipient
     [ObservableProperty]
     private bool _canStop;
 
+    [ObservableProperty]
+    private bool _isAllExpanded;
+
+    [ObservableProperty]
+    private string _verifyButtonText = "Vérifier";
+
+    [ObservableProperty]
+    private string _installButtonText = "Installer";
+
     public InstallationViewModel(InstallationService installationService, InstalledPackagesService installedPackagesService)
     {
         _installationService = installationService;
@@ -57,14 +71,15 @@ public partial class InstallationViewModel : ObservableRecipient
         _semaphore = new SemaphoreSlim(DefaultMaxParallelTasks);
         _taskQueue = new ConcurrentQueue<Func<CancellationToken, Task>>();
         _categories = new ObservableCollection<CategoryViewModel>();
+        _allPackages = new ObservableCollection<PackageViewModel>();
         _statusText = "Prêt";
+        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installation_viewmodel.log");
         LogToFile("ViewModel initialisé");
 
         InitializeCommand = new AsyncRelayCommand(InitializeAsync);
         CheckStatusCommand = new AsyncRelayCommand(CheckStatusAsync, () => CanCheck);
-        StopCheckCommand = new RelayCommand(StopCheck, () => CanStop);
         ResetCommand = new RelayCommand(Reset);
         SelectAllCommand = new RelayCommand(SelectAll);
         InstallSelectedCommand = new AsyncRelayCommand(InstallSelectedAsync, () => CanInstall);
@@ -72,7 +87,6 @@ public partial class InstallationViewModel : ObservableRecipient
 
     public ICommand InitializeCommand { get; }
     public ICommand CheckStatusCommand { get; }
-    public ICommand StopCheckCommand { get; }
     public ICommand ResetCommand { get; }
     public ICommand SelectAllCommand { get; }
     public ICommand InstallSelectedCommand { get; }
@@ -100,34 +114,37 @@ public partial class InstallationViewModel : ObservableRecipient
 
         try
         {
-            Debug.WriteLine("Début de l'initialisation du ViewModel");
             await _installationService.InitializeAsync();
-            Debug.WriteLine("Service initialisé avec succès");
-
             var packages = await _installationService.GetPackagesAsync();
-            Debug.WriteLine($"Packages récupérés : {packages.Count}");
 
             Categories.Clear();
-            var groupedPackages = packages
-                .GroupBy(p => p.Category)
+            AllPackages.Clear();
+
+            // Créer les PackageViewModels une seule fois et les réutiliser
+            var packageViewModels = packages
+                .Select(p => new PackageViewModel(p))
+                .OrderBy(p => p.Package.Name)
+                .ToList();
+
+            // Remplir AllPackages
+            foreach (var packageViewModel in packageViewModels)
+            {
+                AllPackages.Add(packageViewModel);
+            }
+
+            // Grouper et remplir les catégories
+            var groupedPackages = packageViewModels
+                .GroupBy(p => p.Package.Category)
                 .OrderBy(g => g.Key);
 
             foreach (var group in groupedPackages)
             {
-                Debug.WriteLine($"Traitement de la catégorie : {group.Key}");
-                var categoryViewModel = new CategoryViewModel(group.Key);
-                foreach (var package in group.OrderBy(p => p.Name))
-                {
-                    categoryViewModel.Packages.Add(new PackageViewModel(package));
-                }
+                var categoryViewModel = new CategoryViewModel(group.Key, group.ToList());
                 Categories.Add(categoryViewModel);
-                Debug.WriteLine($"Catégorie {group.Key} ajoutée avec {categoryViewModel.Packages.Count} packages");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Erreur lors de l'initialisation : {ex.GetType().Name} - {ex.Message}");
-            Debug.WriteLine($"StackTrace : {ex.StackTrace}");
             StatusText = $"Erreur lors du chargement : {ex.Message}";
         }
         finally
@@ -137,101 +154,69 @@ public partial class InstallationViewModel : ObservableRecipient
             {
                 StatusText = "Prêt";
             }
-            LogToFile($"Fin de l'initialisation - Status: {StatusText}");
         }
     }
 
     private async Task CheckStatusAsync()
     {
-        var allPackages = Categories.SelectMany(c => c.Packages);
-        await ProcessTasksAsync(async (package, token) =>
-        {
-            var isInstalled = await _installationService.IsPackageInstalledAsync(package.Package, token);
-            await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, isInstalled);
-            package.IsInstalled = isInstalled;
-            if (isInstalled)
-            {
-                package.IsSelected = false;
-            }
-        }, "Vérification du statut des packages...", allPackages);
-    }
-
-    private async Task InstallSelectedAsync()
-    {
-        var selectedPackages = Categories
-            .SelectMany(c => c.Packages)
-            .Where(p => p.IsSelected && !p.IsInstalled)
-            .ToList();
-
-        if (!selectedPackages.Any())
-        {
-            StatusText = "Aucun package sélectionné à installer";
-            return;
-        }
-
-        await ProcessTasksAsync(async (package, token) =>
-        {
-            if (await _installationService.InstallPackageAsync(package.Package, token))
-            {
-                await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, true);
-                package.IsInstalled = true;
-                package.IsSelected = false;
-            }
-        }, "Installation des packages sélectionnés...", selectedPackages);
-    }
-
-    private async Task ProcessTasksAsync(Func<PackageViewModel, CancellationToken, Task> action, string statusMessage, IEnumerable<PackageViewModel>? packages = null)
-    {
-        if (IsProcessing)
-        {
-            return;
-        }
+        if (IsProcessing) return;
 
         IsProcessing = true;
         CanCheck = false;
         CanInstall = false;
         CanStop = true;
-        StatusText = statusMessage;
+        StatusText = "Vérification des installations...";
+        VerifyButtonText = "Arrêter";
         _cancellationTokenSource = new CancellationTokenSource();
 
         try
         {
-            packages ??= Categories.SelectMany(c => c.Packages);
-            var totalCount = packages.Count();
+            var packages = AllPackages.Where(p => !p.IsInstalled).ToList();  // Ne vérifie que les packages non installés
+            var totalCount = packages.Count;
             var processedCount = 0;
 
+            var tasks = new List<Task>();
             foreach (var package in packages)
             {
                 if (_cancellationTokenSource.Token.IsCancellationRequested)
-                {
                     break;
-                }
 
-                _taskQueue.Enqueue(async (token) =>
+                var task = Task.Run(async () =>
                 {
-                    await _semaphore.WaitAsync(token);
+                    await _semaphore.WaitAsync(_cancellationTokenSource.Token);
                     try
                     {
-                        await action(package, token);
-                        Interlocked.Increment(ref processedCount);
-                        ProgressValue = (double)processedCount / totalCount * 100;
+                        if (_cancellationTokenSource.Token.IsCancellationRequested) return;
+
+                        _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            StatusText = $"Vérification de {package.Name}... ({processedCount + 1}/{totalCount})";
+                        });
+
+                        var isInstalled = await _installationService.IsPackageInstalledAsync(package.Package);
+                        
+                        if (!_cancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            _dispatcherQueue.TryEnqueue(() =>
+                            {
+                                package.IsInstalled = isInstalled;
+                                if (isInstalled)
+                                {
+                                    package.IsSelected = false;
+                                }
+                                Interlocked.Increment(ref processedCount);
+                                ProgressValue = (double)processedCount / totalCount * 100;
+                            });
+                        }
                     }
                     finally
                     {
                         _semaphore.Release();
                     }
-                });
-            }
+                }, _cancellationTokenSource.Token);
 
-            var tasks = new List<Task>();
-            while (_taskQueue.TryDequeue(out var task))
-            {
-                if (_cancellationTokenSource.Token.IsCancellationRequested)
-                {
-                    break;
-                }
+                tasks.Add(task);
 
-                tasks.Add(Task.Run(() => task(_cancellationTokenSource.Token)));
                 if (tasks.Count >= DefaultMaxParallelTasks)
                 {
                     await Task.WhenAny(tasks);
@@ -240,10 +225,15 @@ public partial class InstallationViewModel : ObservableRecipient
             }
 
             await Task.WhenAll(tasks);
+
+            if (!_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                StatusText = $"Vérification terminée ({processedCount}/{totalCount})";
+            }
         }
         catch (OperationCanceledException)
         {
-            StatusText = "Opération annulée";
+            StatusText = "Vérification annulée";
         }
         catch (Exception ex)
         {
@@ -258,34 +248,119 @@ public partial class InstallationViewModel : ObservableRecipient
             CanInstall = true;
             CanStop = false;
             ProgressValue = 0;
+            VerifyButtonText = "Vérifier";
         }
     }
 
-    private void StopCheck()
+    private async Task InstallSelectedAsync()
     {
-        _cancellationTokenSource?.Cancel();
+        if (IsProcessing) return;
+
+        var selectedPackages = AllPackages.Where(p => p.IsSelected && !p.IsInstalled).ToList();
+        if (!selectedPackages.Any())
+        {
+            StatusText = "Aucun package sélectionné à installer";
+            return;
+        }
+
+        IsProcessing = true;
+        CanCheck = false;
+        CanInstall = false;
+        CanStop = true;
+        StatusText = "Installation des packages...";
+        InstallButtonText = "Annuler";
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        try
+        {
+            var totalCount = selectedPackages.Count;
+            var processedCount = 0;
+
+            foreach (var package in selectedPackages)
+            {
+                if (_cancellationTokenSource.Token.IsCancellationRequested)
+                    break;
+
+                StatusText = $"Installation de {package.Name}... ({processedCount + 1}/{totalCount})";
+
+                if (await _installationService.InstallPackageAsync(package.Package, _cancellationTokenSource.Token))
+                {
+                    await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, true);
+                    _dispatcherQueue.TryEnqueue(() =>
+                    {
+                        package.IsInstalled = true;
+                        package.IsSelected = false;
+                    });
+                    processedCount++;
+                    ProgressValue = (double)processedCount / totalCount * 100;
+                }
+            }
+
+            if (!_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                StatusText = processedCount == totalCount 
+                    ? "Installation terminée avec succès" 
+                    : $"Installation terminée avec {processedCount}/{totalCount} packages installés";
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            StatusText = "Installation annulée";
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Erreur : {ex.Message}";
+        }
+        finally
+        {
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
+            IsProcessing = false;
+            CanCheck = true;
+            CanInstall = true;
+            CanStop = false;
+            ProgressValue = 0;
+            InstallButtonText = "Installer";
+        }
     }
 
     private void Reset()
     {
-        foreach (var category in Categories)
+        foreach (var package in AllPackages)
         {
-            foreach (var package in category.Packages)
-            {
-                package.IsSelected = false;
-            }
+            package.IsSelected = false;
+            package.IsInstalled = false;  // Réactive tous les packages
+        }
+        StatusText = "Prêt";
+        ProgressValue = 0;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanStop))]
+    private void StopCheck()
+    {
+        if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
+        {
+            _cancellationTokenSource.Cancel();
+            CanStop = false;  // Désactive le bouton immédiatement
         }
     }
 
     private void SelectAll()
     {
-        var allSelected = Categories.All(c => c.Packages.All(p => p.IsSelected));
+        var allSelected = AllPackages.All(p => p.IsSelected || p.IsInstalled);
+        foreach (var package in AllPackages.Where(p => !p.IsInstalled))
+        {
+            package.IsSelected = !allSelected;
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleAllExpanded()
+    {
+        IsAllExpanded = !IsAllExpanded;
         foreach (var category in Categories)
         {
-            foreach (var package in category.Packages)
-            {
-                package.IsSelected = !allSelected;
-            }
+            category.IsExpanded = IsAllExpanded;
         }
     }
 }
