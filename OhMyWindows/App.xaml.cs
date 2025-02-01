@@ -72,6 +72,8 @@ public partial class App : Application
             services.AddTransient<INavigationViewService, NavigationViewService>();
             services.AddSingleton<RegistryService>();
             services.AddSingleton<ProgramService>();
+            services.AddSingleton<InstallationService>();
+            services.AddSingleton<InstalledPackagesService>();
 
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
