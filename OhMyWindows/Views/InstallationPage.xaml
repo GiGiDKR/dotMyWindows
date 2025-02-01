@@ -25,6 +25,7 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -37,23 +38,36 @@
                          OffContent="Désactivée"
                          Margin="0,0,12,0"/>
 
+            <!-- NumberBox pour le nombre de tâches parallèles -->
+            <NumberBox Grid.Column="1"
+                      Header="Tâches parallèles"
+                      Value="{x:Bind ViewModel.MaxParallelTasks, Mode=TwoWay}"
+                      Minimum="1"
+                      Maximum="10"
+                      SpinButtonPlacementMode="Compact"
+                      SmallChange="1"
+                      LargeChange="2"
+                      ToolTipService.ToolTip="Nombre de tâches exécutées simultanément (1-10)"
+                      Width="120"
+                      Margin="0,0,12,0"/>
+
             <!-- Barre de commandes -->
-            <CommandBar Grid.Column="1" 
-                       DefaultLabelPosition="Right" 
+            <CommandBar Grid.Column="2" 
+                       DefaultLabelPosition="Collapsed" 
                        Background="Transparent"
                        HorizontalAlignment="Right">
                 <AppBarButton Icon="Refresh" 
-                             Label="Réinitialiser" 
+                             ToolTipService.ToolTip="Réinitialiser"
                              Command="{x:Bind ViewModel.ResetCommand}"/>
                 <AppBarButton Icon="Download" 
-                             Label="Installer" 
+                             Label="Installer"
+                             ToolTipService.ToolTip="Installer"
                              Command="{x:Bind ViewModel.InstallSelectedCommand}"
                              IsEnabled="{x:Bind ViewModel.CanInstall, Mode=OneWay}"/>
                 <AppBarButton Icon="Cancel"
-                             Label="Annuler"
+                             ToolTipService.ToolTip="Annuler"
                              Command="{x:Bind ViewModel.CancelOperationCommand}"
-                             IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"
-                             ToolTipService.ToolTip="Annuler l'opération en cours"/>
+                             IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"/>
             </CommandBar>
         </Grid>
 

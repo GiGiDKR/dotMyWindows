@@ -11,12 +11,6 @@ using OhMyWindows.Models;
 
 namespace OhMyWindows.Services
 {
-    /// <summary>
-    /// Service pour gérer le téléchargement et la lecture du fichier packages.json.
-    /// Tente de télécharger packages.json depuis GitHub en testant les branches "alpha", "dev", "main", "master".
-    /// Si le téléchargement échoue, une version par défaut (vide) sera utilisée.
-    /// Le fichier est sauvegardé localement dans le dossier Data.
-    /// </summary>
     public class InstallationService
     {
         private const string PackagesUrl = "https://raw.githubusercontent.com/GiGiDKR/OhMyWindows/alpha/files/packages.json";
@@ -24,6 +18,7 @@ namespace OhMyWindows.Services
         private readonly JsonSerializerOptions _jsonOptions;
         private readonly string _logPath;
         private static readonly object _lockObj = new object();
+        private readonly PowerShellVersionService _powerShellVersionService;
 
         private void LogToFile(string message)
         {
@@ -50,7 +45,7 @@ namespace OhMyWindows.Services
 
                 var dataPath = Path.Combine(baseDir, "Data");
                 LogToFile($"Chemin du dossier Data : {dataPath}");
-                
+
                 if (!Directory.Exists(dataPath))
                 {
                     LogToFile("Création du dossier Data...");
@@ -69,6 +64,9 @@ namespace OhMyWindows.Services
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                     Converters = { new JsonStringEnumConverter() }
                 };
+
+                _powerShellVersionService = new PowerShellVersionService();
+                LogToFile("PowerShellVersionService initialisé");
             }
             catch (Exception ex)
             {
@@ -98,7 +96,7 @@ namespace OhMyWindows.Services
                         if (packageList?.Packages != null && packageList.Packages.Count > 0)
                         {
                             LogToFile($"Fichier GitHub valide avec {packageList.Packages.Count} packages");
-                            
+
                             // Assigner une catégorie par défaut si nécessaire
                             foreach (var package in packageList.Packages)
                             {
@@ -133,10 +131,6 @@ namespace OhMyWindows.Services
             }
         }
 
-        /// <summary>
-        /// Télécharge ou charge localement le fichier packages.json.
-        /// Tente les branches dans l'ordre jusqu'à réussite, ou utilise une version par défaut.
-        /// </summary>
         public async Task InitializeAsync()
         {
             try
@@ -171,10 +165,6 @@ namespace OhMyWindows.Services
             }
         }
 
-        /// <summary>
-        /// Lit et désérialise le fichier packages.json en une liste de packages.
-        /// </summary>
-        /// <returns>Une liste de Package.</returns>
         public async Task<List<Package>> GetPackagesAsync()
         {
             try
@@ -195,22 +185,20 @@ namespace OhMyWindows.Services
             }
         }
 
-        /// <summary>
-        /// Vérifie si un package est installé en utilisant winget ou choco selon la source.
-        /// </summary>
         public async Task<bool> IsPackageInstalledAsync(Package package, CancellationToken cancellationToken = default)
         {
             if (package == null) return false;
 
             try
             {
+                var powerShellPath = _powerShellVersionService.GetLatestPowerShellVersion();
                 var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
-                    FileName = "pwsh.exe",
+                    FileName = powerShellPath,
                     Arguments = "-NoProfile -NonInteractive -Command "
                 };
 
@@ -268,7 +256,7 @@ namespace OhMyWindows.Services
 
                 if (package.Source.Equals("winget", StringComparison.OrdinalIgnoreCase))
                 {
-                    return outputStr.Contains(package.Id, StringComparison.OrdinalIgnoreCase) && 
+                    return outputStr.Contains(package.Id, StringComparison.OrdinalIgnoreCase) &&
                            !outputStr.Contains("Aucun package installé", StringComparison.OrdinalIgnoreCase);
                 }
                 else
@@ -283,9 +271,6 @@ namespace OhMyWindows.Services
             }
         }
 
-        /// <summary>
-        /// Installe un package en utilisant winget ou choco selon la source.
-        /// </summary>
         public async Task<bool> InstallPackageAsync(Package package, CancellationToken cancellationToken = default)
         {
             if (package == null) return false;
@@ -299,13 +284,14 @@ namespace OhMyWindows.Services
                     return true;
                 }
 
+                var powerShellPath = _powerShellVersionService.GetLatestPowerShellVersion();
                 var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
-                    FileName = "pwsh.exe",
+                    FileName = powerShellPath,
                     Arguments = "-NoProfile -NonInteractive -Command "
                 };
 

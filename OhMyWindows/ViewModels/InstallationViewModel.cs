@@ -20,10 +20,12 @@ public partial class InstallationViewModel : ObservableRecipient
 {
     private readonly InstallationService _installationService;
     private readonly InstalledPackagesService _installedPackagesService;
-    private readonly SemaphoreSlim _semaphore;
+    private SemaphoreSlim _semaphore;
     private readonly ConcurrentQueue<Func<CancellationToken, Task>> _taskQueue;
     private CancellationTokenSource? _cancellationTokenSource;
     private const int DefaultMaxParallelTasks = 3;
+    private const int MinParallelTasks = 1;
+    private const int MaxParallelTasksLimit = 10;
     private readonly string _logPath;
     private static readonly object _lockObj = new object();
     private readonly DispatcherQueue _dispatcherQueue;
@@ -58,7 +60,7 @@ public partial class InstallationViewModel : ObservableRecipient
     private string _statusText;
 
     [ObservableProperty]
-    private string _permanentStatusText;
+    private string _permanentStatusText = string.Empty;
 
     [ObservableProperty]
     private bool _canCheck = true;
@@ -87,15 +89,19 @@ public partial class InstallationViewModel : ObservableRecipient
     [ObservableProperty]
     private string _installButtonText = "Installer";
 
+    [ObservableProperty]
+    private int _maxParallelTasks = DefaultMaxParallelTasks;
+
     public InstallationViewModel(InstallationService installationService, InstalledPackagesService installedPackagesService)
     {
         _installationService = installationService;
         _installedPackagesService = installedPackagesService;
-        _semaphore = new SemaphoreSlim(DefaultMaxParallelTasks);
+        _semaphore = new SemaphoreSlim(_maxParallelTasks);
         _taskQueue = new ConcurrentQueue<Func<CancellationToken, Task>>();
         _categories = new ObservableCollection<CategoryViewModel>();
         _allPackages = new ObservableCollection<PackageViewModel>();
         _statusText = "Prêt";
+        _permanentStatusText = "Prêt";
         _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installation_viewmodel.log");
@@ -115,6 +121,19 @@ public partial class InstallationViewModel : ObservableRecipient
     public ICommand ResetCommand { get; }
     public ICommand SelectAllCommand { get; }
     public ICommand InstallSelectedCommand { get; }
+
+    partial void OnMaxParallelTasksChanged(int value)
+    {
+        if (value < MinParallelTasks)
+            _maxParallelTasks = MinParallelTasks;
+        else if (value > MaxParallelTasksLimit)
+            _maxParallelTasks = MaxParallelTasksLimit;
+        else
+            _maxParallelTasks = value;
+
+        _semaphore?.Dispose();
+        _semaphore = new SemaphoreSlim(_maxParallelTasks);
+    }
 
     private void LogToFile(string message)
     {
@@ -201,7 +220,7 @@ public partial class InstallationViewModel : ObservableRecipient
 
     private async Task AnimateProgressValueAsync(double startValue, double endValue, int durationMs = 500)
     {
-        var stepCount = 20; // Nombre d'étapes pour l'animation
+        var stepCount = 10; // Nombre d'étapes pour l'animation
         var stepDuration = durationMs / stepCount;
         var valueIncrement = (endValue - startValue) / stepCount;
 
@@ -219,7 +238,7 @@ public partial class InstallationViewModel : ObservableRecipient
 
         IsProcessing = true;
         IsChecking = true;
-        StatusText = "Vérification des installations...";
+        StatusText = "Vérification de l'état d'installation...";
         _cancellationTokenSource = new CancellationTokenSource();
 
         try
@@ -254,7 +273,7 @@ public partial class InstallationViewModel : ObservableRecipient
                                     package.IsSelected = false;
                                 }
                                 var newCount = Interlocked.Increment(ref processedCount);
-                                StatusText = $"Vérification de {package.Name}... ({newCount}/{totalCount})";
+                                StatusText = $"Vérification de l'état d'installation ({newCount}/{totalCount})";
                                 var nextProgress = (double)newCount / totalCount * 100;
                                 await AnimateProgressValueAsync(currentProgress, nextProgress);
                                 currentProgress = nextProgress;
@@ -269,7 +288,7 @@ public partial class InstallationViewModel : ObservableRecipient
 
                 tasks.Add(task);
 
-                if (tasks.Count >= DefaultMaxParallelTasks)
+                if (tasks.Count >= _maxParallelTasks)
                 {
                     await Task.WhenAny(tasks);
                     tasks.RemoveAll(t => t.IsCompleted);
@@ -293,19 +312,26 @@ public partial class InstallationViewModel : ObservableRecipient
             var permanentStatus = $"Programmes installés : {installedCount}/{totalPackages}";
             ShowTemporaryStatus("Vérification annulée", permanentStatus);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            var installedCount = AllPackages.Count(p => p.IsInstalled);
-            var totalPackages = AllPackages.Count;
-            var permanentStatus = $"Programmes installés : {installedCount}/{totalPackages}";
-            ShowTemporaryStatus("Vérification annulée", permanentStatus);
+            if (!(ex is OperationCanceledException || ex is TaskCanceledException))
+            {
+                var installedCount = AllPackages.Count(p => p.IsInstalled);
+                var totalPackages = AllPackages.Count;
+                var permanentStatus = $"Programmes installés : {installedCount}/{totalPackages}";
+                ShowTemporaryStatus("Vérification annulée", permanentStatus);
+            }
         }
         finally
         {
-            IsChecking = false;
-            IsProcessing = false;
-            IsVerifyChecked = false;
-            EnableVerifyAfterDelay();
+            if (!_cancellationTokenSource?.IsCancellationRequested ?? false)
+            {
+                IsChecking = false;
+                IsProcessing = false;
+                IsVerifyChecked = false;
+                ProgressValue = 0;
+                EnableVerifyAfterDelay();
+            }
         }
     }
 
@@ -317,6 +343,23 @@ public partial class InstallationViewModel : ObservableRecipient
             {
                 _cancellationTokenSource.Cancel();
                 StatusText = "Annulation en cours...";
+
+                // Calculer immédiatement le statut final pour éviter le message d'erreur
+                var installedCount = AllPackages.Count(p => p.IsInstalled);
+                var totalPackages = AllPackages.Count;
+                var permanentStatus = $"Programmes installés : {installedCount}/{totalPackages}";
+
+                _dispatcherQueue.TryEnqueue(() =>
+                {
+                    if (IsInstalling)
+                    {
+                        ShowTemporaryStatus("Installation annulée", permanentStatus);
+                    }
+                    else
+                    {
+                        ShowTemporaryStatus("Vérification annulée", permanentStatus);
+                    }
+                });
             }
         }
         finally
@@ -330,12 +373,19 @@ public partial class InstallationViewModel : ObservableRecipient
                 // Ignorer les erreurs de disposition
             }
             _cancellationTokenSource = null;
-            IsChecking = false;
-            IsInstalling = false;
-            IsProcessing = false;
-            CanInstall = true;
-            CanCancel = false;
-            ProgressValue = 0;
+
+            // Réinitialiser immédiatement l'interface
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                IsChecking = false;
+                IsInstalling = false;
+                IsProcessing = false;
+                CanInstall = true;
+                CanCancel = false;
+                IsIndeterminate = false;
+                ProgressValue = 0;
+            });
+
             EnableVerifyAfterDelay();
         }
     }
@@ -361,36 +411,68 @@ public partial class InstallationViewModel : ObservableRecipient
         try
         {
             // Première étape : vérifier tous les packages sélectionnés
-            var alreadyInstalledPackages = new List<PackageViewModel>();
-            var packagesToInstall = new List<PackageViewModel>();
+            var alreadyInstalledPackages = new ConcurrentBag<PackageViewModel>();
+            var packagesToInstall = new ConcurrentBag<PackageViewModel>();
             var totalSelected = selectedPackages.Count;
             var processedCount = 0;
 
+            StatusText = $"Vérification de l'état d'installation (0/{totalSelected})";
+
+            var verificationTasks = new List<Task>();
             foreach (var package in selectedPackages)
             {
                 if (_cancellationTokenSource.Token.IsCancellationRequested)
                     break;
 
-                StatusText = $"Vérification du package {package.Name}";
-                var isAlreadyInstalled = await _installationService.IsPackageInstalledAsync(package.Package);
-                processedCount++;
-                ProgressValue = (double)processedCount / totalSelected * 100;
-
-                if (isAlreadyInstalled)
+                var task = Task.Run(async () =>
                 {
-                    alreadyInstalledPackages.Add(package);
-                    await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, true);
-                    _dispatcherQueue.TryEnqueue(() =>
+                    await _semaphore.WaitAsync(_cancellationTokenSource.Token);
+                    try
                     {
-                        package.IsInstalled = true;
-                        package.IsSelected = false;
-                    });
-                }
-                else
+                        if (_cancellationTokenSource.Token.IsCancellationRequested) return;
+
+                        var isAlreadyInstalled = await _installationService.IsPackageInstalledAsync(package.Package);
+                        
+                        if (!_cancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            if (isAlreadyInstalled)
+                            {
+                                alreadyInstalledPackages.Add(package);
+                                await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, true);
+                                _dispatcherQueue.TryEnqueue(() =>
+                                {
+                                    package.IsInstalled = true;
+                                    package.IsSelected = false;
+                                });
+                            }
+                            else
+                            {
+                                packagesToInstall.Add(package);
+                            }
+
+                            var newCount = Interlocked.Increment(ref processedCount);
+                            _dispatcherQueue.TryEnqueue(() =>
+                            {
+                                StatusText = $"Vérification de l'état d'installation ({newCount}/{totalSelected})";
+                            });
+                        }
+                    }
+                    finally
+                    {
+                        _semaphore.Release();
+                    }
+                }, _cancellationTokenSource.Token);
+
+                verificationTasks.Add(task);
+
+                if (verificationTasks.Count >= _maxParallelTasks)
                 {
-                    packagesToInstall.Add(package);
+                    await Task.WhenAny(verificationTasks);
+                    verificationTasks.RemoveAll(t => t.IsCompleted);
                 }
             }
+
+            await Task.WhenAll(verificationTasks);
 
             // Attendre que toutes les mises à jour de l'interface soient terminées
             await Task.Delay(100);
@@ -411,26 +493,55 @@ public partial class InstallationViewModel : ObservableRecipient
                 var newlyInstalledCount = 0;
                 processedCount = 0;
                 var totalToInstall = packagesToInstall.Count;
-                IsIndeterminate = true;
 
+                StatusText = $"Installation des programmes (0/{totalToInstall})";
+
+                var installationTasks = new List<Task>();
                 foreach (var package in packagesToInstall)
                 {
                     if (_cancellationTokenSource.Token.IsCancellationRequested)
                         break;
 
-                    StatusText = $"Installation du package {package.Name}";
-                    if (await _installationService.InstallPackageAsync(package.Package, _cancellationTokenSource.Token))
+                    var task = Task.Run(async () =>
                     {
-                        newlyInstalledCount++;
-                        await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, true);
-                        _dispatcherQueue.TryEnqueue(() =>
+                        await _semaphore.WaitAsync(_cancellationTokenSource.Token);
+                        try
                         {
-                            package.IsInstalled = true;
-                            package.IsSelected = false;
-                        });
+                            if (_cancellationTokenSource.Token.IsCancellationRequested) return;
+
+                            if (await _installationService.InstallPackageAsync(package.Package, _cancellationTokenSource.Token))
+                            {
+                                Interlocked.Increment(ref newlyInstalledCount);
+                                await _installedPackagesService.SetPackageInstalledAsync(package.Package.Id, true);
+                                _dispatcherQueue.TryEnqueue(() =>
+                                {
+                                    package.IsInstalled = true;
+                                    package.IsSelected = false;
+                                });
+                            }
+
+                            var newCount = Interlocked.Increment(ref processedCount);
+                            _dispatcherQueue.TryEnqueue(() =>
+                            {
+                                StatusText = $"Installation des programmes ({newCount}/{totalToInstall})";
+                            });
+                        }
+                        finally
+                        {
+                            _semaphore.Release();
+                        }
+                    }, _cancellationTokenSource.Token);
+
+                    installationTasks.Add(task);
+
+                    if (installationTasks.Count >= _maxParallelTasks)
+                    {
+                        await Task.WhenAny(installationTasks);
+                        installationTasks.RemoveAll(t => t.IsCompleted);
                     }
-                    processedCount++;
                 }
+
+                await Task.WhenAll(installationTasks);
 
                 // Attendre que toutes les mises à jour de l'interface soient terminées
                 await Task.Delay(100);
@@ -449,28 +560,27 @@ public partial class InstallationViewModel : ObservableRecipient
                 }
             }
         }
-        catch (OperationCanceledException)
-        {
-            await Task.Delay(100);
-            var installedCount = AllPackages.Count(p => p.IsInstalled);
-            var totalPackages = AllPackages.Count;
-            ShowTemporaryStatus("Installation annulée", $"Programmes installés : {installedCount}/{totalPackages}");
-        }
         catch (Exception ex)
         {
-            await Task.Delay(100);
-            var installedCount = AllPackages.Count(p => p.IsInstalled);
-            var totalPackages = AllPackages.Count;
-            ShowTemporaryStatus($"Erreur : {ex.Message}", $"Programmes installés : {installedCount}/{totalPackages}");
+            if (!(ex is OperationCanceledException || ex is TaskCanceledException))
+            {
+                await Task.Delay(100);
+                var installedCount = AllPackages.Count(p => p.IsInstalled);
+                var totalPackages = AllPackages.Count;
+                ShowTemporaryStatus($"Erreur : {ex.Message}", $"Programmes installés : {installedCount}/{totalPackages}");
+            }
         }
         finally
         {
-            IsIndeterminate = false;
-            CanInstall = true;
-            CanCancel = false;
-            IsInstalling = false;
-            IsProcessing = false;
-            ProgressValue = 0;
+            if (!_cancellationTokenSource?.IsCancellationRequested ?? false)
+            {
+                IsIndeterminate = false;
+                CanInstall = true;
+                CanCancel = false;
+                IsInstalling = false;
+                IsProcessing = false;
+                ProgressValue = 0;
+            }
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = null;
         }
