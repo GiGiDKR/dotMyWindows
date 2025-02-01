@@ -28,6 +28,7 @@ public partial class InstallationViewModel : ObservableRecipient
     private static readonly object _lockObj = new object();
     private readonly DispatcherQueue _dispatcherQueue;
     private DispatcherQueueTimer? _statusTimer;
+    private DispatcherQueueTimer? _enableVerifyTimer;
 
     [ObservableProperty]
     private ObservableCollection<CategoryViewModel> _categories;
@@ -66,6 +67,9 @@ public partial class InstallationViewModel : ObservableRecipient
     private bool _canInstall = true;
 
     [ObservableProperty]
+    private bool _canCancel;
+
+    [ObservableProperty]
     private bool _canStop;
 
     [ObservableProperty]
@@ -73,6 +77,9 @@ public partial class InstallationViewModel : ObservableRecipient
 
     [ObservableProperty]
     private bool _isAllSelected;
+
+    [ObservableProperty]
+    private bool _isVerifyChecked;
 
     [ObservableProperty]
     private string _verifyButtonText = "Vérifier";
@@ -192,6 +199,20 @@ public partial class InstallationViewModel : ObservableRecipient
         }
     }
 
+    private async Task AnimateProgressValueAsync(double startValue, double endValue, int durationMs = 500)
+    {
+        var stepCount = 20; // Nombre d'étapes pour l'animation
+        var stepDuration = durationMs / stepCount;
+        var valueIncrement = (endValue - startValue) / stepCount;
+
+        for (int i = 0; i < stepCount; i++)
+        {
+            ProgressValue = startValue + (valueIncrement * i);
+            await Task.Delay(stepDuration);
+        }
+        ProgressValue = endValue;
+    }
+
     private async Task CheckStatusAsync()
     {
         if (IsProcessing && !IsChecking) return;
@@ -206,6 +227,7 @@ public partial class InstallationViewModel : ObservableRecipient
             var packages = AllPackages.Where(p => !p.IsInstalled).ToList();
             var totalCount = packages.Count;
             var processedCount = 0;
+            var currentProgress = 0.0;
 
             var tasks = new List<Task>();
             foreach (var package in packages)
@@ -224,7 +246,7 @@ public partial class InstallationViewModel : ObservableRecipient
                         
                         if (!_cancellationTokenSource.Token.IsCancellationRequested)
                         {
-                            _dispatcherQueue.TryEnqueue(() =>
+                            _dispatcherQueue.TryEnqueue(async () =>
                             {
                                 package.IsInstalled = isInstalled;
                                 if (isInstalled)
@@ -233,7 +255,9 @@ public partial class InstallationViewModel : ObservableRecipient
                                 }
                                 var newCount = Interlocked.Increment(ref processedCount);
                                 StatusText = $"Vérification de {package.Name}... ({newCount}/{totalCount})";
-                                ProgressValue = (double)newCount / totalCount * 100;
+                                var nextProgress = (double)newCount / totalCount * 100;
+                                await AnimateProgressValueAsync(currentProgress, nextProgress);
+                                currentProgress = nextProgress;
                             });
                         }
                     }
@@ -278,7 +302,10 @@ public partial class InstallationViewModel : ObservableRecipient
         }
         finally
         {
-            StopChecking();
+            IsChecking = false;
+            IsProcessing = false;
+            IsVerifyChecked = false;
+            EnableVerifyAfterDelay();
         }
     }
 
@@ -306,7 +333,10 @@ public partial class InstallationViewModel : ObservableRecipient
             IsChecking = false;
             IsInstalling = false;
             IsProcessing = false;
+            CanInstall = true;
+            CanCancel = false;
             ProgressValue = 0;
+            EnableVerifyAfterDelay();
         }
     }
 
@@ -324,7 +354,8 @@ public partial class InstallationViewModel : ObservableRecipient
         IsProcessing = true;
         IsInstalling = true;
         IsIndeterminate = true;
-        InstallButtonText = "Annuler";
+        CanInstall = false;
+        CanCancel = true;
         _cancellationTokenSource = new CancellationTokenSource();
 
         try
@@ -420,7 +451,6 @@ public partial class InstallationViewModel : ObservableRecipient
         }
         catch (OperationCanceledException)
         {
-            // Attendre que toutes les mises à jour de l'interface soient terminées
             await Task.Delay(100);
             var installedCount = AllPackages.Count(p => p.IsInstalled);
             var totalPackages = AllPackages.Count;
@@ -428,7 +458,6 @@ public partial class InstallationViewModel : ObservableRecipient
         }
         catch (Exception ex)
         {
-            // Attendre que toutes les mises à jour de l'interface soient terminées
             await Task.Delay(100);
             var installedCount = AllPackages.Count(p => p.IsInstalled);
             var totalPackages = AllPackages.Count;
@@ -437,7 +466,8 @@ public partial class InstallationViewModel : ObservableRecipient
         finally
         {
             IsIndeterminate = false;
-            InstallButtonText = "Installer";
+            CanInstall = true;
+            CanCancel = false;
             IsInstalling = false;
             IsProcessing = false;
             ProgressValue = 0;
@@ -450,21 +480,36 @@ public partial class InstallationViewModel : ObservableRecipient
     {
         if (IsProcessing)
         {
-            StopChecking();
+            _cancellationTokenSource?.Cancel();
+            IsVerifyChecked = false;
+            CanCheck = false;
+            EnableVerifyAfterDelay();
         }
+
         foreach (var package in AllPackages)
         {
             package.IsSelected = false;
             package.IsInstalled = false;
         }
+
         IsProcessing = false;
         IsChecking = false;
         IsInstalling = false;
         IsAllSelected = false;
+        CanInstall = true;
+        CanCancel = false;
         ProgressValue = 0;
         StatusText = "Réinitialisé";
-        VerifyButtonText = "Vérifier";
-        InstallButtonText = "Installer";
+
+        try
+        {
+            _cancellationTokenSource?.Dispose();
+        }
+        catch
+        {
+            // Ignorer les erreurs de disposition
+        }
+        _cancellationTokenSource = null;
     }
 
     private void SelectAll()
@@ -486,15 +531,46 @@ public partial class InstallationViewModel : ObservableRecipient
         }
     }
 
-    partial void OnIsCheckingChanged(bool value)
+    private void EnableVerifyAfterDelay()
+    {
+        _enableVerifyTimer?.Stop();
+        _enableVerifyTimer = _dispatcherQueue.CreateTimer();
+        _enableVerifyTimer.Interval = TimeSpan.FromSeconds(2);
+        _enableVerifyTimer.Tick += (s, e) =>
+        {
+            CanCheck = true;
+            _enableVerifyTimer?.Stop();
+        };
+        _enableVerifyTimer.Start();
+    }
+
+    [RelayCommand]
+    private void CancelOperation()
+    {
+        if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
+        {
+            StopChecking();
+        }
+    }
+
+    partial void OnIsVerifyCheckedChanged(bool value)
     {
         if (value)
         {
+            CanCheck = true;
             _ = CheckStatusAsync();
         }
-        else if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
+        else
         {
-            StopChecking();
+            CanCheck = false;
+            if (IsProcessing)
+            {
+                StopChecking();
+            }
+            else
+            {
+                EnableVerifyAfterDelay();
+            }
         }
     }
 }

@@ -31,7 +31,8 @@
             <!-- ToggleSwitch pour la vérification -->
             <ToggleSwitch Grid.Column="0"
                          Header="Vérification"
-                         IsOn="{x:Bind ViewModel.IsChecking, Mode=TwoWay}"
+                         IsOn="{x:Bind ViewModel.IsVerifyChecked, Mode=TwoWay}"
+                         IsEnabled="{x:Bind ViewModel.CanCheck, Mode=OneWay}"
                          OnContent="Activée"
                          OffContent="Désactivée"
                          Margin="0,0,12,0"/>
@@ -41,11 +42,18 @@
                        DefaultLabelPosition="Right" 
                        Background="Transparent"
                        HorizontalAlignment="Right">
-                <AppBarButton Icon="Refresh" Label="Réinitialiser" Command="{x:Bind ViewModel.ResetCommand}"/>
+                <AppBarButton Icon="Refresh" 
+                             Label="Réinitialiser" 
+                             Command="{x:Bind ViewModel.ResetCommand}"/>
                 <AppBarButton Icon="Download" 
-                             Label="{x:Bind ViewModel.InstallButtonText, Mode=OneWay}" 
+                             Label="Installer" 
                              Command="{x:Bind ViewModel.InstallSelectedCommand}"
-                             IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+                             IsEnabled="{x:Bind ViewModel.CanInstall, Mode=OneWay}"/>
+                <AppBarButton Icon="Cancel"
+                             Label="Annuler"
+                             Command="{x:Bind ViewModel.CancelOperationCommand}"
+                             IsEnabled="{x:Bind ViewModel.CanCancel, Mode=OneWay}"
+                             ToolTipService.ToolTip="Annuler l'opération en cours"/>
             </CommandBar>
         </Grid>
 
@@ -53,7 +61,7 @@
         <StackPanel Grid.Row="1" Margin="0,10">
             <TextBlock Text="{x:Bind ViewModel.StatusText, Mode=OneWay}" Margin="0,0,0,5"/>
             <ProgressBar Value="{x:Bind ViewModel.ProgressValue, Mode=OneWay}" 
-                        IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}"/>
+                        IsIndeterminate="{x:Bind ViewModel.IsIndeterminate, Mode=OneWay}"/>
         </StackPanel>
 
         <!-- Zone de contenu -->
