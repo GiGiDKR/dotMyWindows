@@ -170,12 +170,10 @@ public partial class InstallationViewModel : ObservableRecipient
 
     private async Task CheckStatusAsync()
     {
-        if (IsProcessing) return;
+        if (IsProcessing && !IsChecking) return;
 
         IsProcessing = true;
-        IsChecking = true;
         StatusText = "Vérification des installations...";
-        VerifyButtonText = "Arrêter";
         _cancellationTokenSource = new CancellationTokenSource();
 
         try
@@ -197,11 +195,6 @@ public partial class InstallationViewModel : ObservableRecipient
                     {
                         if (_cancellationTokenSource.Token.IsCancellationRequested) return;
 
-                        _dispatcherQueue.TryEnqueue(() =>
-                        {
-                            StatusText = $"Vérification de {package.Name}... ({processedCount + 1}/{totalCount})";
-                        });
-
                         var isInstalled = await _installationService.IsPackageInstalledAsync(package.Package);
                         
                         if (!_cancellationTokenSource.Token.IsCancellationRequested)
@@ -213,8 +206,9 @@ public partial class InstallationViewModel : ObservableRecipient
                                 {
                                     package.IsSelected = false;
                                 }
-                                Interlocked.Increment(ref processedCount);
-                                ProgressValue = (double)processedCount / totalCount * 100;
+                                var newCount = Interlocked.Increment(ref processedCount);
+                                StatusText = $"Vérification de {package.Name}... ({newCount}/{totalCount})";
+                                ProgressValue = (double)newCount / totalCount * 100;
                             });
                         }
                     }
@@ -234,14 +228,19 @@ public partial class InstallationViewModel : ObservableRecipient
             }
 
             await Task.WhenAll(tasks);
+            
+            if (!_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                StatusText = "Vérification terminée";
+            }
         }
         catch (OperationCanceledException)
         {
             StatusText = "Vérification annulée";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            StatusText = $"Erreur : {ex.Message}";
+            StatusText = "Vérification annulée";
         }
         finally
         {
@@ -274,8 +273,6 @@ public partial class InstallationViewModel : ObservableRecipient
             IsInstalling = false;
             IsProcessing = false;
             ProgressValue = 0;
-            VerifyButtonText = "Vérifier";
-            InstallButtonText = "Installer";
         }
     }
 
@@ -379,6 +376,18 @@ public partial class InstallationViewModel : ObservableRecipient
         foreach (var category in Categories)
         {
             category.IsExpanded = IsAllExpanded;
+        }
+    }
+
+    partial void OnIsCheckingChanged(bool value)
+    {
+        if (value)
+        {
+            _ = CheckStatusAsync();
+        }
+        else if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
+        {
+            StopChecking();
         }
     }
 }
