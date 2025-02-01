@@ -47,12 +47,14 @@ public partial class App : Application
     {
         InitializeComponent();
 
+#if !DEBUG
         if (!IsRunAsAdministrator())
         {
             RestartAsAdmin();
             Environment.Exit(0);
             return;
         }
+#endif
 
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().

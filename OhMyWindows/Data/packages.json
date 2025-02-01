@@ -1,0 +1,50 @@
+[
+    {
+        "Name": "Visual Studio Code",
+        "Id": "Microsoft.VisualStudioCode",
+        "Source": "winget",
+        "Category": "Développement"
+    },
+    {
+        "Name": "7-Zip",
+        "Id": "7zip.7zip",
+        "Source": "winget",
+        "Category": "Utilitaires"
+    },
+    {
+        "Name": "Google Chrome",
+        "Id": "Google.Chrome",
+        "Source": "winget",
+        "Category": "Navigateurs"
+    },
+    {
+        "Name": "Mozilla Firefox",
+        "Id": "Mozilla.Firefox",
+        "Source": "winget",
+        "Category": "Navigateurs"
+    },
+    {
+        "Name": "VLC Media Player",
+        "Id": "VideoLAN.VLC",
+        "Source": "winget",
+        "Category": "Multimédia"
+    },
+    {
+        "Name": "Git",
+        "Id": "Git.Git",
+        "Source": "winget",
+        "Category": "Développement"
+    },
+    {
+        "Name": "Node.js",
+        "Id": "OpenJS.NodeJS",
+        "Source": "winget",
+        "Category": "Développement"
+    },
+    {
+        "Name": "Notepad++",
+        "Id": "Notepad++.Notepad++",
+        "Source": "winget",
+        "Category": "Utilitaires"
+    }
+] 
