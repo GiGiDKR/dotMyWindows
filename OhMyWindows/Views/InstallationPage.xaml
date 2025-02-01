@@ -25,10 +25,10 @@
         <!-- Barre d'outils -->
         <CommandBar Grid.Row="0" DefaultLabelPosition="Right" Background="Transparent">
             <AppBarButton Icon="Refresh" Label="Réinitialiser" Command="{x:Bind ViewModel.ResetCommand}"/>
-            <AppBarButton Icon="Scan" Label="{x:Bind ViewModel.VerifyButtonText, Mode=OneWay}" Command="{x:Bind ViewModel.CheckStatusCommand}" IsEnabled="{x:Bind ViewModel.CanCheck, Mode=OneWay}"/>
-            <AppBarButton Icon="Download" Label="{x:Bind ViewModel.InstallButtonText, Mode=OneWay}" Command="{x:Bind ViewModel.InstallSelectedCommand}" IsEnabled="{x:Bind ViewModel.CanInstall, Mode=OneWay}"/>
+            <AppBarButton Icon="Scan" Label="{x:Bind ViewModel.VerifyButtonText, Mode=OneWay}" Command="{x:Bind ViewModel.CheckStatusCommand}" IsEnabled="{x:Bind ViewModel.IsChecking, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+            <AppBarButton Icon="Stop" Label="Arrêter" Command="{x:Bind ViewModel.StopCheckCommand}" IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay}"/>
+            <AppBarButton Icon="Download" Label="{x:Bind ViewModel.InstallButtonText, Mode=OneWay}" Command="{x:Bind ViewModel.InstallSelectedCommand}" IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
             <AppBarButton Icon="SelectAll" Label="Tout sélectionner" Command="{x:Bind ViewModel.SelectAllCommand}"/>
-            <AppBarButton Icon="List" Label="{x:Bind ViewModel.IsAllExpanded, Mode=OneWay, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='Tout replier|Tout déplier'}" Command="{x:Bind ViewModel.ToggleAllExpandedCommand}"/>
         </CommandBar>
 
         <!-- Barre de progression -->
@@ -50,7 +50,6 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" 
                                             IsChecked="{Binding IsSelected, Mode=TwoWay}"
@@ -59,12 +58,7 @@
                                              Text="{Binding Name}" 
                                              VerticalAlignment="Center"
                                              Margin="10,0"/>
-                                    <TextBlock Grid.Column="2"
-                                             Text="{Binding Package.Category}"
-                                             Opacity="0.6"
-                                             VerticalAlignment="Center"
-                                             Margin="10,0"/>
-                                    <FontIcon Grid.Column="3" 
+                                    <FontIcon Grid.Column="2" 
                                              Glyph="&#xE73E;" 
                                              Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
                                              Foreground="{ThemeResource SystemFillColorSuccessBrush}"/>
@@ -77,43 +71,54 @@
 
             <!-- Onglet Catégories -->
             <TabViewItem Header="Catégories">
-                <ScrollViewer>
-                    <ItemsControl ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Expander HorizontalAlignment="Stretch" Margin="0,0,0,5" IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-                                    <Expander.Header>
-                                        <TextBlock Text="{Binding Name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    </Expander.Header>
-                                    <ItemsControl ItemsSource="{Binding Packages}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Padding="5">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <CheckBox Grid.Column="0" 
-                                                            IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                            IsEnabled="{Binding IsInstalled, Converter={StaticResource InverseBooleanConverter}}"/>
-                                                    <TextBlock Grid.Column="1" 
-                                                             Text="{Binding Name}" 
-                                                             VerticalAlignment="Center"
-                                                             Margin="10,0"/>
-                                                    <FontIcon Grid.Column="2" 
-                                                             Glyph="&#xE73E;" 
-                                                             Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                             Foreground="{ThemeResource SystemFillColorSuccessBrush}"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Expander>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <CommandBar Background="Transparent">
+                        <AppBarButton Icon="List" Label="{x:Bind ViewModel.IsAllExpanded, Mode=OneWay, Converter={StaticResource BooleanToStringConverter}, ConverterParameter='Tout replier|Tout déplier'}" Command="{x:Bind ViewModel.ToggleAllExpandedCommand}"/>
+                    </CommandBar>
+
+                    <ScrollViewer Grid.Row="1">
+                        <ItemsControl ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Expander HorizontalAlignment="Stretch" Margin="0,0,0,5" IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        </Expander.Header>
+                                        <ItemsControl ItemsSource="{Binding Packages}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Padding="5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <CheckBox Grid.Column="0" 
+                                                                IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                                IsEnabled="{Binding IsInstalled, Converter={StaticResource InverseBooleanConverter}}"/>
+                                                        <TextBlock Grid.Column="1" 
+                                                                 Text="{Binding Name}" 
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="10,0"/>
+                                                        <FontIcon Grid.Column="2" 
+                                                                 Glyph="&#xE73E;" 
+                                                                 Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                 Foreground="{ThemeResource SystemFillColorSuccessBrush}"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Expander>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
             </TabViewItem>
         </TabView>
     </Grid>
