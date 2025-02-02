@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using OhMyWindows.Services;
 using OhMyWindows.Messages;
+using OhMyWindows.Models;
 
 namespace OhMyWindows.ViewModels;
 
@@ -12,25 +13,14 @@ public partial class ProgrammesViewModel : ObservableRecipient
 {
     private readonly ProgramService _programService;
     private readonly RegistryService _registryService;
-    private Dictionary<string, bool> _modifiedSettings;
-
-    [ObservableProperty]
-    private bool hasModifications;
-
-    [ObservableProperty]
-    private string selectAllButtonText = "Tout sélectionner";
-
-    [ObservableProperty]
-    private bool isAllExpanded;
 
     // Propriétés pour les programmes
     private ObservableCollection<InstalledProgram> _allPrograms = new();
-    private string _searchText = string.Empty;
-    private string _sortOption = "Name";
-    private bool _sortDescending = false;
-
     [ObservableProperty]
     private ObservableCollection<InstalledProgram> installedPrograms = new();
+
+    [ObservableProperty]
+    private IList<InstalledProgram> selectedPrograms = new List<InstalledProgram>();
 
     [ObservableProperty]
     private bool isInstalling;
@@ -72,7 +62,6 @@ public partial class ProgrammesViewModel : ObservableRecipient
     }
 
     public IRelayCommand ToggleSortOrderCommand { get; }
-
 
     partial void OnSearchTextChanged(string value)
     {
@@ -125,10 +114,8 @@ public partial class ProgrammesViewModel : ObservableRecipient
     private string errorMessage = string.Empty;
 
     // Commandes
-    public IAsyncRelayCommand ToggleAllSettingsCommand { get; }
-    public IAsyncRelayCommand ExpandAllCommand { get; }
-    public IAsyncRelayCommand InstallSelectedCommand { get; }
     public IAsyncRelayCommand UninstallSelectedCommand { get; private set; }
+    public IAsyncRelayCommand InstallSelectedCommand { get; private set; }
     public IAsyncRelayCommand ConfirmUninstallCommand { get; private set; }
     public IAsyncRelayCommand RefreshProgramsCommand { get; }
 
@@ -136,11 +123,8 @@ public partial class ProgrammesViewModel : ObservableRecipient
     {
         _programService = programService ?? throw new ArgumentNullException(nameof(programService));
         _registryService = registryService ?? throw new ArgumentNullException(nameof(registryService));
-        _modifiedSettings = new Dictionary<string, bool>();
 
         // Initialisation des commandes
-        ToggleAllSettingsCommand = new AsyncRelayCommand(ToggleAllSettingsAsync);
-        ExpandAllCommand = new AsyncRelayCommand(ToggleExpandAllAsync);
         InstallSelectedCommand = new AsyncRelayCommand(InstallSelectedAsync);
         UninstallSelectedCommand = new AsyncRelayCommand(ShowUninstallConfirmationAsync);
         ConfirmUninstallCommand = new AsyncRelayCommand(UninstallSelectedAsync);
@@ -153,25 +137,6 @@ public partial class ProgrammesViewModel : ObservableRecipient
 
         // Chargement initial des programmes
         _ = LoadInstalledProgramsAsync();
-    }
-
-    private Task ToggleAllSettingsAsync()
-    {
-        var newState = SelectAllButtonText == "Tout sélectionner";
-        SelectAllButtonText = newState ? "Tout désélectionner" : "Tout sélectionner";
-        
-        foreach (var program in InstalledPrograms)
-        {
-            program.IsSelected = newState;
-        }
-
-        return Task.CompletedTask;
-    }
-
-    private Task ToggleExpandAllAsync()
-    {
-        IsAllExpanded = !IsAllExpanded;
-        return Task.CompletedTask;
     }
 
     private async Task InstallSelectedAsync()
@@ -193,16 +158,14 @@ public partial class ProgrammesViewModel : ObservableRecipient
 
     private async Task ShowUninstallConfirmationAsync()
     {
-        var selectedPrograms = InstalledPrograms.Where(p => p.IsSelected).ToList();
-        if (!selectedPrograms.Any()) return;
+        if (!SelectedPrograms.Any()) return;
 
         WeakReferenceMessenger.Default.Send(new ShowUninstallConfirmationMessage());
     }
 
     private async Task UninstallSelectedAsync()
     {
-        var selectedPrograms = InstalledPrograms.Where(p => p.IsSelected).ToList();
-        if (!selectedPrograms.Any()) return;
+        if (!SelectedPrograms.Any()) return;
 
         IsError = false;
         ErrorMessage = string.Empty;
@@ -210,10 +173,10 @@ public partial class ProgrammesViewModel : ObservableRecipient
         try
         {
             IsInstalling = true;
-            var total = selectedPrograms.Count;
+            var total = SelectedPrograms.Count;
             var current = 0;
 
-            foreach (var program in selectedPrograms)
+            foreach (var program in SelectedPrograms)
             {
                 CurrentOperation = $"Désinstallation de {program.Name}...";
                 InstallProgress = (double)current / total * 100;

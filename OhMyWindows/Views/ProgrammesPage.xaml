@@ -5,13 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:OhMyWindows.Services"
+    xmlns:models="using:OhMyWindows.Models"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converters="using:OhMyWindows.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converters:SizeConverter x:Key="SizeConverter"/>
-        <converters:BooleanToRotationConverter x:Key="BooleanToRotationConverter"/>
+        <converters:DateConverter x:Key="DateConverter"/>
+        <converters:BooleanToSortIconConverter x:Key="BooleanToSortIconConverter"/>
+        <converters:StringToSpacerConverter x:Key="StringToSpacerConverter"/>
         <x:Double x:Key="ListItemHeight">64</x:Double>
         <Thickness x:Key="ListItemPadding">16,8</Thickness>
     </Page.Resources>
@@ -43,13 +46,8 @@
                              Command="{x:Bind ViewModel.UninstallSelectedCommand}"/>
                 <AppBarButton Icon="Add" 
                              Label="Installer"
-                             Command="{x:Bind ViewModel.InstallSelectedCommand}"/>
-                <AppBarButton Icon="SelectAll" 
-                             Label="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
-                             Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"/>
-                <AppBarButton Icon="List" 
-                             Label="Tout déplier"
-                             Command="{x:Bind ViewModel.ExpandAllCommand}"/>
+                             Command="{x:Bind ViewModel.InstallSelectedCommand}"
+                             IsEnabled="False"/>
             </CommandBar>
 
             <!-- Barre de recherche et options de tri -->
@@ -77,17 +75,20 @@
                 <Button Grid.Column="2"
                         Command="{x:Bind ViewModel.ToggleSortOrderCommand}"
                         Height="32"
-                        Width="32">
-                    <FontIcon Glyph="&#xE74B;"
-                             RenderTransform="{x:Bind ViewModel.SortDescending, Mode=OneWay, Converter={StaticResource BooleanToRotationConverter}}"/>
+                        Width="40"
+                        Margin="0,0,10,0">
+                    <FontIcon Glyph="{x:Bind ViewModel.SortDescending, Mode=OneWay, Converter={StaticResource BooleanToSortIconConverter}}"
+                             FontSize="24"/>
                 </Button>
             </Grid>
         </Grid>
 
         <!-- Liste des programmes -->
         <ListView Grid.Row="1" 
+                 x:Name="ProgramsList"
                  ItemsSource="{x:Bind ViewModel.InstalledPrograms, Mode=OneWay}"
                  SelectionMode="Multiple"
+                 SelectionChanged="ProgramsList_SelectionChanged"
                  Margin="0,10">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -97,44 +98,36 @@
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="services:InstalledProgram">
+                <DataTemplate x:DataType="models:InstalledProgram">
                     <Grid VerticalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Checkbox -->
-                        <CheckBox Grid.Row="0" Grid.RowSpan="2"
-                                Grid.Column="0"
-                                IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
-                                Margin="0,0,12,0"
-                                VerticalAlignment="Center"/>
-
                         <!-- Nom du programme -->
-                        <TextBlock Grid.Row="0" Grid.Column="1"
+                        <TextBlock Grid.Row="0" Grid.Column="0"
                                  Text="{x:Bind Name}"
                                  FontWeight="SemiBold"/>
 
                         <!-- Version | Éditeur | Date d'installation -->
-                        <TextBlock Grid.Row="1" Grid.Column="1"
+                        <TextBlock Grid.Row="1" Grid.Column="0"
                                  Opacity="0.8"
                                  FontSize="12"
                                  Margin="0,4,0,0">
                             <Run Text="{x:Bind Version}"/>
-                            <Run Text=" | "/>
+                            <Run Text="{x:Bind Version, Converter={StaticResource StringToSpacerConverter}}"/>
                             <Run Text="{x:Bind Publisher}"/>
                             <Run Text=" | "/>
-                            <Run Text="{x:Bind InstallDate}"/>
+                            <Run Text="{x:Bind InstallDate, Converter={StaticResource DateConverter}}"/>
                         </TextBlock>
 
                         <!-- Taille -->
-                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                        <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
                                  Text="{x:Bind EstimatedSize, Converter={StaticResource SizeConverter}}"
                                  VerticalAlignment="Center"
                                  Margin="12,0,0,0"/>
@@ -180,9 +173,9 @@
         <ContentDialog x:Name="UninstallConfirmationDialog"
                       Title="Confirmation de désinstallation"
                       PrimaryButtonText="Désinstaller"
-                    CloseButtonText="Annuler"
-                    DefaultButton="Close"
-                    XamlRoot="{x:Bind ContentArea.XamlRoot}">
+                      CloseButtonText="Annuler"
+                      DefaultButton="Close"
+                      XamlRoot="{x:Bind ContentArea.XamlRoot}">
             <TextBlock Text="Êtes-vous sûr de vouloir désinstaller les programmes sélectionnés ?" 
                      TextWrapping="Wrap"/>
         </ContentDialog>

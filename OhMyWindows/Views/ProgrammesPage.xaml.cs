@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using OhMyWindows.Messages;
 using OhMyWindows.ViewModels;
 using System.ComponentModel;
+using OhMyWindows.Models;
 
 namespace OhMyWindows.Views;
 
@@ -19,6 +20,14 @@ public sealed partial class ProgrammesPage : Page, IRecipient<ShowUninstallConfi
         _messenger = WeakReferenceMessenger.Default;
         InitializeComponent();
         _messenger.Register(this);
+    }
+
+    private void ProgramsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ListView listView)
+        {
+            ViewModel.SelectedPrograms = listView.SelectedItems.Cast<InstalledProgram>().ToList();
+        }
     }
 
     public async void Receive(ShowUninstallConfirmationMessage message)
