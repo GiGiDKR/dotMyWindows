@@ -15,28 +15,55 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Barre d'outils -->
-        <CommandBar Grid.Row="0" 
-                   DefaultLabelPosition="Right"
-                   Background="Transparent"
-                   IsOpen="False"
-                   Margin="0,0,0,10">
-            <AppBarButton Icon="Refresh" 
-                         Label="Rafraîchir"
-                         Command="{x:Bind ViewModel.RefreshProgramsCommand}"/>
-            <AppBarButton Icon="Delete" 
-                         Label="Désinstaller"
-                         Command="{x:Bind ViewModel.UninstallSelectedCommand}"/>
-            <AppBarButton Icon="Add" 
-                         Label="Installer"
-                         Command="{x:Bind ViewModel.InstallSelectedCommand}"/>
-            <AppBarButton Icon="SelectAll" 
-                         Label="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
-                         Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"/>
-            <AppBarButton Icon="List" 
-                         Label="Tout déplier"
-                         Command="{x:Bind ViewModel.ExpandAllCommand}"/>
-        </CommandBar>
+        <!-- Barre d'outils et recherche -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <CommandBar Grid.Row="0"
+                       DefaultLabelPosition="Right"
+                       Background="Transparent"
+                       IsOpen="False"
+                       Margin="0,0,0,10">
+                <AppBarButton Icon="Refresh" 
+                             Label="Rafraîchir"
+                             Command="{x:Bind ViewModel.RefreshProgramsCommand}"/>
+                <AppBarButton Icon="Delete" 
+                             Label="Désinstaller"
+                             Command="{x:Bind ViewModel.UninstallSelectedCommand}"/>
+                <AppBarButton Icon="Add" 
+                             Label="Installer"
+                             Command="{x:Bind ViewModel.InstallSelectedCommand}"/>
+                <AppBarButton Icon="SelectAll" 
+                             Label="{x:Bind ViewModel.SelectAllButtonText, Mode=OneWay}"
+                             Command="{x:Bind ViewModel.ToggleAllSettingsCommand}"/>
+                <AppBarButton Icon="List" 
+                             Label="Tout déplier"
+                             Command="{x:Bind ViewModel.ExpandAllCommand}"/>
+            </CommandBar>
+
+            <!-- Barre de recherche et options de tri -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <AutoSuggestBox Grid.Column="0"
+                               PlaceholderText="Rechercher un programme..."
+                               Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}"
+                               QueryIcon="Find"
+                               Margin="0,0,10,0"/>
+
+                <ComboBox Grid.Column="1"
+                         Header="Trier par"
+                         ItemsSource="{x:Bind ViewModel.SortOptions}"
+                         SelectedItem="{x:Bind ViewModel.SortOption, Mode=TwoWay}"
+                         MinWidth="150"/>
+            </Grid>
+        </Grid>
 
         <!-- Liste des programmes -->
         <ScrollViewer Grid.Row="1" 
@@ -76,9 +103,26 @@
                                     <Run Text="Éditeur : "/>
                                     <Run Text="{x:Bind Publisher}"/>
                                 </TextBlock>
+                                <TextBlock>
+                                    <Run Text="Date d'installation : "/>
+                                    <Run Text="{x:Bind InstallDate}"/>
+                                </TextBlock>
+                                <TextBlock>
+                                    <Run Text="Taille : "/>
+                                    <Run Text="{x:Bind EstimatedSize}"/>
+                                    <Run Text=" Ko"/>
+                                </TextBlock>
+                                <TextBlock>
+                                    <Run Text="Emplacement : "/>
+                                    <Run Text="{x:Bind InstallLocation}"/>
+                                </TextBlock>
                                 <TextBlock TextWrapping="Wrap">
                                     <Run Text="Commande de désinstallation : "/>
                                     <Run Text="{x:Bind UninstallString}"/>
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap">
+                                    <Run Text="Commande de désinstallation silencieuse : "/>
+                                    <Run Text="{x:Bind QuietUninstallString}"/>
                                 </TextBlock>
                             </StackPanel>
                         </Expander>

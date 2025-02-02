@@ -24,6 +24,10 @@ public partial class ProgrammesViewModel : ObservableRecipient
     private bool isAllExpanded;
 
     // Propriétés pour les programmes
+    private ObservableCollection<InstalledProgram> _allPrograms = new();
+    private string _searchText = string.Empty;
+    private string _sortOption = "Name";
+
     [ObservableProperty]
     private ObservableCollection<InstalledProgram> installedPrograms = new();
 
@@ -35,6 +39,61 @@ public partial class ProgrammesViewModel : ObservableRecipient
 
     [ObservableProperty]
     private double installProgress;
+
+    [ObservableProperty]
+    private string searchText = string.Empty;
+
+    [ObservableProperty]
+    private string sortOption = "Name";
+
+    public IEnumerable<string> SortOptions => new[]
+    {
+        "Nom",
+        "Éditeur",
+        "Date d'installation",
+        "Taille"
+    };
+
+    partial void OnSearchTextChanged(string value)
+    {
+        UpdateFilteredPrograms();
+    }
+
+    partial void OnSortOptionChanged(string value)
+    {
+        UpdateFilteredPrograms();
+    }
+
+    private void UpdateFilteredPrograms()
+    {
+        var filtered = _allPrograms.AsEnumerable();
+
+        // Appliquer le filtre de recherche
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            var searchLower = SearchText.ToLower();
+            filtered = filtered.Where(p =>
+                p.Name.ToLower().Contains(searchLower) ||
+                (p.Publisher?.ToLower().Contains(searchLower) ?? false) ||
+                (p.Version?.ToLower().Contains(searchLower) ?? false));
+        }
+
+        // Appliquer le tri
+        filtered = SortOption switch
+        {
+            "Nom" => filtered.OrderBy(p => p.Name),
+            "Éditeur" => filtered.OrderBy(p => p.Publisher ?? ""),
+            "Date d'installation" => filtered.OrderByDescending(p => p.InstallDate ?? ""),
+            "Taille" => filtered.OrderByDescending(p => p.EstimatedSize),
+            _ => filtered.OrderBy(p => p.Name)
+        };
+
+        InstalledPrograms.Clear();
+        foreach (var program in filtered)
+        {
+            InstalledPrograms.Add(program);
+        }
+    }
 
     [ObservableProperty]
     private bool isError;
@@ -163,11 +222,13 @@ public partial class ProgrammesViewModel : ObservableRecipient
 
     private async Task LoadInstalledProgramsAsync()
     {
+        _allPrograms.Clear();
         InstalledPrograms.Clear();
         var programs = await _programService.GetInstalledProgramsAsync();
         foreach (var program in programs)
         {
-            InstalledPrograms.Add(program);
+            _allPrograms.Add(program);
         }
+        UpdateFilteredPrograms();
     }
 }

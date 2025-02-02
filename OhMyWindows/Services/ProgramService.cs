@@ -11,6 +11,10 @@ public class InstalledProgram
     public string? Version { get; set; }
     public string? Publisher { get; set; }
     public string? UninstallString { get; set; }
+    public string? QuietUninstallString { get; set; }
+    public string? InstallLocation { get; set; }
+    public string? InstallDate { get; set; }
+    public long EstimatedSize { get; set; }
     public bool IsSelected { get; set; }
 }
 
@@ -57,12 +61,19 @@ public class ProgramService
             var displayName = subKey.GetValue("DisplayName") as string;
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
+            var estimatedSizeValue = subKey.GetValue("EstimatedSize");
+            var estimatedSize = estimatedSizeValue != null ? Convert.ToInt64(estimatedSizeValue) : 0;
+            
             yield return new InstalledProgram
             {
                 Name = displayName,
                 Version = subKey.GetValue("DisplayVersion") as string ?? "Version inconnue",
                 Publisher = subKey.GetValue("Publisher") as string ?? "Éditeur inconnu",
                 UninstallString = subKey.GetValue("UninstallString") as string ?? "",
+                QuietUninstallString = subKey.GetValue("QuietUninstallString") as string ?? "",
+                InstallLocation = subKey.GetValue("InstallLocation") as string ?? "",
+                InstallDate = subKey.GetValue("InstallDate") as string ?? "",
+                EstimatedSize = estimatedSize,
                 IsSelected = false
             };
         }
@@ -149,4 +160,4 @@ public class ProgramService
             return false;
         }
     }
-} 
+}
