@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:OhMyWindows.Services"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -86,21 +87,48 @@
             </ItemsRepeater>
         </ScrollViewer>
 
-        <!-- Barre de progression -->
-        <Grid Grid.Row="2" 
-              Visibility="{x:Bind ViewModel.IsInstalling, Mode=OneWay}">
+        <!-- Zone de progression et messages -->
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" 
-                     Text="{x:Bind ViewModel.CurrentOperation, Mode=OneWay}"
-                     Margin="0,8,0,4"
-                     HorizontalAlignment="Center"/>
-            <ProgressBar Grid.Row="1" 
-                       Value="{x:Bind ViewModel.InstallProgress, Mode=OneWay}"
-                       Maximum="100"
-                       Margin="0,0,0,8"/>
+
+            <!-- Message d'erreur -->
+            <controls:InfoBar Grid.Row="0"
+                    IsOpen="{x:Bind ViewModel.IsError, Mode=OneWay}"
+                    Severity="Error"
+                    Title="Erreur"
+                    Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                    Margin="0,0,0,8"/>
+
+            <!-- Barre de progression -->
+            <Grid Grid.Row="1" 
+                  Visibility="{x:Bind ViewModel.IsInstalling, Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" 
+                         Text="{x:Bind ViewModel.CurrentOperation, Mode=OneWay}"
+                         Margin="0,8,0,4"
+                         HorizontalAlignment="Center"/>
+                <ProgressBar Grid.Row="1" 
+                           Value="{x:Bind ViewModel.InstallProgress, Mode=OneWay}"
+                           Maximum="100"
+                           Margin="0,0,0,8"/>
+            </Grid>
         </Grid>
+
+        <!-- Boîte de dialogue de confirmation -->
+        <ContentDialog x:Name="UninstallConfirmationDialog"
+                      Title="Confirmation de désinstallation"
+                      PrimaryButtonText="Désinstaller"
+                    CloseButtonText="Annuler"
+                    DefaultButton="Close"
+                    XamlRoot="{x:Bind ContentArea.XamlRoot}">
+            <TextBlock Text="Êtes-vous sûr de vouloir désinstaller les programmes sélectionnés ?" 
+                     TextWrapping="Wrap"/>
+        </ContentDialog>
     </Grid>
-</Page> 
+</Page>
