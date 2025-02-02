@@ -17,5 +17,8 @@ namespace OhMyWindows.Models
             get => _category;
             set => _category = string.IsNullOrWhiteSpace(value) ? "Autres" : value;
         }
+
+        [JsonIgnore]
+        public bool IsInstalled { get; set; }
     }
 }

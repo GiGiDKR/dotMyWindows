@@ -14,13 +14,14 @@ namespace OhMyWindows.ViewModels
         private bool isInstalled;
         private readonly Package _package;
 
-        public PackageViewModel(Package package)
+        public PackageViewModel(Package package, bool isInstalled = false)
         {
             _package = package;
             Id = package.Id;
             Name = package.Name;
             Source = package.Source;
             Category = package.Category;
+            this.isInstalled = isInstalled;
         }
 
         /// <summary>

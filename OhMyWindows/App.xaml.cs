@@ -75,7 +75,7 @@ public partial class App : Application
             services.AddSingleton<RegistryService>();
             services.AddSingleton<ProgramService>();
             services.AddSingleton<InstallationService>();
-            services.AddSingleton<InstalledPackagesService>();
+            services.AddSingleton<IInstalledPackagesService, InstalledPackagesService>();
 
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
@@ -168,12 +168,25 @@ public partial class App : Application
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
-    protected async override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-        base.OnLaunched(args);
-
-        App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
-
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        try
+        {
+            base.OnLaunched(args);
+            var activationService = App.GetService<IActivationService>();
+            await activationService.ActivateAsync(args);
+        }
+        catch (Exception ex)
+        {
+            var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+                "OhMyWindows", "startup_crash.log");
+            var logDir = Path.GetDirectoryName(logPath);
+            if (!Directory.Exists(logDir))
+            {
+                Directory.CreateDirectory(logDir);
+            }
+            File.WriteAllText(logPath, $"{DateTime.Now:o} - {ex}");
+            Application.Current.Exit();
+        }
     }
 }

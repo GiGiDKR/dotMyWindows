@@ -1,7 +1,9 @@
-﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using OhMyWindows.ViewModels;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Threading.Tasks;
 
 namespace OhMyWindows.Views;
 
@@ -14,20 +16,48 @@ public sealed partial class InstallationPage : Page
 
     public InstallationPage()
     {
-        ViewModel = App.GetService<InstallationViewModel>();
-        InitializeComponent();
+        try
+        {
+            ViewModel = App.GetService<InstallationViewModel>();
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            // En cas d'erreur, afficher un message à l'utilisateur
+            var dialog = new ContentDialog
+            {
+                Title = "Erreur",
+                Content = $"Une erreur s'est produite lors de l'initialisation : {ex.Message}",
+                CloseButtonText = "OK"
+            };
+            _ = dialog.ShowAsync();
+        }
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        base.OnNavigatedTo(e);
-        if (ViewModel.InitializeCommand is IAsyncRelayCommand asyncCommand)
+        try
         {
-            _ = asyncCommand.ExecuteAsync(null);
+            base.OnNavigatedTo(e);
+            if (ViewModel.InitializeCommand is IAsyncRelayCommand asyncCommand)
+            {
+                _ = asyncCommand.ExecuteAsync(null);
+            }
+            else
+            {
+                ViewModel.InitializeCommand.Execute(null);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            ViewModel.InitializeCommand.Execute(null);
+            // En cas d'erreur, afficher un message à l'utilisateur
+            var dialog = new ContentDialog
+            {
+                Title = "Erreur",
+                Content = $"Une erreur s'est produite lors du chargement : {ex.Message}",
+                CloseButtonText = "OK"
+            };
+            _ = dialog.ShowAsync();
         }
     }
 }

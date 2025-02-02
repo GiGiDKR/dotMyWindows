@@ -6,6 +6,8 @@ namespace OhMyWindows.Services;
 
 public class RegistryService
 {
+    private bool _needsExplorerRestart;
+
     public async Task<bool> IsSettingEnabled(RegistryKeys.RegistryKey key)
     {
         return await Task.Run(() =>
@@ -35,7 +37,7 @@ public class RegistryService
 
     public async Task SetSetting(RegistryKeys.RegistryKey key, bool enable)
     {
-        bool needsExplorerRestart = false;
+        _needsExplorerRestart = false;
 
         await Task.Run(() =>
         {
@@ -86,7 +88,7 @@ public class RegistryService
                     key.Path.Contains("TaskBar") || 
                     key.Path.Contains("Shell"))
                 {
-                    needsExplorerRestart = true;
+                    _needsExplorerRestart = true;
                 }
             }
             catch (Exception ex)
@@ -97,7 +99,7 @@ public class RegistryService
         });
 
         // Commenté temporairement
-        /*if (needsExplorerRestart)
+        /*if (_needsExplorerRestart)
         {
             await ShowExplorerRestartDialog();
         }*/
@@ -238,4 +240,4 @@ public class RegistryService
             }
         });
     }
-} 
+}

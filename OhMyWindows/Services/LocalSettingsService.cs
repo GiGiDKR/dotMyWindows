@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 
 using OhMyWindows.Contracts.Services;
 using OhMyWindows.Core.Contracts.Services;
@@ -50,24 +50,29 @@ public class LocalSettingsService : ILocalSettingsService
 
     public async Task<T?> ReadSettingAsync<T>(string key)
     {
-        if (RuntimeHelper.IsMSIX)
+        try
         {
-            if (ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out var obj))
+            if (RuntimeHelper.IsMSIX)
             {
-                return await Json.ToObjectAsync<T>((string)obj);
+                if (ApplicationData.Current.LocalSettings.Values.TryGetValue(key, out var obj))
+                {
+                    return await Json.ToObjectAsync<T>((string)obj);
+                }
             }
+            else
+            {
+                await InitializeAsync();
+                if (_settings.TryGetValue(key, out var json))
+                {
+                    return await Json.ToObjectAsync<T>((string)json);
+                }
+            }
+            return default;
         }
-        else
+        catch
         {
-            await InitializeAsync();
-
-            if (_settings != null && _settings.TryGetValue(key, out var obj))
-            {
-                return await Json.ToObjectAsync<T>((string)obj);
-            }
+            return default;
         }
-
-        return default;
     }
 
     public async Task SaveSettingAsync<T>(string key, T value)

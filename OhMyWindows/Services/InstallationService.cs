@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using OhMyWindows.Models;
+using OhMyWindows.Contracts.Services;
 
 namespace OhMyWindows.Services
 {
@@ -19,6 +20,7 @@ namespace OhMyWindows.Services
         private readonly string _logPath;
         private static readonly object _lockObj = new object();
         private readonly PowerShellVersionService _powerShellVersionService;
+        private readonly IInstalledPackagesService _installedPackagesService;
 
         private void LogToFile(string message)
         {
@@ -35,36 +37,35 @@ namespace OhMyWindows.Services
             }
         }
 
-        public InstallationService()
+        public InstallationService(IInstalledPackagesService installedPackagesService)
         {
             try
             {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                _logPath = Path.Combine(baseDir, "installation_service.log");
-                LogToFile($"Répertoire de base de l'application : {baseDir}");
-
-                var dataPath = Path.Combine(baseDir, "Data");
-                LogToFile($"Chemin du dossier Data : {dataPath}");
-
-                if (!Directory.Exists(dataPath))
-                {
-                    LogToFile("Création du dossier Data...");
-                    Directory.CreateDirectory(dataPath);
-                    LogToFile("Dossier Data créé avec succès");
-                }
-
-                _localPath = Path.Combine(dataPath, "packages.json");
-                LogToFile($"Chemin du fichier packages.json : {_localPath}");
+                _installedPackagesService = installedPackagesService ?? throw new ArgumentNullException(nameof(installedPackagesService));
+                
+                // Utiliser LocalApplicationData au lieu de BaseDirectory pour les données
+                var appDataPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "OhMyWindows"
+                );
+                
+                _logPath = Path.Combine(appDataPath, "logs", "installation_service.log");
+                _localPath = Path.Combine(appDataPath, "data", "packages.json");
+                
+                // Créer les répertoires nécessaires
+                Directory.CreateDirectory(Path.GetDirectoryName(_logPath));
+                Directory.CreateDirectory(Path.GetDirectoryName(_localPath));
+                
+                LogToFile($"Répertoire de l'application : {appDataPath}");
+                LogToFile($"Fichier de packages local : {_localPath}");
 
                 _jsonOptions = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
-                    AllowTrailingCommas = true,
-                    WriteIndented = true,
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                    Converters = { new JsonStringEnumConverter() }
+                    WriteIndented = true
                 };
-
+                
                 _powerShellVersionService = new PowerShellVersionService();
                 LogToFile("PowerShellVersionService initialisé");
             }
@@ -80,53 +81,76 @@ namespace OhMyWindows.Services
         {
             try
             {
+                if (string.IsNullOrEmpty(_localPath))
+                {
+                    LogToFile("Erreur : _localPath n'est pas initialisé");
+                    return false;
+                }
+
                 using var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Add("User-Agent", "OhMyWindows");
                 LogToFile($"Tentative de téléchargement depuis : {PackagesUrl}");
 
                 var response = await httpClient.GetAsync(PackagesUrl);
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    LogToFile("Contenu téléchargé depuis GitHub");
-
-                    try
-                    {
-                        var packageList = JsonSerializer.Deserialize<PackageList>(content, _jsonOptions);
-                        if (packageList?.Packages != null && packageList.Packages.Count > 0)
-                        {
-                            LogToFile($"Fichier GitHub valide avec {packageList.Packages.Count} packages");
-
-                            // Assigner une catégorie par défaut si nécessaire
-                            foreach (var package in packageList.Packages)
-                            {
-                                if (string.IsNullOrWhiteSpace(package.Category))
-                                {
-                                    package.Category = "Autres";
-                                    LogToFile($"Catégorie par défaut assignée pour : {package.Name}");
-                                }
-                            }
-
-                            var formattedJson = JsonSerializer.Serialize(packageList, _jsonOptions);
-                            await File.WriteAllTextAsync(_localPath, formattedJson);
-                            return true;
-                        }
-                        LogToFile("Le fichier ne contient pas de packages valides");
-                    }
-                    catch (JsonException ex)
-                    {
-                        LogToFile($"Erreur de désérialisation JSON : {ex.Message}");
-                    }
-                }
-                else
+                LogToFile($"Statut de la réponse HTTP : {(int)response.StatusCode} {response.StatusCode}");
+                
+                if (!response.IsSuccessStatusCode)
                 {
                     LogToFile($"Échec du téléchargement. Code : {response.StatusCode}");
+                    return false;
                 }
+
+                var content = await response.Content.ReadAsStringAsync();
+                LogToFile($"Contenu téléchargé depuis GitHub (longueur: {content.Length} caractères)");
+                LogToFile($"Début du contenu : {content.Substring(0, Math.Min(100, content.Length))}...");
+
+                try
+                {
+                    var packageList = JsonSerializer.Deserialize<PackageList>(content, _jsonOptions);
+                    if (packageList?.Packages == null)
+                    {
+                        LogToFile("Le fichier JSON désérialisé contient une liste de packages null");
+                        return false;
+                    }
+                    if (packageList.Packages.Count == 0)
+                    {
+                        LogToFile("Le fichier JSON désérialisé contient une liste de packages vide");
+                        return false;
+                    }
+
+                    LogToFile($"Fichier GitHub valide avec {packageList.Packages.Count} packages");
+                    
+                    // Créer le répertoire si nécessaire
+                    var directory = Path.GetDirectoryName(_localPath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                        LogToFile($"Création du répertoire : {directory}");
+                    }
+
+                    await File.WriteAllTextAsync(_localPath, content);
+                    LogToFile($"Fichier sauvegardé localement dans : {_localPath}");
+                    return true;
+                }
+                catch (JsonException ex)
+                {
+                    LogToFile($"Erreur de désérialisation JSON : {ex.Message}");
+                    LogToFile($"Stack trace : {ex.StackTrace}");
+                    return false;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                LogToFile($"Erreur HTTP lors du téléchargement : {ex.Message}");
+                if (ex.InnerException != null)
+                    LogToFile($"Cause : {ex.InnerException.Message}");
                 return false;
             }
             catch (Exception ex)
             {
-                LogToFile($"Erreur lors du téléchargement : {ex.Message}");
+                LogToFile($"Erreur inattendue lors du téléchargement : {ex.Message}");
+                LogToFile($"Type d'erreur : {ex.GetType().FullName}");
+                LogToFile($"Stack trace : {ex.StackTrace}");
                 return false;
             }
         }
@@ -146,21 +170,31 @@ namespace OhMyWindows.Services
                 LogToFile("Échec du téléchargement, utilisation du fichier local");
                 if (!File.Exists(_localPath))
                 {
-                    throw new FileNotFoundException("Le fichier packages.json n'existe pas et n'a pas pu être téléchargé.");
+                    LogToFile("Le fichier local n'existe pas, création d'un fichier vide");
+                    await File.WriteAllTextAsync(_localPath, JsonSerializer.Serialize(new PackageList { Packages = new List<Package>() }, _jsonOptions));
+                    return;
                 }
 
                 var localContent = await File.ReadAllTextAsync(_localPath);
-                var packageList = JsonSerializer.Deserialize<PackageList>(localContent, _jsonOptions);
-                if (packageList?.Packages == null || packageList.Packages.Count == 0)
+                try
                 {
-                    throw new InvalidOperationException("Le fichier packages.json est invalide ou vide");
+                    var packageList = JsonSerializer.Deserialize<PackageList>(localContent, _jsonOptions);
+                    if (packageList?.Packages == null)
+                    {
+                        LogToFile("Le fichier local est invalide, création d'un fichier vide");
+                        await File.WriteAllTextAsync(_localPath, JsonSerializer.Serialize(new PackageList { Packages = new List<Package>() }, _jsonOptions));
+                    }
                 }
-
-                LogToFile($"Utilisation du fichier local avec {packageList.Packages.Count} packages");
+                catch (JsonException ex)
+                {
+                    LogToFile($"Erreur de désérialisation du fichier local : {ex.Message}");
+                    LogToFile("Création d'un fichier vide");
+                    await File.WriteAllTextAsync(_localPath, JsonSerializer.Serialize(new PackageList { Packages = new List<Package>() }, _jsonOptions));
+                }
             }
             catch (Exception ex)
             {
-                LogToFile($"Erreur lors de l'initialisation : {ex}");
+                LogToFile($"Erreur critique lors de l'initialisation : {ex}");
                 throw;
             }
         }
@@ -169,19 +203,66 @@ namespace OhMyWindows.Services
         {
             try
             {
-                LogToFile("Début du chargement des packages");
-                var jsonContent = await File.ReadAllTextAsync(_localPath);
+                if (!File.Exists(_localPath))
+                {
+                    LogToFile("Le fichier packages.json n'existe pas, tentative de téléchargement...");
+                    if (!await TryDownloadPackages())
+                    {
+                        LogToFile("Échec du téléchargement des packages");
+                        return new List<Package>();
+                    }
+                }
 
-                var packageList = JsonSerializer.Deserialize<PackageList>(jsonContent, _jsonOptions) ??
-                    throw new InvalidOperationException("Le fichier packages.json est invalide");
+                var content = await File.ReadAllTextAsync(_localPath);
+                try
+                {
+                    var packageList = JsonSerializer.Deserialize<PackageList>(content, _jsonOptions);
+                    if (packageList?.Packages == null)
+                    {
+                        LogToFile("Le fichier packages.json est invalide");
+                        return new List<Package>();
+                    }
 
-                LogToFile($"Packages chargés : {packageList.Packages.Count}");
-                return packageList.Packages;
+                    LogToFile($"Chargement réussi de {packageList.Packages.Count} packages");
+                    foreach (var package in packageList.Packages)
+                    {
+                        bool isInstalled = await _installedPackagesService.IsPackageInstalledAsync(package.Name);
+                        LogToFile($"Package {package.Name} - Installé: {isInstalled}");
+                        
+                        // Si le package est installé mais pas enregistré, on l'enregistre
+                        if (isInstalled)
+                        {
+                            bool wasRegistered = await _installedPackagesService.IsPackageInstalledAsync(package.Id);
+                            if (!wasRegistered)
+                            {
+                                LogToFile($"Enregistrement du package {package.Name} comme installé");
+                                await _installedPackagesService.SetPackageInstalledAsync(package.Id, true);
+                            }
+                        }
+                        package.IsInstalled = isInstalled;
+                    }
+
+                    return packageList.Packages;
+                }
+                catch (JsonException ex)
+                {
+                    LogToFile($"Erreur de désérialisation : {ex.Message}");
+                    if (File.Exists(_localPath))
+                    {
+                        LogToFile("Suppression du fichier corrompu et nouvelle tentative de téléchargement...");
+                        File.Delete(_localPath);
+                        if (await TryDownloadPackages())
+                        {
+                            return await GetPackagesAsync();
+                        }
+                    }
+                    return new List<Package>();
+                }
             }
             catch (Exception ex)
             {
-                LogToFile($"Erreur lors du chargement des packages : {ex}");
-                throw;
+                LogToFile($"Erreur lors de la lecture des packages : {ex}");
+                return new List<Package>();
             }
         }
 
@@ -351,6 +432,7 @@ namespace OhMyWindows.Services
                 // Vérifier que le package est bien installé
                 if (await IsPackageInstalledAsync(package, cancellationToken))
                 {
+                    await _installedPackagesService.SetPackageInstalledAsync(package.Id, true);
                     LogToFile($"Installation de {package.Name} réussie");
                     return true;
                 }

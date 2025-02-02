@@ -1,135 +1,156 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 using System.Threading;
+using System.IO;
+using OhMyWindows.Contracts.Services;
 
-namespace OhMyWindows.Services
+namespace OhMyWindows.Services;
+
+public class InstalledPackagesService : IInstalledPackagesService
 {
-    public class InstalledPackagesService
-    {
-        private readonly string _filePath;
-        private HashSet<string> _installedPackages;
-        private readonly JsonSerializerOptions _jsonOptions;
-        private static readonly SemaphoreSlim _semaphore = new(1, 1);
-        private readonly TaskCompletionSource _initializationTask = new();
+    private const string SettingsKey = "InstalledPackages";
+    public required ILocalSettingsService LocalSettingsService { get; init; }
+    private Dictionary<string, bool> _installedPackages;
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly TaskCompletionSource _initializationTask = new();
+    private readonly string _logPath;
+    private static readonly object _lockObj = new object();
 
-        public InstalledPackagesService()
+    private void LogToFile(string message)
+    {
+        try
         {
-            _filePath = Path.Combine(AppContext.BaseDirectory, "Data", "installed_packages.json");
-            _installedPackages = new HashSet<string>();
-            _jsonOptions = new JsonSerializerOptions
+            lock (_lockObj)
             {
-                WriteIndented = true,
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
-            };
+                File.AppendAllText(_logPath, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}{Environment.NewLine}");
+            }
+        }
+        catch
+        {
+            // Ignorer les erreurs de logging
+        }
+    }
+
+    public InstalledPackagesService(ILocalSettingsService localSettingsService)
+    {
+        try
+        {
+            LocalSettingsService = localSettingsService ?? throw new ArgumentNullException(nameof(localSettingsService));
+            _installedPackages = new Dictionary<string, bool>();
+            _logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OhMyWindows", "logs", "installed_packages.log");
             
-            // Initialisation asynchrone
+            // Créer le répertoire des logs s'il n'existe pas
+            Directory.CreateDirectory(Path.GetDirectoryName(_logPath));
+
+            LogToFile("Service initialisé");
+            
+            // Initialisation asynchrone avec meilleure gestion des erreurs
             Task.Run(async () =>
             {
                 try
                 {
+                    LogToFile("Début du chargement des packages installés");
                     await LoadAsync();
+                    LogToFile($"Chargement terminé, {_installedPackages.Count} packages trouvés");
                     _initializationTask.SetResult();
                 }
                 catch (Exception ex)
                 {
-                    _initializationTask.SetException(ex);
+                    LogToFile($"Erreur lors du chargement : {ex.Message}");
+                    // En cas d'erreur, on initialise avec un dictionnaire vide mais on marque l'initialisation comme terminée
+                    _installedPackages = new Dictionary<string, bool>();
+                    _initializationTask.SetResult();
                 }
             });
         }
-
-        /// <summary>
-        /// Marque un package comme installé et sauvegarde l'état de manière asynchrone.
-        /// </summary>
-        /// <param name="packageId">L'identifiant du package.</param>
-        /// <param name="isInstalled">Indique si le package est installé ou non.</param>
-        public async Task SetPackageInstalledAsync(string packageId, bool isInstalled)
+        catch (Exception ex)
         {
-            await _initializationTask.Task; // Attendre l'initialisation
-            await _semaphore.WaitAsync();
-            try
-            {
-                bool changed = false;
-                if (isInstalled)
-                {
-                    changed = _installedPackages.Add(packageId);
-                }
-                else
-                {
-                    changed = _installedPackages.Remove(packageId);
-                }
+            _installedPackages = new Dictionary<string, bool>();
+            _initializationTask.SetResult();
+            LogToFile($"Erreur dans le constructeur : {ex.Message}");
+        }
+    }
 
-                if (changed)
-                {
-                    await SaveAsync();
-                }
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+    public async Task SetPackageInstalledAsync(string packageId, bool isInstalled)
+    {
+        if (string.IsNullOrEmpty(packageId))
+        {
+            LogToFile("Tentative de définir un package avec un ID null ou vide");
+            return;
         }
 
-        /// <summary>
-        /// Vérifie si un package est marqué comme installé.
-        /// </summary>
-        /// <param name="packageId">L'identifiant du package.</param>
-        /// <returns>true si le package est installé, sinon false.</returns>
-        public async Task<bool> IsPackageInstalledAsync(string packageId)
+        await _initializationTask.Task; // Attendre l'initialisation
+        await _semaphore.WaitAsync();
+        try
         {
-            await _initializationTask.Task; // Attendre l'initialisation
-            return _installedPackages.Contains(packageId);
+            LogToFile($"Définition du package {packageId} comme {(isInstalled ? "installé" : "désinstallé")}");
+            _installedPackages[packageId] = isInstalled;
+            await LocalSettingsService.SaveSettingAsync(SettingsKey, _installedPackages);
+            LogToFile("Sauvegarde réussie");
+        }
+        catch (Exception ex)
+        {
+            LogToFile($"Erreur lors de la sauvegarde du package {packageId} : {ex.Message}");
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
+    public async Task<bool> IsPackageInstalledAsync(string packageId)
+    {
+        if (string.IsNullOrEmpty(packageId))
+        {
+            LogToFile("Vérification d'un package avec un ID null ou vide");
+            return false;
         }
 
-        /// <summary>
-        /// Charge l'état des packages installés depuis le fichier JSON de manière asynchrone.
-        /// </summary>
-        private async Task LoadAsync()
+        await _initializationTask.Task; // Attendre l'initialisation
+        var result = _installedPackages.TryGetValue(packageId, out bool isInstalled) && isInstalled;
+        LogToFile($"Vérification du package {packageId} : {result}");
+        return result;
+    }
+
+    public async Task<Dictionary<string, bool>> LoadAsync()
+    {
+        await _semaphore.WaitAsync();
+        try
         {
-            await _semaphore.WaitAsync();
-            try
+            LogToFile("Début du chargement des packages");
+            if (_installedPackages.Count == 0)
             {
-                if (File.Exists(_filePath))
+                try 
                 {
-                    try
+                    var loaded = await LocalSettingsService.ReadSettingAsync<Dictionary<string, bool>>(SettingsKey);
+                    if (loaded != null)
                     {
-                        string json = await File.ReadAllTextAsync(_filePath);
-                        var packages = JsonSerializer.Deserialize<HashSet<string>>(json, _jsonOptions);
-                        if (packages != null)
-                        {
-                            _installedPackages = packages;
-                        }
+                        _installedPackages = loaded;
+                        LogToFile($"Chargement réussi : {loaded.Count} packages");
                     }
-                    catch (Exception)
+                    else
                     {
-                        // En cas d'erreur, initialise avec un ensemble vide.
-                        _installedPackages = new HashSet<string>();
+                        LogToFile("Aucun package trouvé dans les paramètres");
                     }
                 }
+                catch (Exception ex)
+                {
+                    LogToFile($"Erreur lors du chargement des paramètres : {ex.Message}");
+                    // En cas d'erreur de chargement, on continue avec un dictionnaire vide
+                    _installedPackages = new Dictionary<string, bool>();
+                }
             }
-            finally
+            else
             {
-                _semaphore.Release();
+                LogToFile($"Utilisation du cache existant : {_installedPackages.Count} packages");
             }
+            return _installedPackages;
         }
-
-        /// <summary>
-        /// Sauvegarde l'état des packages installés dans le fichier JSON de manière asynchrone.
-        /// </summary>
-        private async Task SaveAsync()
+        finally
         {
-            var directory = Path.GetDirectoryName(_filePath);
-            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            var json = JsonSerializer.Serialize(_installedPackages, _jsonOptions);
-            await File.WriteAllTextAsync(_filePath, json);
+            _semaphore.Release();
         }
     }
 }

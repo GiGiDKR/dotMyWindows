@@ -1,9 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Dispatching;
 using OhMyWindows.Models;
 using OhMyWindows.Services;
+using OhMyWindows.Contracts.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
@@ -19,7 +20,7 @@ namespace OhMyWindows.ViewModels;
 public partial class InstallationViewModel : ObservableRecipient
 {
     private readonly InstallationService _installationService;
-    private readonly InstalledPackagesService _installedPackagesService;
+    private readonly IInstalledPackagesService _installedPackagesService;
     private SemaphoreSlim _semaphore;
     private readonly ConcurrentQueue<Func<CancellationToken, Task>> _taskQueue;
     private CancellationTokenSource? _cancellationTokenSource;
@@ -92,27 +93,35 @@ public partial class InstallationViewModel : ObservableRecipient
     [ObservableProperty]
     private int _maxParallelTasks = DefaultMaxParallelTasks;
 
-    public InstallationViewModel(InstallationService installationService, InstalledPackagesService installedPackagesService)
+    public InstallationViewModel(InstallationService installationService, IInstalledPackagesService installedPackagesService)
     {
-        _installationService = installationService;
-        _installedPackagesService = installedPackagesService;
-        _semaphore = new SemaphoreSlim(_maxParallelTasks);
-        _taskQueue = new ConcurrentQueue<Func<CancellationToken, Task>>();
-        _categories = new ObservableCollection<CategoryViewModel>();
-        _allPackages = new ObservableCollection<PackageViewModel>();
-        _statusText = "Prêt";
-        _permanentStatusText = "Prêt";
-        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        try
+        {
+            _installationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
+            _installedPackagesService = installedPackagesService ?? throw new ArgumentNullException(nameof(installedPackagesService));
+            _semaphore = new SemaphoreSlim(DefaultMaxParallelTasks);
+            _taskQueue = new ConcurrentQueue<Func<CancellationToken, Task>>();
+            _categories = new ObservableCollection<CategoryViewModel>();
+            _allPackages = new ObservableCollection<PackageViewModel>();
+            _statusText = "Prêt";
+            _permanentStatusText = "Prêt";
+            _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installation_viewmodel.log");
-        LogToFile("ViewModel initialisé");
+            _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installation_viewmodel.log");
+            LogToFile("ViewModel initialisé");
 
-        InitializeCommand = new AsyncRelayCommand(InitializeAsync);
-        CheckStatusCommand = new AsyncRelayCommand(CheckStatusAsync);
-        StopCheckCommand = new RelayCommand(StopChecking);
-        ResetCommand = new RelayCommand(Reset);
-        SelectAllCommand = new RelayCommand(SelectAll);
-        InstallSelectedCommand = new AsyncRelayCommand(InstallSelectedAsync);
+            InitializeCommand = new AsyncRelayCommand(InitializeAsync);
+            CheckStatusCommand = new AsyncRelayCommand(CheckStatusAsync);
+            StopCheckCommand = new RelayCommand(StopChecking);
+            ResetCommand = new RelayCommand(Reset);
+            SelectAllCommand = new RelayCommand(SelectAll);
+            InstallSelectedCommand = new AsyncRelayCommand(InstallSelectedAsync);
+        }
+        catch (Exception ex)
+        {
+            LogToFile($"Erreur dans le constructeur : {ex}");
+            throw;
+        }
     }
 
     public ICommand InitializeCommand { get; }
@@ -167,35 +176,65 @@ public partial class InstallationViewModel : ObservableRecipient
         _statusTimer.Start();
     }
 
-    private async Task InitializeAsync()
+    public async Task InitializeAsync()
     {
+        if (IsLoading) return;
+
         IsLoading = true;
         StatusText = "Chargement des packages...";
-        LogToFile("Début de l'initialisation");
 
         try
         {
-            await _installationService.InitializeAsync();
-            var packages = await _installationService.GetPackagesAsync();
+            LogToFile("Début de l'initialisation");
 
-            Categories.Clear();
+            // Vérifier les services
+            if (_installationService == null)
+            {
+                throw new InvalidOperationException("Le service d'installation n'est pas initialisé");
+            }
+
+            if (_installedPackagesService == null)
+            {
+                throw new InvalidOperationException("Le service des packages installés n'est pas initialisé");
+            }
+
+            // Vider les collections existantes
             AllPackages.Clear();
+            Categories.Clear();
 
-            // Créer les PackageViewModels une seule fois et les réutiliser
-            var packageViewModels = packages
-                .Select(p => new PackageViewModel(p))
-                .OrderBy(p => p.Package.Name)
-                .ToList();
+            // Charger les packages
+            var packages = await _installationService.GetPackagesAsync();
+            if (packages == null)
+            {
+                throw new InvalidOperationException("Impossible de charger la liste des packages");
+            }
 
-            // Remplir AllPackages
+            // Créer les ViewModels de packages
+            var packageViewModels = new List<PackageViewModel>();
+            foreach (var package in packages)
+            {
+                try
+                {
+                    var isInstalled = await _installedPackagesService.IsPackageInstalledAsync(package.Id);
+                    var packageViewModel = new PackageViewModel(package, isInstalled);
+                    packageViewModels.Add(packageViewModel);
+                }
+                catch (Exception ex)
+                {
+                    LogToFile($"Erreur lors du chargement du package {package.Id}: {ex.Message}");
+                    // Continuer avec le package suivant
+                }
+            }
+
+            // Ajouter les packages à la collection
             foreach (var packageViewModel in packageViewModels)
             {
                 AllPackages.Add(packageViewModel);
             }
 
-            // Grouper et remplir les catégories
+            // Grouper par catégorie
             var groupedPackages = packageViewModels
-                .GroupBy(p => p.Package.Category)
+                .GroupBy(p => p.Category)
                 .OrderBy(g => g.Key);
 
             foreach (var group in groupedPackages)
@@ -203,18 +242,19 @@ public partial class InstallationViewModel : ObservableRecipient
                 var categoryViewModel = new CategoryViewModel(group.Key, group.ToList());
                 Categories.Add(categoryViewModel);
             }
+
+            LogToFile("Initialisation terminée avec succès");
+            StatusText = "Prêt";
         }
         catch (Exception ex)
         {
+            LogToFile($"Erreur lors de l'initialisation: {ex}");
             StatusText = $"Erreur lors du chargement : {ex.Message}";
+            // Ne pas relancer l'exception pour éviter le plantage
         }
         finally
         {
             IsLoading = false;
-            if (StatusText == "Chargement des packages...")
-            {
-                StatusText = "Prêt";
-            }
         }
     }
 
