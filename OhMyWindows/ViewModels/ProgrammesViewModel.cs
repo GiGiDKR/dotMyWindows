@@ -27,6 +27,7 @@ public partial class ProgrammesViewModel : ObservableRecipient
     private ObservableCollection<InstalledProgram> _allPrograms = new();
     private string _searchText = string.Empty;
     private string _sortOption = "Name";
+    private bool _sortDescending = false;
 
     [ObservableProperty]
     private ObservableCollection<InstalledProgram> installedPrograms = new();
@@ -46,6 +47,9 @@ public partial class ProgrammesViewModel : ObservableRecipient
     [ObservableProperty]
     private string sortOption = "Name";
 
+    [ObservableProperty]
+    private bool sortDescending = false;
+
     public IEnumerable<string> SortOptions => new[]
     {
         "Nom",
@@ -53,6 +57,22 @@ public partial class ProgrammesViewModel : ObservableRecipient
         "Date d'installation",
         "Taille"
     };
+
+    private string FormatSize(long sizeInKb)
+    {
+        if (sizeInKb >= 1024 * 1024) // Plus de 1 Go
+        {
+            return $"{sizeInKb / (1024.0 * 1024.0):F2} Go";
+        }
+        else if (sizeInKb >= 1024) // Plus de 1 Mo
+        {
+            return $"{sizeInKb / 1024.0:F2} Mo";
+        }
+        return $"{sizeInKb} Ko";
+    }
+
+    public IRelayCommand ToggleSortOrderCommand { get; }
+
 
     partial void OnSearchTextChanged(string value)
     {
@@ -78,15 +98,18 @@ public partial class ProgrammesViewModel : ObservableRecipient
                 (p.Version?.ToLower().Contains(searchLower) ?? false));
         }
 
-        // Appliquer le tri
-        filtered = SortOption switch
+        // Créer les expressions de tri
+        var sortExp = SortOption switch
         {
-            "Nom" => filtered.OrderBy(p => p.Name),
-            "Éditeur" => filtered.OrderBy(p => p.Publisher ?? ""),
-            "Date d'installation" => filtered.OrderByDescending(p => p.InstallDate ?? ""),
-            "Taille" => filtered.OrderByDescending(p => p.EstimatedSize),
-            _ => filtered.OrderBy(p => p.Name)
+            "Nom" => (Func<InstalledProgram, string>)(p => p.Name),
+            "Éditeur" => p => p.Publisher ?? "",
+            "Date d'installation" => p => p.InstallDate ?? "",
+            "Taille" => p => p.EstimatedSize.ToString("D20"),
+            _ => p => p.Name
         };
+
+        // Appliquer le tri avec l'ordre
+        filtered = SortDescending ? filtered.OrderByDescending(sortExp) : filtered.OrderBy(sortExp);
 
         InstalledPrograms.Clear();
         foreach (var program in filtered)
@@ -122,6 +145,11 @@ public partial class ProgrammesViewModel : ObservableRecipient
         UninstallSelectedCommand = new AsyncRelayCommand(ShowUninstallConfirmationAsync);
         ConfirmUninstallCommand = new AsyncRelayCommand(UninstallSelectedAsync);
         RefreshProgramsCommand = new AsyncRelayCommand(LoadInstalledProgramsAsync);
+        ToggleSortOrderCommand = new RelayCommand(() => 
+        {
+            SortDescending = !SortDescending;
+            UpdateFilteredPrograms();
+        });
 
         // Chargement initial des programmes
         _ = LoadInstalledProgramsAsync();
