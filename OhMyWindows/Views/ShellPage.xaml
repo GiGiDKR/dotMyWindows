@@ -90,6 +90,11 @@
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
+                        <NavigationViewItem x:Uid="Shell_Installation_Desinstallation" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.DesinstallationViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe74d;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Outils" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.OutilsViewModel">

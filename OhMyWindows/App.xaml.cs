@@ -109,6 +109,8 @@ public partial class App : Application
             services.AddTransient<AndroidPage>();
             services.AddTransient<ConfigurationViewModel>();
             services.AddTransient<ConfigurationPage>();
+            services.AddTransient<DesinstallationViewModel>();
+            services.AddTransient<DesinstallationPage>();
             services.AddTransient<AcceuilViewModel>();
             services.AddTransient<AcceuilPage>();
             services.AddTransient<ShellPage>();

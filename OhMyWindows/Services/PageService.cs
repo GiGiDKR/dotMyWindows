@@ -26,6 +26,7 @@ public class PageService : IPageService
         Configure<OutilsViewModel, OutilsPage>();
         Configure<ActivationViewModel, ActivationPage>();
         Configure<AndroidViewModel, AndroidPage>();
+        Configure<DesinstallationViewModel, DesinstallationPage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 
