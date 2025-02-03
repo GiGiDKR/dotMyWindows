@@ -75,10 +75,11 @@
                 <Button Grid.Column="2"
                         Command="{x:Bind ViewModel.ToggleSortOrderCommand}"
                         Height="32"
-                        Width="40"
+                        Width="48"
                         Margin="0,0,10,0">
                     <FontIcon Glyph="{x:Bind ViewModel.SortDescending, Mode=OneWay, Converter={StaticResource BooleanToSortIconConverter}}"
-                             FontSize="24"/>
+                             FontSize="12"
+                             Margin="0,0,10,0"/>
                 </Button>
             </Grid>
         </Grid>

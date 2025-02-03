@@ -8,7 +8,7 @@
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" typ="xsd:string" minOccurs="0" />
               </xsd:sequence>
               <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
@@ -73,12 +73,12 @@
   <data name="Shell_Installation.Content" xml:space="preserve">
     <value>Installation</value>
   </data>
-  <data name="Shell_Installation_Programmes.Content" xml:space="preserve">
-    <value>Programmes</value>
-  </data>
-  <data name="Shell_Installation_GestionnairePaquets.Content" xml:space="preserve">
-    <value>Gestionnaire de paquets</value>
-  </data>
+<data name="Shell_Installation_Programmes.Content" xml:space="preserve">
+    <value>Désinstallation</value>
+</data>
+<data name="Shell_Installation_GestionnairePaquets.Content" xml:space="preserve">
+    <value>Installation</value>
+</data>
   <data name="Shell_Configuration_Systeme.Content" xml:space="preserve">
     <value>Système</value>
   </data>
