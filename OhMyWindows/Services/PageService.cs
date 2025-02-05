@@ -21,7 +21,7 @@ public class PageService : IPageService
         Configure<TerminalViewModel, TerminalPage>();
         Configure<ThemeViewModel, ThemePage>();
         Configure<InstallationViewModel, InstallationPage>();
-        Configure<ProgrammesViewModel, ProgrammesPage>();
+        Configure<UninstallViewModel, UninstallPage>();
         Configure<InstallPackagesViewModel, InstallPackagesPage>();
         Configure<OutilsViewModel, OutilsPage>();
         Configure<ActivationViewModel, ActivationPage>();

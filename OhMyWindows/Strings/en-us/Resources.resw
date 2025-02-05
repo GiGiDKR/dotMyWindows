@@ -73,12 +73,12 @@
   <data name="Shell_Installation.Content" xml:space="preserve">
     <value>Installation</value>
   </data>
-<data name="Shell_Installation_Programmes.Content" xml:space="preserve">
+  <data name="Shell_Installation_Uninstall.Content" xml:space="preserve">
     <value>Désinstallation</value>
-</data>
-<data name="Shell_Installation_InstallPackages.Content" xml:space="preserve">
+  </data>
+  <data name="Shell_Installation_InstallPackages.Content" xml:space="preserve">
     <value>Installation</value>
-</data>
+  </data>
   <data name="Shell_Configuration_Systeme.Content" xml:space="preserve">
     <value>Système</value>
   </data>

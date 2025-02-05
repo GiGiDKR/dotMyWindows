@@ -7,6 +7,49 @@
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         
+        <TextBlock Grid.Row="0" 
+                   Text="Sélectionnez les gestionnaires de paquets à installer"
+                   Style="{StaticResource SubtitleTextBlockStyle}"
+                   Margin="0,0,0,20"/>
+        
+        <StackPanel Grid.Row="1" Spacing="12">
+            <CheckBox IsChecked="{x:Bind ViewModel.IsWingetSelected, Mode=TwoWay}"
+                      Content="WinGet - Gestionnaire de paquets Windows"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+            
+            <CheckBox IsChecked="{x:Bind ViewModel.IsChocolateySelected, Mode=TwoWay}"
+                      Content="Chocolatey - Gestionnaire de paquets pour Windows"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+            
+            <CheckBox IsChecked="{x:Bind ViewModel.IsScoopSelected, Mode=TwoWay}"
+                      Content="Scoop - Gestionnaire de paquets pour ligne de commande"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+            
+            <CheckBox IsChecked="{x:Bind ViewModel.IsPipSelected, Mode=TwoWay}"
+                      Content="Pip - Gestionnaire de paquets Python"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,0" Spacing="10">
+            <Button Command="{x:Bind ViewModel.InstallSelectedPackageManagersCommand}"
+                    IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+                    Content="Installer les gestionnaires sélectionnés"
+                    Style="{StaticResource AccentButtonStyle}"/>
+            
+            <ProgressBar Value="{x:Bind ViewModel.InstallProgress, Mode=OneWay}"
+                        Height="4"
+                        Maximum="100"
+                        Visibility="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            
+            <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}"
+                      TextWrapping="Wrap"
+                      Visibility="{x:Bind ViewModel.StatusMessage, Mode=OneWay, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+        </StackPanel>
     </Grid>
 </Page>

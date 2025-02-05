@@ -9,10 +9,11 @@ using OhMyWindows.Models;
 
 namespace OhMyWindows.ViewModels;
 
-public partial class ProgrammesViewModel : ObservableRecipient
+public partial class UninstallViewModel : ObservableRecipient
 {
     private readonly ProgramService _programService;
     private readonly RegistryService _registryService;
+
 
     // Propriétés pour les programmes
     private ObservableCollection<InstalledProgram> _allPrograms = new();
@@ -119,7 +120,8 @@ public partial class ProgrammesViewModel : ObservableRecipient
     public IAsyncRelayCommand ConfirmUninstallCommand { get; private set; }
     public IAsyncRelayCommand RefreshProgramsCommand { get; }
 
-    public ProgrammesViewModel(ProgramService programService, RegistryService registryService)
+    public UninstallViewModel(ProgramService programService, RegistryService registryService)
+
     {
         _programService = programService ?? throw new ArgumentNullException(nameof(programService));
         _registryService = registryService ?? throw new ArgumentNullException(nameof(registryService));

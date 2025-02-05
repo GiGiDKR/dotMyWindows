@@ -76,6 +76,7 @@ public partial class App : Application
             services.AddSingleton<ProgramService>();
             services.AddSingleton<InstallationService>();
             services.AddSingleton<IInstalledPackagesService, InstalledPackagesService>();
+            services.AddSingleton<PackageManagerInstallationService>();
 
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
@@ -91,8 +92,8 @@ public partial class App : Application
             services.AddTransient<OutilsPage>();
             services.AddTransient<InstallationViewModel>();
             services.AddTransient<InstallationPage>();
-            services.AddTransient<ProgrammesViewModel>();
-            services.AddTransient<ProgrammesPage>();
+            services.AddTransient<UninstallViewModel>();
+            services.AddTransient<UninstallPage>();
             services.AddTransient<InstallPackagesViewModel>();
             services.AddTransient<InstallPackagesPage>();
             services.AddTransient<SystemeViewModel>();

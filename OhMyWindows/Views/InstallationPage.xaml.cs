@@ -6,11 +6,7 @@ namespace OhMyWindows.Views;
 
 public sealed partial class InstallationPage : Page
 {
-    public InstallationViewModel ViewModel
-    {
-        get;
-
-    }
+    public InstallationViewModel ViewModel { get; }
 
     public InstallationPage()
     {

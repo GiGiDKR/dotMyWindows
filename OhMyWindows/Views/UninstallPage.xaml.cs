@@ -7,20 +7,23 @@ using OhMyWindows.Models;
 
 namespace OhMyWindows.Views;
 
-public sealed partial class ProgrammesPage : Page, IRecipient<ShowUninstallConfirmationMessage>, IDisposable
+public sealed partial class UninstallPage : Page, IRecipient<ShowUninstallConfirmationMessage>, IDisposable
 {
     private bool _disposed;
     private readonly IMessenger _messenger;
 
-    public ProgrammesViewModel ViewModel { get; }
 
-    public ProgrammesPage()
+    public UninstallViewModel ViewModel { get; }
+
+    public UninstallPage()
+
     {
-        ViewModel = App.GetService<ProgrammesViewModel>() ?? throw new InvalidOperationException("Failed to resolve ViewModel");
+        ViewModel = App.GetService<UninstallViewModel>() ?? throw new InvalidOperationException("Failed to resolve ViewModel");
         _messenger = WeakReferenceMessenger.Default;
         InitializeComponent();
         _messenger.Register(this);
     }
+
 
     private void ProgramsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -58,8 +61,9 @@ public sealed partial class ProgrammesPage : Page, IRecipient<ShowUninstallConfi
         }
     }
 
-    ~ProgrammesPage()
+    ~UninstallPage()
     {
         Dispose();
     }
+
 }
