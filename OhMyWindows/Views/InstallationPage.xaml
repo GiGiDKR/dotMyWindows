@@ -22,17 +22,35 @@
             <CheckBox IsChecked="{x:Bind ViewModel.IsWingetSelected, Mode=TwoWay}"
                       Content="WinGet - Gestionnaire de paquets Windows"
                       IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
-            
+
             <CheckBox IsChecked="{x:Bind ViewModel.IsChocolateySelected, Mode=TwoWay}"
                       Content="Chocolatey - Gestionnaire de paquets pour Windows"
                       IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
-            
+
             <CheckBox IsChecked="{x:Bind ViewModel.IsScoopSelected, Mode=TwoWay}"
                       Content="Scoop - Gestionnaire de paquets pour ligne de commande"
                       IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
-            
+
             <CheckBox IsChecked="{x:Bind ViewModel.IsPipSelected, Mode=TwoWay}"
                       Content="Pip - Gestionnaire de paquets Python"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+
+            <!-- Options WinGet -->
+            <TextBlock Text="Options WinGet" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,20,0,10"/>
+            <CheckBox IsChecked="{x:Bind ViewModel.IsForceSelected, Mode=TwoWay}"
+                      Content="Forcer l'installation"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+
+            <CheckBox IsChecked="{x:Bind ViewModel.IsDebugSelected, Mode=TwoWay}"
+                      Content="Mode débogage"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+
+            <CheckBox IsChecked="{x:Bind ViewModel.IsWaitSelected, Mode=TwoWay}"
+                      Content="Attendre avant de quitter"
+                      IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+
+            <CheckBox IsChecked="{x:Bind ViewModel.IsNoExitSelected, Mode=TwoWay}"
+                      Content="Ne pas quitter après l'installation"
                       IsEnabled="{x:Bind ViewModel.IsInstalling, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
         </StackPanel>
         

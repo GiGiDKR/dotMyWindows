@@ -22,6 +22,19 @@ public partial class InstallationViewModel : ObservableRecipient
     [ObservableProperty]
     private bool isPipSelected;
 
+    // Options WinGet
+    [ObservableProperty]
+    private bool isForceSelected;
+
+    [ObservableProperty]
+    private bool isDebugSelected;
+
+    [ObservableProperty]
+    private bool isWaitSelected;
+
+    [ObservableProperty]
+    private bool isNoExitSelected;
+
     [ObservableProperty]
     private double installProgress;
 
@@ -50,7 +63,11 @@ public partial class InstallationViewModel : ObservableRecipient
             if (IsWingetSelected)
             {
                 StatusMessage = "Installation de WinGet...";
-                await _installationService.InstallWinGetAsync();
+                await _installationService.InstallWinGetAsync(
+                    force: IsForceSelected,
+                    debug: IsDebugSelected,
+                    wait: IsWaitSelected,
+                    noExit: IsNoExitSelected);
                 InstallProgress += 25;
             }
 

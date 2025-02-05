@@ -15,10 +15,30 @@ public class PackageManagerInstallationService
         Directory.CreateDirectory(_scriptsPath);
     }
 
-    public async Task InstallWinGetAsync()
+    public async Task InstallWinGetAsync(bool force = false, bool debug = false, bool wait = false, bool noExit = false)
     {
-        var scriptPath = Path.Combine(_scriptsPath, "WinGetInstall.ps1");
-        await RunPowerShellScriptAsync(scriptPath);
+        var scriptPath = Path.Combine(AppContext.BaseDirectory, "Scripts", "WinGetInstall.ps1");
+        var arguments = new List<string> { "-NoProfile", "-ExecutionPolicy", "Bypass" };
+        
+        if (force) arguments.Add("-Force");
+        if (debug) arguments.Add("-Debug");
+        if (wait) arguments.Add("-Wait");
+        if (noExit) arguments.Add("-NoExit");
+        
+        arguments.Add("-File");
+        arguments.Add($"\"{scriptPath}\"");
+        
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = "powershell.exe",
+            Arguments = string.Join(" ", arguments),
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true
+        };
+
+        await RunProcessAsync(startInfo);
     }
 
     public async Task InstallChocolateyAsync()
@@ -88,4 +108,4 @@ public class PackageManagerInstallationService
             throw new Exception($"Erreur lors de l'exécution du script : {error}");
         }
     }
-} 
+}
