@@ -63,7 +63,7 @@
   </data>
 	<data name="AppDescription" xml:space="preserve">
 		<value>OhMyWindows</value>
-  	</data>
+  </data>
   <data name="Shell_Acceuil.Content" xml:space="preserve">
     <value>Acceuil</value>
   </data>
@@ -76,7 +76,7 @@
 <data name="Shell_Installation_Programmes.Content" xml:space="preserve">
     <value>Désinstallation</value>
 </data>
-<data name="Shell_Installation_GestionnairePaquets.Content" xml:space="preserve">
+<data name="Shell_Installation_InstallPackages.Content" xml:space="preserve">
     <value>Installation</value>
 </data>
   <data name="Shell_Configuration_Systeme.Content" xml:space="preserve">

@@ -22,7 +22,7 @@ public class PageService : IPageService
         Configure<ThemeViewModel, ThemePage>();
         Configure<InstallationViewModel, InstallationPage>();
         Configure<ProgrammesViewModel, ProgrammesPage>();
-        Configure<GestionnairePaquetsViewModel, GestionnairePaquetsPage>();
+        Configure<InstallPackagesViewModel, InstallPackagesPage>();
         Configure<OutilsViewModel, OutilsPage>();
         Configure<ActivationViewModel, ActivationPage>();
         Configure<AndroidViewModel, AndroidPage>();

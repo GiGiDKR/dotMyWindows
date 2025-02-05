@@ -93,8 +93,8 @@ public partial class App : Application
             services.AddTransient<InstallationPage>();
             services.AddTransient<ProgrammesViewModel>();
             services.AddTransient<ProgrammesPage>();
-            services.AddTransient<GestionnairePaquetsViewModel>();
-            services.AddTransient<GestionnairePaquetsPage>();
+            services.AddTransient<InstallPackagesViewModel>();
+            services.AddTransient<InstallPackagesPage>();
             services.AddTransient<SystemeViewModel>();
             services.AddTransient<SystemePage>();
             services.AddTransient<LogicielsViewModel>();

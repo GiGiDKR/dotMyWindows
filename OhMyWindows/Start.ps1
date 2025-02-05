@@ -1,0 +1,1 @@
+Start-Process -FilePath "dotnet" -ArgumentList "run --configuration Debug" -Verb RunAs -WorkingDirectory "D:\Visual Studio\OhMyWindows\OhMyWindows"
