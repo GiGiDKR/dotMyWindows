@@ -1,4 +1,4 @@
-﻿﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿﻿﻿﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Dispatching;
 using System;
 using System.Management;
@@ -16,42 +16,88 @@ public partial class AcceuilViewModel : ObservableRecipient
     private readonly DispatcherQueueTimer timer;
     private readonly List<PerformanceCounter> performanceCounters;
 
-    [ObservableProperty]
     private string processorName;
+    public string ProcessorName
+    {
+        get => processorName;
+        set => SetProperty(ref processorName, value);
+    }
 
-    [ObservableProperty]
     private string processorCores;
+    public string ProcessorCores
+    {
+        get => processorCores;
+        set => SetProperty(ref processorCores, value);
+    }
 
-    [ObservableProperty]
     private string totalMemory;
+    public string TotalMemory
+    {
+        get => totalMemory;
+        set => SetProperty(ref totalMemory, value);
+    }
 
-    [ObservableProperty]
     private string availableMemory;
+    public string AvailableMemory
+    {
+        get => availableMemory;
+        set => SetProperty(ref availableMemory, value);
+    }
 
-    [ObservableProperty]
     private string cpuUsage;
+    public string CpuUsage
+    {
+        get => cpuUsage;
+        set => SetProperty(ref cpuUsage, value);
+    }
 
     public class DriveInfoWrapper
     {
-        public string Name { get; set; }
-        public string FreeSpace { get; set; }
-        public string TotalSize { get; set; }
+        public string? Name { get; set; }
+        public string? FreeSpace { get; set; }
+        public string? TotalSize { get; set; }
+        public string? FormattedInfo { get; set; }
     }
 
-    [ObservableProperty]
     private List<DriveInfoWrapper> drives;
+    public List<DriveInfoWrapper> Drives
+    {
+        get => drives;
+        set => SetProperty(ref drives, value);
+    }
 
-    [ObservableProperty]
     private string networkSpeed;
+    public string NetworkSpeed
+    {
+        get => networkSpeed;
+        set => SetProperty(ref networkSpeed, value);
+    }
 
-    [ObservableProperty]
     private string networkInterface;
+    public string NetworkInterface
+    {
+        get => networkInterface;
+        set => SetProperty(ref networkInterface, value);
+    }
 
-    [ObservableProperty]
     private string operatingSystem;
+    public string OperatingSystem
+    {
+        get => operatingSystem;
+        set => SetProperty(ref operatingSystem, value);
+    }
 
     public AcceuilViewModel()
     {
+        processorName = string.Empty;
+        processorCores = string.Empty;
+        totalMemory = string.Empty;
+        availableMemory = string.Empty;
+        cpuUsage = string.Empty;
+        drives = new List<DriveInfoWrapper>();
+        networkSpeed = string.Empty;
+        networkInterface = string.Empty;
+        operatingSystem = string.Empty;
         dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         performanceCounters = new List<PerformanceCounter>();
         InitializePerformanceCounters();
@@ -116,7 +162,7 @@ public partial class AcceuilViewModel : ObservableRecipient
             }
 
             OperatingSystem = RuntimeInformation.OSDescription;
-            ulong totalMemoryInBytes = GetTotalPhysicalMemory();
+            var totalMemoryInBytes = GetTotalPhysicalMemory();
             TotalMemory = $"Mémoire Totale : {FormatBytes((long)(totalMemoryInBytes & 0x7FFFFFFFFFFFFFFF))}";
         }
         catch (Exception)
@@ -137,11 +183,14 @@ public partial class AcceuilViewModel : ObservableRecipient
             {
                 if (drive.IsReady)
                 {
+                    var usedSpace = drive.TotalSize - drive.AvailableFreeSpace;
+                    var driveLetter = drive.Name.TrimEnd('\\', ':');
                     driveList.Add(new DriveInfoWrapper
                     {
                         Name = $"Disque {drive.Name}",
                         FreeSpace = FormatBytes(drive.AvailableFreeSpace),
-                        TotalSize = FormatBytes(drive.TotalSize)
+                        TotalSize = FormatBytes(drive.TotalSize),
+                        FormattedInfo = $"{driveLetter}: = {FormatBytes(usedSpace)}/{FormatBytes(drive.TotalSize)}"
                     });
                 }
             }
@@ -149,7 +198,7 @@ public partial class AcceuilViewModel : ObservableRecipient
         }
         catch (Exception)
         {
-            Drives = new List<DriveInfoWrapper>();
+            Drives = [];
         }
     }
 
@@ -192,11 +241,11 @@ public partial class AcceuilViewModel : ObservableRecipient
     private string FormatBytes(long bytes)
     {
         string[] suffixes = { "o", "Ko", "Mo", "Go", "To" };
-        int counter = 0;
+        var counter = 0;
         decimal number = bytes;
         while (Math.Round(number / 1024) >= 1)
         {
-            number = number / 1024;
+            number /= 1024;
             counter++;
         }
         return $"{number:n1} {suffixes[counter]}";

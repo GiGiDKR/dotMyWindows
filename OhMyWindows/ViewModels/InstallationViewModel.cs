@@ -10,39 +10,87 @@ public partial class InstallationViewModel : ObservableRecipient
 {
     private readonly PackageManagerInstallationService _installationService;
 
-    [ObservableProperty]
     private bool isWingetSelected;
 
-    [ObservableProperty]
+    public bool IsWingetSelected
+    {
+        get => isWingetSelected;
+        set => SetProperty(ref isWingetSelected, value);
+    }
+
     private bool isChocolateySelected;
 
-    [ObservableProperty]
+    public bool IsChocolateySelected
+    {
+        get => isChocolateySelected;
+        set => SetProperty(ref isChocolateySelected, value);
+    }
+
     private bool isScoopSelected;
 
-    [ObservableProperty]
+    public bool IsScoopSelected
+    {
+        get => isScoopSelected;
+        set => SetProperty(ref isScoopSelected, value);
+    }
+
     private bool isPipSelected;
 
+    public bool IsPipSelected
+    {
+        get => isPipSelected;
+        set => SetProperty(ref isPipSelected, value);
+    }
+
     // Options WinGet
-    [ObservableProperty]
     private bool isForceSelected;
+    public bool IsForceSelected
+    {
+        get => isForceSelected;
+        set => SetProperty(ref isForceSelected, value);
+    }
 
-    [ObservableProperty]
     private bool isDebugSelected;
+    public bool IsDebugSelected
+    {
+        get => isDebugSelected;
+        set => SetProperty(ref isDebugSelected, value);
+    }
 
-    [ObservableProperty]
     private bool isWaitSelected;
+    public bool IsWaitSelected
+    {
+        get => isWaitSelected;
+        set => SetProperty(ref isWaitSelected, value);
+    }
 
-    [ObservableProperty]
     private bool isNoExitSelected;
+    public bool IsNoExitSelected
+    {
+        get => isNoExitSelected;
+        set => SetProperty(ref isNoExitSelected, value);
+    }
 
-    [ObservableProperty]
     private double installProgress;
+    public double InstallProgress
+    {
+        get => installProgress;
+        set => SetProperty(ref installProgress, value);
+    }
 
-    [ObservableProperty]
     private string statusMessage = string.Empty;
+    public string StatusMessage
+    {
+        get => statusMessage;
+        set => SetProperty(ref statusMessage, value);
+    }
 
-    [ObservableProperty]
     private bool isInstalling;
+    public bool IsInstalling
+    {
+        get => isInstalling;
+        set => SetProperty(ref isInstalling, value);
+    }
 
     public InstallationViewModel(PackageManagerInstallationService installationService)
     {
