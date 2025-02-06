@@ -4,9 +4,73 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:storage="using:System.IO"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        
-    </Grid>
+    <ScrollViewer>
+        <Grid x:Name="ContentArea" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Informations Système -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="Informations Système" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,10"/>
+                <TextBlock Text="{x:Bind ViewModel.OperatingSystem, Mode=OneWay}" Margin="0,0,0,5"/>
+            </StackPanel>
+
+            <!-- Informations Processeur -->
+            <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                <TextBlock Text="Processeur" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,10"/>
+                <TextBlock Text="{x:Bind ViewModel.ProcessorName, Mode=OneWay}" Margin="0,0,0,5"/>
+                <TextBlock Text="{x:Bind ViewModel.ProcessorCores, Mode=OneWay}" Margin="0,0,0,5"/>
+                <TextBlock Text="{x:Bind ViewModel.CpuUsage, Mode=OneWay}" Margin="0,0,0,5"/>
+            </StackPanel>
+
+            <!-- Informations Mémoire -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                <TextBlock Text="Mémoire" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,10"/>
+                <TextBlock Text="{x:Bind ViewModel.TotalMemory, Mode=OneWay}" Margin="0,0,0,5"/>
+                <TextBlock Text="{x:Bind ViewModel.AvailableMemory, Mode=OneWay}" Margin="0,0,0,5"/>
+            </StackPanel>
+
+            <!-- Informations Stockage et Réseau -->
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Informations Disques -->
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="Disques" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,10"/>
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.Drives, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,10">
+                                    <TextBlock Text="{Binding Name}" Margin="0,0,0,5"/>
+                                    <TextBlock>
+                                        <Run Text="Espace libre : "/>
+                                        <Run Text="{Binding FreeSpace}"/>
+                                        <Run Text=" / "/>
+                                        <Run Text="{Binding TotalSize}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- Informations Réseau -->
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <TextBlock Text="Réseau" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,10"/>
+                    <TextBlock Text="{x:Bind ViewModel.NetworkInterface, Mode=OneWay}" Margin="0,0,0,5"/>
+                    <TextBlock Text="{x:Bind ViewModel.NetworkSpeed, Mode=OneWay}" Margin="0,0,0,5"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </Page>
