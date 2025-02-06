@@ -14,108 +14,151 @@ public partial class SystemeViewModel : ObservableObject
     private readonly Dictionary<string, bool> _modifiedSettings;
     private bool _isSelectAll;
 
-    [ObservableProperty]
-    private string selectAllButtonText = "Tout sélectionner";
-
-    [ObservableProperty]
-    private bool canExpandAll = true;
-
-    [ObservableProperty]
-    private bool canCollapseAll = false;
-
-    [ObservableProperty]
-    private bool isTaskbarExpanded;
-
-    [ObservableProperty]
-    private bool isPrivacyExpanded;
-
-    [ObservableProperty]
-    private bool isFileExplorerExpanded;
-
-    [ObservableProperty]
-    private bool isContextMenuExpanded;
-
-    [ObservableProperty]
-    private bool isSystemExpanded;
-
-    [ObservableProperty]
-    private bool taskbarAlignmentCenter;
-
-    [ObservableProperty]
-    private bool taskbarEndTask;
-
-    [ObservableProperty]
-    private bool taskViewButton;
-
-    [ObservableProperty]
-    private bool bingSearch;
-
-    [ObservableProperty]
-    private bool webSearch;
-
-    [ObservableProperty]
-    private bool subscribedContent;
-
-    [ObservableProperty]
-    private bool offlineMaps;
-
-    [ObservableProperty]
-    private bool appIconsThumbnails;
-
-    [ObservableProperty]
-    private bool automaticFolderDiscovery;
-
-    [ObservableProperty]
-    private bool compactView;
-
-    [ObservableProperty]
-    private bool fileExtension;
-
-    [ObservableProperty]
-    private bool hiddenFiles;
-
-    [ObservableProperty]
-    private bool classicContextMenu;
-
-    [ObservableProperty]
-    private bool autoHideTaskbar;
-
-    [ObservableProperty]
-    private bool themeContextMenu;
-
-    [ObservableProperty]
-    private bool mouseAcceleration;
-
-    [ObservableProperty]
-    private bool microsoftCopilot;
-
-    [ObservableProperty]
-    private bool backgroundApps;
-
-    [ObservableProperty]
-    private bool devMode;
-
-    [ObservableProperty]
-    private bool hibernation;
-
-    [ObservableProperty]
-    private bool telemetry;
-
-    [ObservableProperty]
-    private bool hasModifications;
-
-    private int _searchboxTaskbarMode;
-    public int SearchboxTaskbarMode
+    private string _selectAllButtonText = "Tout sélectionner";
+    public string SelectAllButtonText
     {
-        get => _searchboxTaskbarMode;
-        set
-        {
-            if (SetProperty(ref _searchboxTaskbarMode, value))
-            {
-                _modifiedSettings[nameof(SearchboxTaskbarMode)] = true;
-                HasModifications = _modifiedSettings.Count > 0;
-            }
-        }
+        get => _selectAllButtonText;
+        set => SetProperty(ref _selectAllButtonText, value);
+    }
+
+    private bool _canExpandAll = true;
+    public bool CanExpandAll
+    {
+        get => _canExpandAll;
+        set => SetProperty(ref _canExpandAll, value);
+    }
+
+    private bool _canCollapseAll = false;
+    public bool CanCollapseAll
+    {
+        get => _canCollapseAll;
+        set => SetProperty(ref _canCollapseAll, value);
+    }
+
+    private bool _isTaskbarExpanded;
+    public bool IsTaskbarExpanded
+    {
+        get => _isTaskbarExpanded;
+        set => SetProperty(ref _isTaskbarExpanded, value);
+    }
+
+    private bool _isPrivacyExpanded;
+    public bool IsPrivacyExpanded
+    {
+        get => _isPrivacyExpanded;
+        set => SetProperty(ref _isPrivacyExpanded, value);
+    }
+
+    private bool _isFileExplorerExpanded;
+    public bool IsFileExplorerExpanded
+    {
+        get => _isFileExplorerExpanded;
+        set => SetProperty(ref _isFileExplorerExpanded, value);
+    }
+
+    private bool _isContextMenuExpanded;
+    public bool IsContextMenuExpanded
+    {
+        get => _isContextMenuExpanded;
+        set => SetProperty(ref _isContextMenuExpanded, value);
+    }
+
+    private bool _isSystemExpanded;
+    public bool IsSystemExpanded
+    {
+        get => _isSystemExpanded;
+        set => SetProperty(ref _isSystemExpanded, value);
+    }
+
+    private bool _taskbarAlignmentCenter;
+    public bool TaskbarAlignmentCenter
+    {
+        get => _taskbarAlignmentCenter;
+        set => SetProperty(ref _taskbarAlignmentCenter, value);
+    }
+
+    private bool _taskbarEndTask;
+    public bool TaskbarEndTask
+    {
+        get => _taskbarEndTask;
+        set => SetProperty(ref _taskbarEndTask, value);
+    }
+
+    private bool _taskViewButton;
+    public bool TaskViewButton
+    {
+        get => _taskViewButton;
+        set => SetProperty(ref _taskViewButton, value);
+    }
+
+    private bool _bingSearch;
+    public bool BingSearch
+    {
+        get => _bingSearch;
+        set => SetProperty(ref _bingSearch, value);
+    }
+
+    private bool _webSearch;
+    public bool WebSearch
+    {
+        get => _webSearch;
+        set => SetProperty(ref _webSearch, value);
+    }
+
+    private bool _subscribedContent;
+    public bool SubscribedContent
+    {
+        get => _subscribedContent;
+        set => SetProperty(ref _subscribedContent, value);
+    }
+
+    private bool _offlineMaps;
+    public bool OfflineMaps
+    {
+        get => _offlineMaps;
+        set => SetProperty(ref _offlineMaps, value);
+    }
+
+    private bool _appIconsThumbnails;
+    public bool AppIconsThumbnails
+    {
+        get => _appIconsThumbnails;
+        set => SetProperty(ref _appIconsThumbnails, value);
+    }
+
+    private bool _automaticFolderDiscovery;
+    public bool AutomaticFolderDiscovery
+    {
+        get => _automaticFolderDiscovery;
+        set => SetProperty(ref _automaticFolderDiscovery, value);
+    }
+
+    private bool _compactView;
+    public bool CompactView
+    {
+        get => _compactView;
+        set => SetProperty(ref _compactView, value);
+    }
+
+    private bool _fileExtension;
+    public bool FileExtension
+    {
+        get => _fileExtension;
+        set => SetProperty(ref _fileExtension, value);
+    }
+
+    private bool _hiddenFiles;
+    public bool HiddenFiles
+    {
+        get => _hiddenFiles;
+        set => SetProperty(ref _hiddenFiles, value);
+    }
+
+    private bool _classicContextMenu;
+    public bool ClassicContextMenu
+    {
+        get => _classicContextMenu;
+        set => SetProperty(ref _classicContextMenu, value);
     }
 
     private bool _systemFiles;
@@ -125,47 +168,173 @@ public partial class SystemeViewModel : ObservableObject
         set => SetProperty(ref _systemFiles, value);
     }
 
-    [ObservableProperty]
-    private bool copyMoreDetails;
+    private bool _autoHideTaskbar;
+    public bool AutoHideTaskbar
+    {
+        get => _autoHideTaskbar;
+        set => SetProperty(ref _autoHideTaskbar, value);
+    }
 
-    [ObservableProperty]
-    private bool driveLetters;
+    private bool _themeContextMenu;
+    public bool ThemeContextMenu
+    {
+        get => _themeContextMenu;
+        set => SetProperty(ref _themeContextMenu, value);
+    }
 
-    [ObservableProperty]
-    private bool foldersGroupToThisPC;
+    private bool _mouseAcceleration;
+    public bool MouseAcceleration
+    {
+        get => _mouseAcceleration;
+        set => SetProperty(ref _mouseAcceleration, value);
+    }
 
-    [ObservableProperty]
-    private bool gallery;
+    private bool _microsoftCopilot;
+    public bool MicrosoftCopilot
+    {
+        get => _microsoftCopilot;
+        set => SetProperty(ref _microsoftCopilot, value);
+    }
 
-    [ObservableProperty]
-    private bool controlPanelInNavigation;
+    private bool _backgroundApps;
+    public bool BackgroundApps
+    {
+        get => _backgroundApps;
+        set => SetProperty(ref _backgroundApps, value);
+    }
 
-    [ObservableProperty]
-    private bool recycleBinInNavigation;
+    private bool _devMode;
+    public bool DevMode
+    {
+        get => _devMode;
+        set => SetProperty(ref _devMode, value);
+    }
 
-    [ObservableProperty]
-    private bool userFolderInNavigation;
+    private bool _hibernation;
+    public bool Hibernation
+    {
+        get => _hibernation;
+        set => SetProperty(ref _hibernation, value);
+    }
 
-    [ObservableProperty]
-    private bool removableDrivesInSidebar;
+    private bool _telemetry;
+    public bool Telemetry
+    {
+        get => _telemetry;
+        set => SetProperty(ref _telemetry, value);
+    }
 
-    [ObservableProperty]
-    private bool openFileExplorerToThisPC;
+    private bool _hasModifications;
 
-    [ObservableProperty]
-    private bool recentDocsHistory;
+    private int _searchboxTaskbarMode = 1;
+    public int SearchboxTaskbarMode
+    {
+        get => _searchboxTaskbarMode;
+        set => SetProperty(ref _searchboxTaskbarMode, value);
+    }
+    public bool HasModifications
+    {
+        get => _hasModifications;
+        set => SetProperty(ref _hasModifications, value);
+    }
 
-    [ObservableProperty]
-    private bool recentlyAddedApps;
+    private bool _copyMoreDetails;
+    public bool CopyMoreDetails
+    {
+        get => _copyMoreDetails;
+        set => SetProperty(ref _copyMoreDetails, value);
+    }
 
-    [ObservableProperty]
-    private bool shortcutText;
+    private bool _driveLetters;
+    public bool DriveLetters
+    {
+        get => _driveLetters;
+        set => SetProperty(ref _driveLetters, value);
+    }
 
-    [ObservableProperty]
-    private bool snapLayouts;
+    private bool _foldersGroupToThisPC;
+    public bool FoldersGroupToThisPC
+    {
+        get => _foldersGroupToThisPC;
+        set => SetProperty(ref _foldersGroupToThisPC, value);
+    }
 
-    [ObservableProperty]
-    private bool statusBar;
+    private bool _gallery;
+    public bool Gallery
+    {
+        get => _gallery;
+        set => SetProperty(ref _gallery, value);
+    }
+
+    private bool _controlPanelInNavigation;
+    public bool ControlPanelInNavigation
+    {
+        get => _controlPanelInNavigation;
+        set => SetProperty(ref _controlPanelInNavigation, value);
+    }
+
+    private bool _recycleBinInNavigation;
+    public bool RecycleBinInNavigation
+    {
+        get => _recycleBinInNavigation;
+        set => SetProperty(ref _recycleBinInNavigation, value);
+    }
+
+    private bool _userFolderInNavigation;
+    public bool UserFolderInNavigation
+    {
+        get => _userFolderInNavigation;
+        set => SetProperty(ref _userFolderInNavigation, value);
+    }
+
+    private bool _removableDrivesInSidebar;
+    public bool RemovableDrivesInSidebar
+    {
+        get => _removableDrivesInSidebar;
+        set => SetProperty(ref _removableDrivesInSidebar, value);
+    }
+
+    private bool _openFileExplorerToThisPC;
+    public bool OpenFileExplorerToThisPC
+    {
+        get => _openFileExplorerToThisPC;
+        set => SetProperty(ref _openFileExplorerToThisPC, value);
+    }
+
+    private bool _recentDocsHistory;
+    public bool RecentDocsHistory
+    {
+        get => _recentDocsHistory;
+        set => SetProperty(ref _recentDocsHistory, value);
+    }
+
+    private bool _recentlyAddedApps;
+    public bool RecentlyAddedApps
+    {
+        get => _recentlyAddedApps;
+        set => SetProperty(ref _recentlyAddedApps, value);
+    }
+
+    private bool _shortcutText;
+    public bool ShortcutText
+    {
+        get => _shortcutText;
+        set => SetProperty(ref _shortcutText, value);
+    }
+
+    private bool _snapLayouts;
+    public bool SnapLayouts
+    {
+        get => _snapLayouts;
+        set => SetProperty(ref _snapLayouts, value);
+    }
+
+    private bool _statusBar;
+    public bool StatusBar
+    {
+        get => _statusBar;
+        set => SetProperty(ref _statusBar, value);
+    }
 
     public SystemeViewModel(RegistryService registryService)
     {

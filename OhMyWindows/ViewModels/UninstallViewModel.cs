@@ -16,30 +16,62 @@ public partial class UninstallViewModel : ObservableRecipient
 
 
     // Propriétés pour les programmes
-    private ObservableCollection<InstalledProgram> _allPrograms = new();
-    [ObservableProperty]
-    private ObservableCollection<InstalledProgram> installedPrograms = new();
+    private readonly ObservableCollection<InstalledProgram> _allPrograms = new();
+    private ObservableCollection<InstalledProgram> _installedPrograms = new();
+    public ObservableCollection<InstalledProgram> InstalledPrograms
+    {
+        get => _installedPrograms;
+        set => SetProperty(ref _installedPrograms, value);
+    }
 
-    [ObservableProperty]
-    private IList<InstalledProgram> selectedPrograms = new List<InstalledProgram>();
+    private IList<InstalledProgram> _selectedPrograms = new List<InstalledProgram>();
+    public IList<InstalledProgram> SelectedPrograms
+    {
+        get => _selectedPrograms;
+        set => SetProperty(ref _selectedPrograms, value);
+    }
 
-    [ObservableProperty]
     private bool isInstalling;
+    public bool IsInstalling
+    {
+        get => isInstalling;
+        set => SetProperty(ref isInstalling, value);
+    }
 
-    [ObservableProperty]
     private string currentOperation = string.Empty;
+    public string CurrentOperation
+    {
+        get => currentOperation;
+        set => SetProperty(ref currentOperation, value);
+    }
 
-    [ObservableProperty]
     private double installProgress;
+    public double InstallProgress
+    {
+        get => installProgress;
+        set => SetProperty(ref installProgress, value);
+    }
 
-    [ObservableProperty]
     private string searchText = string.Empty;
+    public string SearchText
+    {
+        get => searchText;
+        set => SetProperty(ref searchText, value);
+    }
 
-    [ObservableProperty]
     private string sortOption = "Name";
+    public string SortOption
+    {
+        get => sortOption;
+        set => SetProperty(ref sortOption, value);
+    }
 
-    [ObservableProperty]
     private bool sortDescending = false;
+    public bool SortDescending
+    {
+        get => sortDescending;
+        set => SetProperty(ref sortDescending, value, nameof(SortDescending));
+    }
 
     public IEnumerable<string> SortOptions => new[]
     {
@@ -64,12 +96,12 @@ public partial class UninstallViewModel : ObservableRecipient
 
     public IRelayCommand ToggleSortOrderCommand { get; }
 
-    partial void OnSearchTextChanged(string value)
+    private void OnSearchTextChanged(string value)
     {
         UpdateFilteredPrograms();
     }
-
-    partial void OnSortOptionChanged(string value)
+    
+    private void OnSortOptionChanged(string value)
     {
         UpdateFilteredPrograms();
     }
@@ -108,11 +140,19 @@ public partial class UninstallViewModel : ObservableRecipient
         }
     }
 
-    [ObservableProperty]
     private bool isError;
+    public bool IsError
+    {
+        get => isError;
+        set => SetProperty(ref isError, value);
+    }
 
-    [ObservableProperty]
     private string errorMessage = string.Empty;
+    public string ErrorMessage
+    {
+        get => errorMessage;
+        set => SetProperty(ref errorMessage, value);
+    }
 
     // Commandes
     public IAsyncRelayCommand UninstallSelectedCommand { get; private set; }
@@ -158,11 +198,12 @@ public partial class UninstallViewModel : ObservableRecipient
         }
     }
 
-    private async Task ShowUninstallConfirmationAsync()
+    private Task ShowUninstallConfirmationAsync()
     {
-        if (!SelectedPrograms.Any()) return;
+        if (!SelectedPrograms.Any()) return Task.CompletedTask;
 
         WeakReferenceMessenger.Default.Send(new ShowUninstallConfirmationMessage());
+        return Task.CompletedTask;
     }
 
     private async Task UninstallSelectedAsync()

@@ -17,11 +17,19 @@ public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
 
-    [ObservableProperty]
     private ElementTheme _elementTheme;
+    public ElementTheme ElementTheme
+    {
+        get => _elementTheme;
+        set => SetProperty(ref _elementTheme, value);
+    }
 
-    [ObservableProperty]
     private string _versionDescription;
+    public string VersionDescription
+    {
+        get => _versionDescription;
+        set => SetProperty(ref _versionDescription, value);
+    }
 
     public ICommand SwitchThemeCommand
     {

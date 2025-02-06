@@ -16,7 +16,7 @@ public class InstalledPackagesService : IInstalledPackagesService
     private static readonly SemaphoreSlim _semaphore = new(1, 1);
     private readonly TaskCompletionSource _initializationTask = new();
     private readonly string _logPath;
-    private static readonly object _lockObj = new object();
+    private static readonly object _lockObj = new();
 
     private void LogToFile(string message)
     {
@@ -39,10 +39,15 @@ public class InstalledPackagesService : IInstalledPackagesService
         {
             LocalSettingsService = localSettingsService ?? throw new ArgumentNullException(nameof(localSettingsService));
             _installedPackages = new Dictionary<string, bool>();
-            _logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OhMyWindows", "logs", "installed_packages.log");
+            var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OhMyWindows", "logs", "installed_packages.log");
             
             // Créer le répertoire des logs s'il n'existe pas
-            Directory.CreateDirectory(Path.GetDirectoryName(_logPath));
+            var directoryPath = Path.GetDirectoryName(logPath);
+            if (!string.IsNullOrEmpty(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            _logPath = logPath;
 
             LogToFile("Service initialisé");
             
@@ -67,9 +72,10 @@ public class InstalledPackagesService : IInstalledPackagesService
         }
         catch (Exception ex)
         {
+            _logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OhMyWindows", "logs", "installed_packages.log");
+            LogToFile($"Erreur dans le constructeur : {ex.Message}");
             _installedPackages = new Dictionary<string, bool>();
             _initializationTask.SetResult();
-            LogToFile($"Erreur dans le constructeur : {ex.Message}");
         }
     }
 
@@ -109,7 +115,7 @@ public class InstalledPackagesService : IInstalledPackagesService
         }
 
         await _initializationTask.Task; // Attendre l'initialisation
-        var result = _installedPackages.TryGetValue(packageId, out bool isInstalled) && isInstalled;
+        var result = _installedPackages != null && _installedPackages.TryGetValue(packageId, out var isInstalled) && isInstalled;
         LogToFile($"Vérification du package {packageId} : {result}");
         return result;
     }

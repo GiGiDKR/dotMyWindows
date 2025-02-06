@@ -10,15 +10,14 @@ using System.Threading;
 using OhMyWindows.Models;
 using OhMyWindows.Contracts.Services;
 
-namespace OhMyWindows.Services
-{
+namespace OhMyWindows.Services;
     public class InstallationService
     {
         private const string PackagesUrl = "https://raw.githubusercontent.com/GiGiDKR/OhMyWindows/alpha/files/packages.json";
         private readonly string _localPath;
         private readonly JsonSerializerOptions _jsonOptions;
         private readonly string _logPath;
-        private static readonly object _lockObj = new object();
+        private static readonly object _lockObj = new();
         private readonly PowerShellVersionService _powerShellVersionService;
         private readonly IInstalledPackagesService _installedPackagesService;
 
@@ -53,8 +52,10 @@ namespace OhMyWindows.Services
                 _localPath = Path.Combine(appDataPath, "data", "packages.json");
                 
                 // Créer les répertoires nécessaires
-                Directory.CreateDirectory(Path.GetDirectoryName(_logPath));
-                Directory.CreateDirectory(Path.GetDirectoryName(_localPath));
+                var logDir = Path.GetDirectoryName(_logPath);
+                var localDir = Path.GetDirectoryName(_localPath);
+                if (!string.IsNullOrEmpty(logDir)) Directory.CreateDirectory(logDir);
+                if (!string.IsNullOrEmpty(localDir)) Directory.CreateDirectory(localDir);
                 
                 LogToFile($"Répertoire de l'application : {appDataPath}");
                 LogToFile($"Fichier de packages local : {_localPath}");
@@ -226,13 +227,13 @@ namespace OhMyWindows.Services
                     LogToFile($"Chargement réussi de {packageList.Packages.Count} packages");
                     foreach (var package in packageList.Packages)
                     {
-                        bool isInstalled = await _installedPackagesService.IsPackageInstalledAsync(package.Name);
+                        var isInstalled = await _installedPackagesService.IsPackageInstalledAsync(package.Id);
                         LogToFile($"Package {package.Name} - Installé: {isInstalled}");
                         
                         // Si le package est installé mais pas enregistré, on l'enregistre
                         if (isInstalled)
                         {
-                            bool wasRegistered = await _installedPackagesService.IsPackageInstalledAsync(package.Id);
+                            var wasRegistered = await _installedPackagesService.IsPackageInstalledAsync(package.Id);
                             if (!wasRegistered)
                             {
                                 LogToFile($"Enregistrement du package {package.Name} comme installé");
@@ -272,7 +273,7 @@ namespace OhMyWindows.Services
 
             try
             {
-                var powerShellPath = _powerShellVersionService.GetLatestPowerShellVersion();
+                var powerShellPath = PowerShellVersionService.GetLatestPowerShellVersion();
                 var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = false,
@@ -365,7 +366,7 @@ namespace OhMyWindows.Services
                     return true;
                 }
 
-                var powerShellPath = _powerShellVersionService.GetLatestPowerShellVersion();
+                var powerShellPath = PowerShellVersionService.GetLatestPowerShellVersion();
                 var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = false,
@@ -454,8 +455,7 @@ namespace OhMyWindows.Services
         }
     }
 
-    public class PackageList
-    {
-        public required List<Package> Packages { get; set; }
-    }
+public class PackageList
+{
+    public required List<Package> Packages { get; set; }
 }

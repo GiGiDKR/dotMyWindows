@@ -9,10 +9,18 @@ namespace OhMyWindows.ViewModels;
 
 public partial class ShellViewModel : ObservableRecipient
 {
-    [ObservableProperty]
+    public bool IsBackEnabled
+    {
+        get => isBackEnabled;
+        set => SetProperty(ref isBackEnabled, value);
+    }
     private bool isBackEnabled;
 
-    [ObservableProperty]
+    public object? Selected
+    {
+        get => selected;
+        set => SetProperty(ref selected, value);
+    }
     private object? selected;
 
     public INavigationService NavigationService

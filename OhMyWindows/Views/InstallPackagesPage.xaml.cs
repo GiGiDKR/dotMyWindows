@@ -10,7 +10,7 @@ namespace OhMyWindows.Views;
 public sealed partial class InstallPackagesPage : Page
 
 {
-    public InstallPackagesViewModel ViewModel
+    public InstallPackagesViewModel? ViewModel
     {
         get;
     }
@@ -41,11 +41,11 @@ public sealed partial class InstallPackagesPage : Page
         try
         {
             base.OnNavigatedTo(e);
-            if (ViewModel.InitializeCommand is IAsyncRelayCommand asyncCommand)
+            if (ViewModel != null && ViewModel.InitializeCommand is IAsyncRelayCommand asyncCommand)
             {
                 _ = asyncCommand.ExecuteAsync(null);
             }
-            else
+            else if (ViewModel != null && ViewModel.InitializeCommand != null)
             {
                 ViewModel.InitializeCommand.Execute(null);
             }

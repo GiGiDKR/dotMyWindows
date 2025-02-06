@@ -2,8 +2,7 @@ using System;
 using System.ComponentModel;
 using OhMyWindows.Models;
 
-namespace OhMyWindows.ViewModels
-{
+namespace OhMyWindows.ViewModels;
     /// <summary>
     /// ViewModel pour représenter un package dans la vue.
     /// Gère l'état (installation, sélection) et notifie les changements.
@@ -23,8 +22,6 @@ namespace OhMyWindows.ViewModels
             Category = package.Category;
             this.isInstalled = isInstalled;
         }
-
-        /// <summary>
         /// Package modèle sous-jacent.
         /// </summary>
         public Package Package => _package;
@@ -88,9 +85,8 @@ namespace OhMyWindows.ViewModels
         /// Méthode pour notifier que la propriété a changé.
         /// </summary>
         /// <param name="propertyName">Nom de la propriété modifiée.</param>
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

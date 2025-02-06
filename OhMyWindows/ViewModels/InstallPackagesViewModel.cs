@@ -29,70 +29,149 @@ public partial class InstallPackagesViewModel : ObservableRecipient
     private const int MinParallelTasks = 1;
     private const int MaxParallelTasksLimit = 10;
     private readonly string _logPath;
-    private static readonly object _lockObj = new object();
+    private static readonly object _lockObj = new();
     private readonly DispatcherQueue _dispatcherQueue;
     private DispatcherQueueTimer? _statusTimer;
     private DispatcherQueueTimer? _enableVerifyTimer;
 
-    [ObservableProperty]
     private ObservableCollection<CategoryViewModel> _categories;
+    public ObservableCollection<CategoryViewModel> Categories
+    {
+        get => _categories;
+        set => SetProperty(ref _categories, value);
+    }
 
-    [ObservableProperty]
     private ObservableCollection<PackageViewModel> _allPackages;
-
-    [ObservableProperty]
+    public ObservableCollection<PackageViewModel> AllPackages
+    {
+        get => _allPackages;
+        set => SetProperty(ref _allPackages, value);
+    }
     private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value, nameof(IsLoading));
+    }
 
-    [ObservableProperty]
     private bool _isProcessing;
+    public bool IsProcessing
+    {
+        get => _isProcessing;
+        set => SetProperty(ref _isProcessing, value);
+    }
 
-    [ObservableProperty]
     private bool _isChecking;
+    public bool IsChecking
+    {
+        get => _isChecking;
+        set => SetProperty(ref _isChecking, value);
+    }
 
-    [ObservableProperty]
     private bool _isInstalling;
+    public bool IsInstalling
+    {
+        get => _isInstalling;
+        set => SetProperty(ref _isInstalling, value, nameof(IsInstalling));
+    }
 
-    [ObservableProperty]
     private double _progressValue;
+    public double ProgressValue
+    {
+        get => _progressValue;
+        set => SetProperty(ref _progressValue, value);
+    }
 
-    [ObservableProperty]
     private bool _isIndeterminate;
+    public bool IsIndeterminate
+    {
+        get => _isIndeterminate;
+        set => SetProperty(ref _isIndeterminate, value);
+    }
 
-    [ObservableProperty]
     private string _statusText;
+    public string StatusText
+    {
+        get => _statusText;
+        set => SetProperty(ref _statusText, value);
+    }
 
-    [ObservableProperty]
     private string _permanentStatusText = string.Empty;
+    public string PermanentStatusText
+    {
+        get => _permanentStatusText;
+        set => SetProperty(ref _permanentStatusText, value);
+    }
 
-    [ObservableProperty]
     private bool _canCheck = true;
+    public bool CanCheck
+    {
+        get => _canCheck;
+        set => SetProperty(ref _canCheck, value);
+    }
 
-    [ObservableProperty]
     private bool _canInstall = true;
+    public bool CanInstall
+    {
+        get => _canInstall;
+        set => SetProperty(ref _canInstall, value);
+    }
 
-    [ObservableProperty]
     private bool _canCancel;
+    public bool CanCancel
+    {
+        get => _canCancel;
+        set => SetProperty(ref _canCancel, value);
+    }
 
-    [ObservableProperty]
     private bool _canStop;
+    public bool CanStop
+    {
+        get => _canStop;
+        set => SetProperty(ref _canStop, value);
+    }
 
-    [ObservableProperty]
     private bool _isAllExpanded;
+    public bool IsAllExpanded
+    {
+        get => _isAllExpanded;
+        set => SetProperty(ref _isAllExpanded, value);
+    }
 
-    [ObservableProperty]
     private bool _isAllSelected;
+    public bool IsAllSelected
+    {
+        get => _isAllSelected;
+        set => SetProperty(ref _isAllSelected, value);
+    }
 
-    [ObservableProperty]
     private bool _isVerifyChecked;
+    public bool IsVerifyChecked
+    {
+        get => _isVerifyChecked;
+        set => SetProperty(ref _isVerifyChecked, value);
+    }
 
-    [ObservableProperty]
     private string _verifyButtonText = "Vérifier";
+    public string VerifyButtonText
+    {
+        get => _verifyButtonText;
+        set => SetProperty(ref _verifyButtonText, value);
+    }
 
-    [ObservableProperty]
     private string _installButtonText = "Installer";
+    public string InstallButtonText
+    {
+        get => _installButtonText;
+        set => SetProperty(ref _installButtonText, value);
+    }
 
-    [ObservableProperty]
     private int _maxParallelTasks = DefaultMaxParallelTasks;
+    public int MaxParallelTasks
+    {
+        get => _maxParallelTasks;
+        set => SetProperty(ref _maxParallelTasks, value);
+    }
 
     public InstallPackagesViewModel(InstallationService installationService, IInstalledPackagesService installedPackagesService)
     {
@@ -132,7 +211,7 @@ public partial class InstallPackagesViewModel : ObservableRecipient
     public ICommand SelectAllCommand { get; }
     public ICommand InstallSelectedCommand { get; }
 
-    partial void OnMaxParallelTasksChanged(int value)
+    private void OnMaxParallelTasksChanged(int value)
     {
         if (value < MinParallelTasks)
             _maxParallelTasks = MinParallelTasks;
@@ -265,7 +344,7 @@ public partial class InstallPackagesViewModel : ObservableRecipient
         var stepDuration = durationMs / stepCount;
         var valueIncrement = (endValue - startValue) / stepCount;
 
-        for (int i = 0; i < stepCount; i++)
+        for (var i = 0; i < stepCount; i++)
         {
             ProgressValue = startValue + (valueIncrement * i);
             await Task.Delay(stepDuration);
@@ -704,7 +783,8 @@ public partial class InstallPackagesViewModel : ObservableRecipient
         }
     }
 
-    partial void OnIsVerifyCheckedChanged(bool value)
+
+    private void OnIsVerifyCheckedChanged(bool value)
     {
         if (value)
         {

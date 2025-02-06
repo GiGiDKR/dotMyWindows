@@ -2,8 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Collections.Generic;
 
-namespace OhMyWindows.ViewModels
-{
+namespace OhMyWindows.ViewModels;
     public class CategoryViewModel : INotifyPropertyChanged
     {
         private bool _isExpanded;
@@ -42,5 +41,4 @@ namespace OhMyWindows.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-} 
+}

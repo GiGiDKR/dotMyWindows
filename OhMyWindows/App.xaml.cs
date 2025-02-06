@@ -169,7 +169,7 @@ public partial class App : Application
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
-    protected override async void OnLaunched(LaunchActivatedEventArgs args)
+    protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         try
         {
@@ -182,9 +182,18 @@ public partial class App : Application
             var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
                 "OhMyWindows", "startup_crash.log");
             var logDir = Path.GetDirectoryName(logPath);
-            if (!Directory.Exists(logDir))
+            if (!string.IsNullOrEmpty(logDir) && !Directory.Exists(logDir))
             {
-                Directory.CreateDirectory(logDir);
+                try
+                {
+                    Directory.CreateDirectory(logDir);
+                }
+                catch (Exception dirEx)
+                {
+                    File.WriteAllText(logPath, $"{DateTime.Now:o} - Directory Creation Error: {dirEx}");
+                    Application.Current.Exit();
+                    return;
+                }
             }
             File.WriteAllText(logPath, $"{DateTime.Now:o} - {ex}");
             Application.Current.Exit();

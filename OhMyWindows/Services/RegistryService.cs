@@ -59,7 +59,7 @@ public class RegistryService
                     switch (key.ValueKind)
                     {
                         case RegistryValueKind.DWord:
-                            if (!int.TryParse(value, out int intValue))
+                            if (!int.TryParse(value, out var intValue))
                                 throw new Exception($"La valeur '{value}' n'est pas un nombre valide pour une clé DWORD");
                             regKey.SetValue(key.Name, intValue, key.ValueKind);
                             break;
