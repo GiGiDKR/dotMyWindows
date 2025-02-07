@@ -20,6 +20,10 @@
             <StackPanel Grid.Row="0" Margin="0,0,0,20">
                 <TextBlock Text="Informations Système" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,10"/>
                 <TextBlock Text="{x:Bind ViewModel.OperatingSystem, Mode=OneWay}" Margin="0,0,0,5"/>
+				<TextBlock Text="{x:Bind ViewModel.ComputerName, Mode=OneWay}" Margin="0,0,0,5"/>
+                <TextBlock Text="{x:Bind ViewModel.OperatingSystemVersion, Mode=OneWay}" Margin="0,0,0,5"/>
+                <TextBlock Text="{x:Bind ViewModel.OperatingSystemArchitecture, Mode=OneWay}" Margin="0,0,0,5"/>
+                <TextBlock Text="{x:Bind ViewModel.CurrentDateTime, Mode=OneWay}" Margin="0,0,0,5"/>
             </StackPanel>
 
             <!-- Informations Processeur -->
