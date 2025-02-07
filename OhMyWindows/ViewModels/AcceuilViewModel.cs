@@ -116,6 +116,27 @@ public partial class AcceuilViewModel : ObservableRecipient
         set => SetProperty(ref _currentDateTime, value);
     }
 
+    private string _processorBaseFrequency;
+    public string ProcessorBaseFrequency
+    {
+        get => _processorBaseFrequency;
+        set => SetProperty(ref _processorBaseFrequency, value);
+    }
+
+    private string _logicalProcessorsCount;
+    public string LogicalProcessorsCount
+    {
+        get => _logicalProcessorsCount;
+        set => SetProperty(ref _logicalProcessorsCount, value);
+    }
+
+    private string _memoryUsagePercentage;
+    public string MemoryUsagePercentage
+    {
+        get => _memoryUsagePercentage;
+        set => SetProperty(ref _memoryUsagePercentage, value);
+    }
+
 	public AcceuilViewModel()
 	{
 		_processorName = string.Empty;
@@ -131,6 +152,9 @@ public partial class AcceuilViewModel : ObservableRecipient
         _operatingSystemVersion = string.Empty;
         _operatingSystemArchitecture = string.Empty;
         _currentDateTime = string.Empty;
+        _processorBaseFrequency = string.Empty;
+        _logicalProcessorsCount = string.Empty;
+        _memoryUsagePercentage = string.Empty;
 		dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 		performanceCounters = new List<PerformanceCounter>();
 		InitializePerformanceCounters();
@@ -144,6 +168,24 @@ public partial class AcceuilViewModel : ObservableRecipient
 
 		timer.Start();
 	}
+
+    private void GetProcessorInfo()
+    {
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
+            foreach (ManagementObject obj in searcher.Get())
+            {
+                ProcessorBaseFrequency = $"{obj["MaxClockSpeed"]} MHz";
+                LogicalProcessorsCount = $"Processeurs Logiques : {obj["NumberOfLogicalProcessors"]?.ToString() ?? "Inconnu"}";
+            }
+        }
+        catch (Exception)
+        {
+            ProcessorBaseFrequency = "Inconnu";
+            LogicalProcessorsCount = "Inconnu";
+        }
+    }
 
     private void GetCurrentDateTime()
     {
@@ -199,6 +241,7 @@ public partial class AcceuilViewModel : ObservableRecipient
 		try
 		{
 			GetComputerInfo();
+            GetProcessorInfo();
 			using var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
 			foreach (ManagementObject obj in searcher.Get())
 			{
@@ -218,6 +261,9 @@ public partial class AcceuilViewModel : ObservableRecipient
 			OperatingSystem = "Impossible d'obtenir les informations du système";
 			TotalMemory = "Impossible d'obtenir les informations de mémoire";
 			ComputerName = "Inconnu";
+            ProcessorBaseFrequency = "Inconnu";
+            LogicalProcessorsCount = "Inconnu";
+
 		}
 	}
 
@@ -249,11 +295,30 @@ public partial class AcceuilViewModel : ObservableRecipient
 		}
 	}
 
+    private void GetMemoryUsagePercentage()
+    {
+        try
+        {
+            if (performanceCounters.Count >= 2)
+            {
+                var totalMemoryInBytes = GetTotalPhysicalMemory();
+                var availableMemoryInMB = performanceCounters[1].NextValue();
+                var usedMemoryInMB = (totalMemoryInBytes / (1024 * 1024)) - availableMemoryInMB;
+                MemoryUsagePercentage = $"Utilisation Mémoire : { (usedMemoryInMB / (totalMemoryInBytes / (1024 * 1024))) * 100:F1}%";
+            }
+        }
+        catch (Exception)
+        {
+            MemoryUsagePercentage = "Erreur de lecture";
+        }
+    }
+
 	private void Timer_Tick(DispatcherQueueTimer sender, object args)
 	{
 		try
 		{
             GetCurrentDateTime();
+            GetMemoryUsagePercentage();
 			if (performanceCounters.Count >= 3)
 			{
 				CpuUsage = $"Utilisation CPU : {performanceCounters[0].NextValue():F1}%";
