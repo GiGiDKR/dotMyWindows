@@ -27,9 +27,6 @@ public class AppNotificationService : IAppNotificationService
         AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
 
         AppNotificationManager.Default.Register();
-
-        // Afficher une notification toast au démarrage
-        Show("Bienvenue sur OhMyWindows");
     }
 
     public void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
