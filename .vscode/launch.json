@@ -2,16 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C#: OhMyindows Debug",
-            "type": "dotnet",
-            "request": "launch",
-            "projectPath": "${workspaceFolder}/<relative-path-to-project-folder>OhMyindows.csproj"
-        },
-        {
             "name": "C#: OhMyWindows [Default Configuration]",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}\\OhMyWindows\\OhMyWindows.csproj"
-        }
+            "projectPath": "${workspaceFolder}\\OhMyWindows\\OhMyWindows.csproj",
+        },
     ]
 }

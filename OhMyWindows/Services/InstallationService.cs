@@ -383,7 +383,7 @@ namespace OhMyWindows.Services;
                 }
                 else if (package.Source.Equals("choco", StringComparison.OrdinalIgnoreCase))
                 {
-                    startInfo.Arguments += $"\"& {{ choco install '{package.Id}' -y | Out-String }}\"";
+                    startInfo.Arguments += $"\"& {{ choco install '{package.Id}' -y --no-progres| Out-String }}\"";
                 }
                 else
                 {
