@@ -10,23 +10,31 @@
     Loaded="OnLoaded">
 
     <Grid>
-        <Grid x:Name="AppTitleBar"
-              Canvas.ZIndex="1"
-              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
-              IsHitTestVisible="True"
-              VerticalAlignment="Top">
-            <Image Source="/Assets/WindowIcon.ico"
-                   HorizontalAlignment="Left"
-                   Width="16"
-                   Height="16" />
-            <TextBlock x:Name="AppTitleBarText"
-                       VerticalAlignment="Center"
-                       TextWrapping="NoWrap"
-                       Style="{StaticResource CaptionTextBlockStyle}"
-                       Margin="28,0,0,0"/>
-        </Grid>
-        <NavigationView
-            x:Name="NavigationViewControl"
+    <Grid x:Name="AppTitleBar"
+          Canvas.ZIndex="1"
+          Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+          IsHitTestVisible="True"
+          VerticalAlignment="Top">
+        <Image Source="/Assets/WindowIcon.ico"
+               HorizontalAlignment="Left"
+               Width="16"
+               Height="16" />
+        <TextBlock x:Name="AppTitleBarText"
+                   VerticalAlignment="Center"
+                   TextWrapping="NoWrap"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Margin="28,0,0,0"/>
+    </Grid>
+    <ToggleSwitch x:Name="ThemeToggleSwitch"
+        Canvas.ZIndex="2"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="0,12,12,0"
+        OnContent="Sombre"
+        OffContent="Clair"
+        Toggled="ThemeToggleSwitch_Toggled" />
+    <NavigationView
+        x:Name="NavigationViewControl"
             Canvas.ZIndex="0"
             IsBackButtonVisible="Visible"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"

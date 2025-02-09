@@ -1,10 +1,12 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 using OhMyWindows.Contracts.Services;
 using OhMyWindows.Helpers;
+using OhMyWindows.Services;
 using OhMyWindows.ViewModels;
 
 using Windows.System;
@@ -14,14 +16,13 @@ namespace OhMyWindows.Views;
 // TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
 public sealed partial class ShellPage : Page
 {
-    public ShellViewModel ViewModel
-    {
-        get;
-    }
+    public ShellViewModel ViewModel { get; }
+    private readonly IThemeSelectorService _themeSelectorService;
 
-    public ShellPage(ShellViewModel viewModel)
+    public ShellPage(ShellViewModel viewModel, IThemeSelectorService themeSelectorService)
     {
         ViewModel = viewModel;
+        _themeSelectorService = themeSelectorService;
         InitializeComponent();
 
         ViewModel.NavigationService.Frame = NavigationFrame;
@@ -34,6 +35,15 @@ public sealed partial class ShellPage : Page
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+    }
+
+    private async void ThemeToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+    {
+        var toggleSwitch = sender as ToggleSwitch;
+        if (toggleSwitch != null)
+        {
+            await _themeSelectorService.SetThemeAsync(toggleSwitch.IsOn ? ElementTheme.Dark : ElementTheme.Light);
+        }
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
