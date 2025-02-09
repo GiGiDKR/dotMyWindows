@@ -11,7 +11,7 @@
 
     <Grid>
     <Grid x:Name="AppTitleBar"
-          Canvas.ZIndex="1"
+    Canvas.ZIndex="1"
           Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
           IsHitTestVisible="True"
           VerticalAlignment="Top">
@@ -27,9 +27,9 @@
     </Grid>
     <ToggleSwitch x:Name="ThemeToggleSwitch"
         Canvas.ZIndex="2"
-        HorizontalAlignment="Right"
+        HorizontalAlignment="Center"
         VerticalAlignment="Top"
-        Margin="0,12,12,0"
+        Margin="0,16,0,0"
         OnContent="Sombre"
         OffContent="Clair"
         Toggled="ThemeToggleSwitch_Toggled" />
@@ -40,9 +40,12 @@
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
             IsSettingsVisible="True"
+            PaneTitle="Menu"
+            PaneDisplayMode="Left"
             ExpandedModeThresholdWidth="1280"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-            Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+            Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
+            SelectionFollowsFocus="Disabled">
             <NavigationView.MenuItems>
                 <!--
                 TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -56,6 +59,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItemHeader Content="Actions"/>
                 <NavigationViewItem x:Uid="Shell_Configuration" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.ConfigurationViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
