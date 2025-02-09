@@ -112,6 +112,10 @@ public partial class App : Application
             services.AddTransient<ConfigurationPage>();
             services.AddTransient<AcceuilViewModel>();
             services.AddTransient<AcceuilPage>();
+            services.AddTransient<AboutViewModel>();
+            services.AddTransient<AboutPage>();
+            services.AddTransient<HelpViewModel>();
+            services.AddTransient<HelpPage>();
             services.AddTransient<ShellPage>(sp => new ShellPage(sp.GetRequiredService<ShellViewModel>(), sp.GetRequiredService<IThemeSelectorService>()));
             services.AddTransient<ShellViewModel>();
 

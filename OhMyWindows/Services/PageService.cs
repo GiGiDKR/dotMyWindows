@@ -27,6 +27,8 @@ public class PageService : IPageService
         Configure<ActivationViewModel, ActivationPage>();
         Configure<AndroidViewModel, AndroidPage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<AboutViewModel, AboutPage>();
+        Configure<HelpViewModel, HelpPage>();
     }
 
     public Type GetPageType(string key)

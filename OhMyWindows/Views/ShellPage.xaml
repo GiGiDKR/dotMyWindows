@@ -148,6 +148,20 @@
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Frame x:Name="NavigationFrame" />
             </Grid>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Uid="Shell_About" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.AboutViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                
+                <NavigationViewItem x:Uid="Shell_Help" helpers:NavigationHelper.NavigateTo="OhMyWindows.ViewModels.HelpViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE897;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
         </NavigationView>
     </Grid>
 </Page>
