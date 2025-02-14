@@ -32,6 +32,7 @@
                 <TextBlock Text="{x:Bind ViewModel.ProcessorName, Mode=OneWay}" Margin="0,0,0,5"/>
                 <TextBlock Text="{x:Bind ViewModel.ProcessorCores, Mode=OneWay}" Margin="0,0,0,5"/>
                 <TextBlock Text="{x:Bind ViewModel.CpuUsage, Mode=OneWay}" Margin="0,0,0,5"/>
+                <ProgressBar Minimum="0" Maximum="100" Value="{x:Bind ViewModel.CpuUsageValue, Mode=OneWay}" Margin="0,0,0,5"/>
                 <TextBlock Text="{x:Bind ViewModel.ProcessorBaseFrequency, Mode=OneWay}" Margin="0,0,0,5"/>
                 <TextBlock Text="{x:Bind ViewModel.LogicalProcessorsCount, Mode=OneWay}" Margin="0,0,0,5"/>
             </StackPanel>
@@ -42,6 +43,7 @@
                 <TextBlock Text="{x:Bind ViewModel.TotalMemory, Mode=OneWay}" Margin="0,0,0,5"/>
                 <TextBlock Text="{x:Bind ViewModel.AvailableMemory, Mode=OneWay}" Margin="0,0,0,5"/>
                 <TextBlock Text="{x:Bind ViewModel.MemoryUsagePercentage, Mode=OneWay}" Margin="0,0,0,5"/>
+                <ProgressBar Minimum="0" Maximum="100" Value="{x:Bind ViewModel.MemoryUsageValue, Mode=OneWay}" Margin="0,0,0,5"/>
             </StackPanel>
 
             <!-- Informations Stockage et Réseau -->

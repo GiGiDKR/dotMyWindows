@@ -137,6 +137,20 @@ public partial class AcceuilViewModel : ObservableRecipient
         set => SetProperty(ref _memoryUsagePercentage, value);
     }
 
+    private double _memoryUsageValue;
+    public double MemoryUsageValue
+    {
+        get => _memoryUsageValue;
+        set => SetProperty(ref _memoryUsageValue, value);
+    }
+
+    private double _cpuUsageValue;
+    public double CpuUsageValue
+    {
+        get => _cpuUsageValue;
+        set => SetProperty(ref _cpuUsageValue, value);
+    }
+
 	public AcceuilViewModel()
 	{
 		_processorName = string.Empty;
@@ -304,7 +318,9 @@ public partial class AcceuilViewModel : ObservableRecipient
                 var totalMemoryInBytes = GetTotalPhysicalMemory();
                 var availableMemoryInMB = performanceCounters[1].NextValue();
                 var usedMemoryInMB = (totalMemoryInBytes / (1024 * 1024)) - availableMemoryInMB;
-                MemoryUsagePercentage = $"Utilisation Mémoire : { (usedMemoryInMB / (totalMemoryInBytes / (1024 * 1024))) * 100:F1}%";
+                var usagePercentage = (usedMemoryInMB / (totalMemoryInBytes / (1024 * 1024))) * 100;
+                MemoryUsagePercentage = $"Utilisation Mémoire : {usagePercentage:F1}%";
+                MemoryUsageValue = (double)usagePercentage;
             }
         }
         catch (Exception)
@@ -321,7 +337,9 @@ public partial class AcceuilViewModel : ObservableRecipient
             GetMemoryUsagePercentage();
 			if (performanceCounters.Count >= 3)
 			{
-				CpuUsage = $"Utilisation CPU : {performanceCounters[0].NextValue():F1}%";
+                var cpuUsage = performanceCounters[0].NextValue();
+				CpuUsage = $"Utilisation CPU : {cpuUsage:F1}%";
+                CpuUsageValue = (double)cpuUsage;
 				AvailableMemory = $"Mémoire Disponible : {performanceCounters[1].NextValue():F0} Mo";
 				NetworkSpeed = $"Débit Réseau : {FormatBytes((long)performanceCounters[2].NextValue())}/s";
 			}
