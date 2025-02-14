@@ -58,6 +58,7 @@ public partial class AcceuilViewModel : ObservableRecipient
 		public string? FreeSpace { get; set; }
 		public string? TotalSize { get; set; }
 		public string? FormattedInfo { get; set; }
+        public double DiskUsageValue { get; set; }
 	}
 
 	private List<DriveInfoWrapper> _drives;
@@ -292,12 +293,14 @@ public partial class AcceuilViewModel : ObservableRecipient
 				{
 					var usedSpace = drive.TotalSize - drive.AvailableFreeSpace;
 					var driveLetter = drive.Name.TrimEnd('\\', ':');
+                    var diskUsageValue = (double)usedSpace / drive.TotalSize * 100;
 					driveList.Add(new DriveInfoWrapper
 					{
 						Name = $"Disque {drive.Name}",
 						FreeSpace = FormatBytes(drive.AvailableFreeSpace),
 						TotalSize = FormatBytes(drive.TotalSize),
-						FormattedInfo = $"{driveLetter}: = {FormatBytes(usedSpace)}/{FormatBytes(drive.TotalSize)}"
+						FormattedInfo = $"{driveLetter}: = {FormatBytes(usedSpace)}/{FormatBytes(drive.TotalSize)}",
+                        DiskUsageValue = diskUsageValue
 					});
 				}
 			}

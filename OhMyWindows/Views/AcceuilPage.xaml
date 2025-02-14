@@ -67,6 +67,7 @@
                                         <Run Text=" / "/>
                                         <Run Text="{Binding TotalSize}"/>
                                     </TextBlock>
+                                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding DiskUsageValue}" Margin="0,0,0,5"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
