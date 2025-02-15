@@ -49,14 +49,31 @@ public class ProgramService
             var displayName = subKey.GetValue("DisplayName") as string;
             if (string.IsNullOrWhiteSpace(displayName)) continue;
 
+            // Filtre SystemComponent
+            var systemComponent = subKey.GetValue("SystemComponent");
+            if (systemComponent != null && systemComponent.ToString() == "1") continue;
+
+            // Filtre ParentKeyName
+            var parentKeyName = subKey.GetValue("ParentKeyName");
+            if (parentKeyName != null) continue;
+
+            // Filtre ReleaseType
+            var releaseType = subKey.GetValue("ReleaseType") as string;
+            if (releaseType != null && (releaseType.Contains("Hotfix") || releaseType.Contains("Security Update") || releaseType.Contains("Update"))) continue;
+
+            // Filtre "driver" (à affiner)
+            var publisher = subKey.GetValue("Publisher") as string ?? "";
+            var nameLower = displayName.ToLower();
+            if (publisher.ToLower().Contains("driver") || nameLower.Contains("driver")) continue;
+
             var estimatedSizeValue = subKey.GetValue("EstimatedSize");
             var estimatedSize = estimatedSizeValue != null ? Convert.ToInt64(estimatedSizeValue) : 0;
-            
+
             yield return new InstalledProgram
             {
                 Name = displayName,
                 Version = subKey.GetValue("DisplayVersion") as string ?? "",
-                Publisher = subKey.GetValue("Publisher") as string ?? "Éditeur inconnu",
+                Publisher = publisher,
                 UninstallString = subKey.GetValue("UninstallString") as string ?? "",
                 QuietUninstallString = subKey.GetValue("QuietUninstallString") as string ?? "",
                 InstallLocation = subKey.GetValue("InstallLocation") as string ?? "",
@@ -66,7 +83,7 @@ public class ProgramService
         }
     }
 
-    public async Task<bool> UninstallProgramAsync(InstalledProgram program)
+     public async Task<bool> UninstallProgramAsync(InstalledProgram program)
     {
         if (string.IsNullOrWhiteSpace(program.UninstallString))
             return false;
